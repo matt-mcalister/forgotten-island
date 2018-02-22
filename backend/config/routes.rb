@@ -4,7 +4,10 @@ Rails.application.routes.draw do
     namespace "v1" do
 
       resources :users, only: [:create]
+      resources :games, only: [:index, :show, :create]
+      resources :active_games, only: [:create]
 
+      mount ActionCable.server => '/cable'
 
     end
   end
