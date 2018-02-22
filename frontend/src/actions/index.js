@@ -25,7 +25,7 @@ export function addGameToGamesList(game) {
 export function updateNewGameForm(e) {
   let value;
   if (e.target.name === "water_level") {
-    value = parseInt(e.target.value)
+    value = parseInt(e.target.value, 10)
   } else {
     value = e.target.value
   }
@@ -35,4 +35,8 @@ export function updateNewGameForm(e) {
 export function createNewGame(newGameForm) {
   RestfulAdapter.createFetchToChannel("games", newGameForm)
   return { type: "RESET_NEW_GAME_FORM", newGameForm: {name: "", water_level: 2} }
+}
+
+export function setActiveGame(game){
+  return { type: "SET_ACTIVE_GAME", game: game }
 }

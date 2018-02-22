@@ -1,10 +1,13 @@
 import React from "react";
 import GamesContainer from "./GamesContainer"
 import NewGameForm from "./NewGameForm"
+import { connect } from "react-redux"
+import LoggedIn from "../hoc/LoggedIn"
 
 class Lobby extends React.Component {
 
   render() {
+    console.log("reached lobby")
     return (
       <div id="lobby">
         <div id="lobby-welcome-message">
@@ -16,4 +19,4 @@ class Lobby extends React.Component {
     )
   }
 }
-export default Lobby
+export default connect(state => ({ currentUser: state.currentUser.currentUser }), null)(LoggedIn(Lobby))

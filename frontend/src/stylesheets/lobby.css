@@ -11,7 +11,7 @@
 
 #new-game-form {
   position: absolute;
-  right: 0;
+  right: 0.5%;
   top: 0;
   width: 25%;
   height: 19%;
@@ -44,7 +44,7 @@
 #games-container {
   position: absolute;
   overflow: scroll;
-  right: 0;
+  right: 0.5%;
   width: 25%;
   height: 81%;
   top:19%

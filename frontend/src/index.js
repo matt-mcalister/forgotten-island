@@ -12,11 +12,12 @@ import "./stylesheets/lobby.css"
 import "./stylesheets/welcome.css"
 
 import { API_WS_ROOT } from './connections/constants';
-import { gamesReducer, currentUserReducer } from './reducers';
+import { gamesReducer, currentUserReducer, activeGameReducer } from './reducers';
 
 const rootReducer = combineReducers({
   currentUser: currentUserReducer,
-  games: gamesReducer
+  games: gamesReducer,
+  activeGame: activeGameReducer
 })
 
 const store = createStore(rootReducer, applyMiddleware(thunk));

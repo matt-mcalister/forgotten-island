@@ -42,3 +42,14 @@ export function gamesReducer(state = {
       return state
   }
 }
+
+export function activeGameReducer(state = {
+  game: null
+}, action) {
+  switch(action.type){
+    case 'SET_ACTIVE_GAME':
+      return {...state, game: action.game}
+    default:
+      return state
+  }
+}
