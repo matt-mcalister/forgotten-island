@@ -1,32 +1,35 @@
-import React from "react"; 
+import React from "react";
 import { connect } from "react-redux";
 import { updateUserNameInput, setUser } from '../actions'
- 
-class Welcome extends React.Component {
- 
+import "../stylesheets/welcome.css"
 
-  
+class Welcome extends React.Component {
+
+
+
   handleChange = (e) => {
     this.props.updateUserNameInput(e.target.value)
   }
-  
+
   handleSubmit = (e) => {
     e.preventDefault()
     this.props.setUser(this.props.userNameInput)
   }
- 
-  render() { 
-    console.log(this.props.userNameInput)
-    return ( 
-      <div>
-        <h1>Forgotten Island</h1>
-        <form onSubmit={this.handleSubmit}>
+
+  render() {
+    return (
+      <div id="welcome-page">
+        <div id="welcome-message">
+          <h1>Forgotten Island</h1>
+        </div>
+        <form onSubmit={this.handleSubmit} id={"login-form"}>
           <input type="text" value={this.props.userNameInput} onChange={this.handleChange} placeholder="Enter your name here..." />
-          <input type="submit" hidden/>
+          <br />
+          <input type="submit" className={"submit"} value="Adventure!"/>
         </form>
       </div>
-    ) 
-  } 
-} 
+    )
+  }
+}
 
 export default connect(state =>  ({userNameInput: state.currentUser.userNameInput}), { updateUserNameInput, setUser })(Welcome);

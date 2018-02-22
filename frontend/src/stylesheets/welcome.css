@@ -1,0 +1,39 @@
+#welcome-page {
+  position:absolute;
+  height:100%;
+  width:100%;
+}
+
+#welcome-message {
+  position: absolute;
+  width:100%;
+  top: 20%;
+  margin: auto;
+  text-align: center;
+}
+
+#welcome-message h1 {
+  font-size: 4em
+}
+
+#login-form {
+  position: absolute;
+  width:100%;
+  top: 50%;
+  margin: auto;
+  text-align: center;
+}
+
+#login-form input {
+  width: 40%;
+  height: 2em;
+  text-align: center;
+  font-size: 1.8em;
+  margin-bottom: 0.5em
+}
+
+#login-form input.submit {
+  font-size: 1.2em;
+  border: solid 2px black;
+  width: 30%
+}

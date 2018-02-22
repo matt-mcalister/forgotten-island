@@ -25,6 +25,12 @@ export class RestfulAdapter {
       headers: HEADERS()
     }).then(responseHandler);
   }
+  static createFetchToChannel(route, body) {
+    return fetch(`${API_ROOT}/${route}`, postRequest(body));
+  }
+  static editFetchToChannel(route, id, body) {
+    return fetch(`${API_ROOT}/${route}/${id}`, patchRequest(body));
+  }
 }
 
 function getRequest() {
@@ -51,7 +57,7 @@ function postRequest(body) {
 
 function responseHandler(response) {
   if (response.ok) {
-    return response.json();
+    return response.json()
   } else {
     console.log("ERROR", response.json());
   }

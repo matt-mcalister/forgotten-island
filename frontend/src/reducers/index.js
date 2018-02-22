@@ -15,13 +15,18 @@ export function currentUserReducer(state = {
 
 export function gamesReducer(state = {
   gamesList: [],
-  newGameForm: {name: "", waterLevel: 2}
+  newGameForm: {name: "", water_level: 2}
 }, action) {
   switch(action.type) {
-    case 'UPDATE_FORM':
+    case 'UPDATE_NEW_GAME_FORM':
       return {
         ...state,
         newGameForm: {...state.newGameForm, ...action.newGameForm}
+      }
+    case 'RESET_NEW_GAME_FORM':
+      return {
+        ...state,
+        newGameForm: action.newGameForm
       }
     case "SET_GAMES_LIST":
       return {

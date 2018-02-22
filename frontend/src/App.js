@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 
 
 class App extends Component {
-  
+
   renderHomePage = () => {
     if (this.props.currentUser){
       return <Lobby />
@@ -14,9 +14,8 @@ class App extends Component {
       return <Welcome />
     }
   }
-  
+
   render() {
-    console.log(this.props)
     return (
       <div>
         <Route exact path="/" render={props => this.renderHomePage()}/>
