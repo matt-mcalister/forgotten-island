@@ -25,4 +25,4 @@ class App extends Component {
   }
 }
 
-export default connect(state => ({ currentUser: state.currentUser }), null)(App);
+export default connect(state => ({ currentUser: state.currentUser.currentUser }), null)(App);

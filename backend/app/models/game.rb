@@ -2,7 +2,7 @@ class Game < ApplicationRecord
   has_many :active_games
   has_many :users, through: :active_games
   has_many :messages, through: :active_games
-  has_many :tiles
+  has_many :tiles, dependent: :destroy
 
   after_create :generate_flood_cards
 

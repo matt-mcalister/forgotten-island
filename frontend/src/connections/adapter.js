@@ -50,11 +50,9 @@ function postRequest(body) {
 }
 
 function responseHandler(response) {
-  return response => {
-    if (response.ok) {
-      return response.json();
-    } else {
-      console.log("ERROR", response.json());
-    }
+  if (response.ok) {
+    return response.json();
+  } else {
+    console.log("ERROR", response.json());
   }
 }

@@ -29,4 +29,4 @@ class Welcome extends React.Component {
   } 
 } 
 
-export default connect(state =>  ({userNameInput: state.userNameInput}), { updateUserNameInput, setUser })(Welcome);
+export default connect(state =>  ({userNameInput: state.currentUser.userNameInput}), { updateUserNameInput, setUser })(Welcome);

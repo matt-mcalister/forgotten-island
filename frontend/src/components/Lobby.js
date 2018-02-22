@@ -1,10 +1,16 @@
 import React from "react"; 
+import GamesContainer from "./GamesContainer"
+import NewGameForm from "./NewGameForm"
  
 class Lobby extends React.Component { 
  
   render() { 
     return ( 
-      <h1>Welcome!</h1>
+      <div id="lobby">
+        <h1>Welcome!</h1>
+        <GamesContainer />
+        <NewGameForm />
+      </div>
     ) 
   } 
 } 
