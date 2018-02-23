@@ -1,10 +1,18 @@
+.active-game {
+
+}
+
+
 .board {
-  width: 40em;
-  height: 40em;
+  width: 70vmin;
+  height: 70vmin;
   display: grid;
   grid-template-columns: repeat(6, 1fr);
   grid-template-rows: repeat(6, 1fr);
   grid-gap: 0.5em;
+  position: absolute;
+  top: 0;
+  left: 25vmin;
 }
 
 .tile {
@@ -20,8 +28,10 @@
 }
 
 .tile-image {
-  height:100%;
-  width: auto
+  height:102%;
+  width: auto;
+  left: -1%;
+  position: relative;
 }
 
 .tile-name {
@@ -34,6 +44,26 @@
   padding: 0;
   font-size: 0.6em
 }
+
+.water-level-container {
+  height: 50vmin;
+  width: 20vmin;
+  border: 0.1em solid black;
+  border-radius: 1em;
+  display: flex;
+  align-items:flex-end;
+}
+
+.water-level {
+  background-color: blue;
+  width: 10vmin;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+
+
 
 .cell-1 {
   grid-row: 1 / 2;
