@@ -1,0 +1,42 @@
+.board {
+  width: 40em;
+  height: 40em;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: repeat(6, 1fr);
+  border: 1px solid blue
+}
+
+.tile {
+  border: 1px solid red;
+  overflow: none;
+  width: 100%
+}
+
+.tile-image-container {
+  width: 2em;
+}
+
+.tile-image {
+  height: 1em;
+  width: auto;
+}
+
+
+
+.cell-1 {
+  grid-row: 1 / 2;
+  grid-column: 3 / 4
+}
+
+.cell-2 {
+
+}
+
+.cell-3 {
+
+}
+
+.cell-4 {
+
+}

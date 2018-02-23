@@ -7,9 +7,11 @@ import registerServiceWorker from './registerServiceWorker';
 import thunk from "redux-thunk"
 import { ActionCableProvider } from 'react-actioncable-provider';
 import { BrowserRouter as Router } from 'react-router-dom'
+
 import "./stylesheets/index.css"
 import "./stylesheets/lobby.css"
 import "./stylesheets/welcome.css"
+import "./stylesheets/active-game.css"
 
 import { API_WS_ROOT } from './connections/constants';
 import { gamesReducer, currentUserReducer, activeGameReducer } from './reducers';

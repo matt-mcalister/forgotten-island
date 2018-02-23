@@ -3,6 +3,7 @@ import GamesContainer from "./GamesContainer"
 import NewGameForm from "./NewGameForm"
 import { connect } from "react-redux"
 import LoggedIn from "../hoc/LoggedIn"
+import { withRouter } from "react-router-dom"
 
 class Lobby extends React.Component {
 
@@ -19,4 +20,7 @@ class Lobby extends React.Component {
     )
   }
 }
-export default connect(state => ({ currentUser: state.currentUser.currentUser }), null)(LoggedIn(Lobby))
+
+const connectedLobby = connect(state => ({ currentUser: state.currentUser.currentUser }) )(Lobby)
+
+export default LoggedIn(connectedLobby)

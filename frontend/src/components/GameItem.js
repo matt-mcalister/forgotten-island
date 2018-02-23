@@ -38,4 +38,6 @@ class GameItem extends React.Component {
   }
 }
 
-export default connect(null, { setActiveGame })(withRouter(GameItem))
+const connectedGameItem = connect(null, { setActiveGame })(GameItem)
+
+export default withRouter(connectedGameItem)

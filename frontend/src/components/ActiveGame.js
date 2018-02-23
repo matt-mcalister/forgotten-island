@@ -18,4 +18,4 @@ class ActiveGame extends React.Component {
     )
   }
 }
-export default connect(state => ({ ...state.activeGame.game, currentUser: state.currentUser.currentUser }))(LoggedIn(ActiveGame))
+export default connect(state => ({ ...state.activeGame.game, currentUser: state.currentUser.currentUser }))(ActiveGame)

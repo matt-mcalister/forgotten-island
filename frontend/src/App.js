@@ -4,21 +4,24 @@ import Welcome from "./components/Welcome";
 import Lobby from "./components/Lobby";
 import ActiveGame from "./components/ActiveGame";
 import { connect } from "react-redux";
+import LoggedIn from "./hoc/LoggedIn"
+import { withRouter } from "react-router-dom"
 
 
 
 class App extends Component {
 
   render() {
+
     return(
     <div>
       <Switch>
-        <Route path="/games/:id" render={props => <ActiveGame />}/>
+        <Route path="/games/:id" render={props => <ActiveGame currentUser={this.props.currentUser} />}/>
         <Route path="/login" render={props => <Welcome routerProps={props} />}/>
-        <Route exact path="/" render={props => <Lobby />}/>
+        <Route exact path="/" render={props => <Lobby currentUser={this.props.currentUser} {...props}/>}/>
       </Switch>
     </div>)
   }
 }
 
-export default App;
+export default withRouter(connect(({ currentUser }) => ({ ...currentUser }) )(App));
