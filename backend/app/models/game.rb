@@ -86,7 +86,7 @@ class Game < ApplicationRecord
   def shuffle_tiles
     positions = (1..24).to_a.shuffle
     self.tiles.each_with_index do |tile, idx|
-      tile.position = positions[idx]
+      tile.update(position: positions[idx])
     end
   end
 
