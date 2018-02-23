@@ -1,7 +1,39 @@
-.active-game {
-
+.card {
+  height: 95%;
+  width:40%;
+  border: 0.25vmin solid black;
+  border-radius: 1em;
+  margin-right: 0.5vmin;
+  margin-left: 0.5vmin;
 }
 
+.cards-container {
+  height: 20vmin;
+  width: 30vmin;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  display: flex
+}
+
+.flood-cards {
+  background: #0066ff;
+}
+
+.flood-cards h3 {
+  margin-top: 50%;
+  font-size: 1.4em;
+  text-align: center;
+}
+
+.treasure-cards {
+  background: #cc9900;
+}
+
+.treasure-cards h3 {
+  margin-top: 50%;
+  font-size: 1.4em;
+  text-align: center;
+}
 
 .board {
   width: 70vmin;
@@ -28,7 +60,7 @@
 }
 
 .tile-image {
-  height:102%;
+  height:101%;
   width: auto;
   left: -1%;
   position: relative;

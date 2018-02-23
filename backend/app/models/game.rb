@@ -73,6 +73,11 @@ class Game < ApplicationRecord
       "Waters Rise!"
     ].shuffle
     self.treasure_discards = []
+    if self.valid?
+      self.save
+    else
+      byebug
+    end
     self.generate_tiles
   end
 
@@ -86,7 +91,11 @@ class Game < ApplicationRecord
   def shuffle_tiles
     positions = (1..24).to_a.shuffle
     self.tiles.each_with_index do |tile, idx|
-      tile.update(position: positions[idx])
+      if tile.update(position: positions[idx])
+        tile.save
+      else
+        byebug
+      end 
     end
   end
 

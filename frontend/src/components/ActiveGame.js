@@ -3,6 +3,8 @@ import { connect } from "react-redux";
 import LoggedIn from "../hoc/LoggedIn"
 import Tile from "./Tile"
 import WaterLevel from "./WaterLevel"
+import FloodCards from "./FloodCards"
+import TreasureCards from "./TreasureCards"
 
 
 class ActiveGame extends React.Component {
@@ -15,8 +17,13 @@ class ActiveGame extends React.Component {
         <div className="board">
           {this.props.tiles.map(tile => <Tile key={tile.id} tile={tile}/>)}
         </div>
+        <FloodCards />
+        <TreasureCards />
       </div>
     )
   }
 }
-export default connect(state => ({ ...state.activeGame.game, currentUser: state.currentUser.currentUser }))(ActiveGame)
+
+const connectedActiveGame = connect(state => ({ ...state.activeGame.game, currentUser: state.currentUser.currentUser }))(ActiveGame)
+
+export default LoggedIn(connectedActiveGame)
