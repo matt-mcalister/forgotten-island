@@ -44,11 +44,14 @@ export function gamesReducer(state = {
 }
 
 export function activeGameReducer(state = {
-  game: null
+  game: null,
+  newMessageInput: ""
 }, action) {
   switch(action.type){
     case 'SET_ACTIVE_GAME':
       return {...state, game: action.game}
+    case 'UPDATE_NEW_MESSAGE_INPUT':
+      return {...state, newMessageInput: action.newMessageInput}
     default:
       return state
   }

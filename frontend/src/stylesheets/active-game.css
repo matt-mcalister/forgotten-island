@@ -1,6 +1,38 @@
+.team-chat {
+  height: 100%;
+  border: 1px solid black;
+}
+
+.messages-container {
+  height: 92%;
+}
+
+.new-message-form{
+  height: 10%;
+}
+
+.new-message-form input {
+  width: 100%;
+  font-size: 1em;
+}
+.new-message-form input.submit {
+  width: 100%;
+  font-size: 2em;
+}
+
+.active-game {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  border: 1px solid red;
+  display: grid;
+  grid-template-columns: 1fr 3fr 2fr;
+  grid-auto-flow: column;
+}
+
 .card {
-  height: 95%;
-  width:40%;
+  height: 95vmin;
+  width:30vmin;
   border: 0.25vmin solid black;
   border-radius: 1em;
   margin-right: 0.5vmin;
@@ -42,9 +74,9 @@
   grid-template-columns: repeat(6, 1fr);
   grid-template-rows: repeat(6, 1fr);
   grid-gap: 0.5em;
-  position: absolute;
+  /* position: absolute;
   top: 0;
-  left: 25vmin;
+  left: 25vmin; */
 }
 
 .tile {

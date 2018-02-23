@@ -3,8 +3,9 @@ import { connect } from "react-redux";
 import LoggedIn from "../hoc/LoggedIn"
 import Tile from "./Tile"
 import WaterLevel from "./WaterLevel"
-import FloodCards from "./FloodCards"
-import TreasureCards from "./TreasureCards"
+// import FloodCards from "./FloodCards"
+// import TreasureCards from "./TreasureCards"
+import TeamChat from "./TeamChat"
 
 
 class ActiveGame extends React.Component {
@@ -17,8 +18,7 @@ class ActiveGame extends React.Component {
         <div className="board">
           {this.props.tiles.map(tile => <Tile key={tile.id} tile={tile}/>)}
         </div>
-        <FloodCards />
-        <TreasureCards />
+        <TeamChat />
       </div>
     )
   }

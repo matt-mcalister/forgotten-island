@@ -40,3 +40,7 @@ export function createNewGame(newGameForm) {
 export function setActiveGame(game){
   return { type: "SET_ACTIVE_GAME", game: game }
 }
+
+export function updateNewMessageInput(newMessageInput){
+  return { type: "UPDATE_NEW_MESSAGE_INPUT", newMessageInput: newMessageInput }
+}
