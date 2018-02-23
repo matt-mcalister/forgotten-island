@@ -37,7 +37,8 @@ export function createNewGame(newGameForm) {
   return { type: "RESET_NEW_GAME_FORM", newGameForm: {name: "", water_level: 2} }
 }
 
-export function setActiveGame(game){
+export function setActiveGame(game, user_id){
+  RestfulAdapter.createFetchToChannel("active_games", {user_id: user_id, game_id: game.id})
   return { type: "SET_ACTIVE_GAME", game: game }
 }
 

@@ -23,8 +23,8 @@ class GameItem extends React.Component {
     }
   }
 
-  handleClick = async (e) => {
-    await this.props.setActiveGame(this.props.game)
+  handleClick = (e) => {
+    this.props.setActiveGame(this.props.game, this.props.currentUser.id)
     this.props.history.push(`/games/${this.props.game.id}`)
   }
 
@@ -38,6 +38,6 @@ class GameItem extends React.Component {
   }
 }
 
-const connectedGameItem = connect(null, { setActiveGame })(GameItem)
+const connectedGameItem = connect(state => ({ currentUser: state.currentUser.currentUser }), { setActiveGame })(GameItem)
 
 export default withRouter(connectedGameItem)
