@@ -52,3 +52,8 @@ export function updateNewMessageInput(newMessageInput){
 export function addActiveGameUsers(active_game){
   return { type: "ADD_ACTIVE_GAME_USERS", active_game: active_game}
 }
+
+export function toggleReadyUp(active_game){
+  RestfulAdapter.editFetchToChannel("active_games", active_game.id, {active_game: {ready_to_start: !active_game.ready_to_start }})
+  return { type: "TOGGLE_READY_UP" }
+}

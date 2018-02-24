@@ -12,11 +12,21 @@
 .ready-up-container {
   width: 60%;
   height: 30%;
+  display: flex;
+  margin: auto;
+  margin-top: 10%;
 }
 
 .ready-up-button {
   height: 100%;
   width: 20%;
+  margin-right: 1em;
+  border-radius: 1em;
+  text-align: center;
+}
+
+p.ready_up_message {
+  margin-top: 25%
 }
 
 .active-game-bottom {

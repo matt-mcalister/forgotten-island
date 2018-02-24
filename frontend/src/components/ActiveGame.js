@@ -15,9 +15,9 @@ import { addActiveGameUsers } from "../actions"
 
 class ActiveGame extends React.Component {
 
-  handleReceivedInformation = (info) => {
-    if (info.active_game){
-      this.props.addActiveGameUsers(info.active_game)
+  handleReceivedData = (data) => {
+    if (data.active_game){
+      this.props.addActiveGameUsers(data)
     }
   }
 
@@ -25,10 +25,10 @@ class ActiveGame extends React.Component {
     console.log("activegame props: ", this.props)
     return (
       <div className="active-game">
-        <ActionCable
+        {this.props.id && (<ActionCable
          channel={{ channel: 'ActiveGamesChannel', game_id: this.props.id }}
-         onReceived={this.handleReceivedInformation}
-         />
+         onReceived={this.handleReceivedData}
+         />)}
         <WaterLevel />
         <div className="board">
           {this.props.tiles && this.props.tiles.map(tile => <Tile key={tile.id} tile={tile}/>)}

@@ -46,7 +46,6 @@ export function gamesReducer(state = {
 export function activeGameReducer(state = {
   game: null,
   newMessageInput: "",
-  playerReady: false,
   in_session: false,
   messages: [],
   active_games: [],
@@ -54,16 +53,30 @@ export function activeGameReducer(state = {
 }, action) {
   switch(action.type){
     case 'SET_ACTIVE_GAME':
-      
+
       return {...state, game: action.game, messages: action.game.messages, active_games: action.active_games, water_level: action.game.water_level}
     case 'UPDATE_NEW_MESSAGE_INPUT':
       return {...state, newMessageInput: action.newMessageInput}
     case 'ADD_ACTIVE_GAME_USERS':
-      return ({
-        ...state,
-        active_games: [...state.active_games, action.active_game],
-        messages: [...state.messages, {alert: "new_active_game", active_game: action.active_game, id: Date.now() }]
-      })
+      if (state.active_games.find(ag => ag.active_game.id === action.active_game.active_game.id)){
+        const newActiveGames = state.active_games.map(ag => {
+          if (ag.active_game.id === action.active_game.active_game.id){
+            return action.active_game
+          }
+          return ag
+        })
+        return ({
+          ...state,
+          active_games: newActiveGames
+        })
+      } else {
+        return ({
+          ...state,
+          active_games: [...state.active_games, action.active_game],
+          messages: [...state.messages, {alert: "new_active_game", active_game: action.active_game.active_game, id: Date.now() }]
+        })
+      }
+
     default:
       return state
   }

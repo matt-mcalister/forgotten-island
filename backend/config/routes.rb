@@ -5,7 +5,7 @@ Rails.application.routes.draw do
 
       resources :users, only: [:create]
       resources :games, only: [:index, :show, :create]
-      resources :active_games, only: [:create]
+      resources :active_games, only: [:create, :update]
 
       mount ActionCable.server => '/cable'
 

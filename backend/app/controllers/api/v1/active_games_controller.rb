@@ -5,18 +5,29 @@ class Api::V1::ActiveGamesController < ApplicationController
     if @active_game.valid?
       @active_game.save
       @game = Game.find(params[:game_id])
-      serialized_game = ActiveModelSerializers::Adapter::Json.new(
+      serialized_active_game = ActiveModelSerializers::Adapter::Json.new(
         ActiveGameSerializer.new(@active_game)
       ).serializable_hash
 
+      ActiveGamesChannel.broadcast_to @game, serialized_active_game
+    end
+  end
 
-      ActiveGamesChannel.broadcast_to @game, serialized_game
+  def update
+    @active_game = ActiveGame.find_by(id: params[:id])
+    if @active_game.update(active_game_params)
+      @game = @active_game.game
+      serialized_active_game = ActiveModelSerializers::Adapter::Json.new(
+        ActiveGameSerializer.new(@active_game)
+      ).serializable_hash
+
+      ActiveGamesChannel.broadcast_to @game, serialized_active_game
     end
   end
 
   private
-    def user_params
-      params.require(:active_game).permit(:id, :game_id, :user_id)
+    def active_game_params
+      params.require(:active_game).permit(:id, :game_id, :user_id, :ready_to_start, :position, :treasure_cards)
     end
 
 end
