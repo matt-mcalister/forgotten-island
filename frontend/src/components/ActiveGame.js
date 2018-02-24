@@ -3,21 +3,22 @@ import { connect } from "react-redux";
 import LoggedIn from "../hoc/LoggedIn"
 import Tile from "./Tile"
 import WaterLevel from "./WaterLevel"
+import GameInfo from "./GameInfo"
+import ReadyUp from "./ReadyUp"
 // import FloodCards from "./FloodCards"
 // import TreasureCards from "./TreasureCards"
 import TeamChat from "./TeamChat"
 import { ActionCable } from 'react-actioncable-provider';
+import { addActiveGameUsers } from "../actions"
 
 
 
 class ActiveGame extends React.Component {
 
-  componentDidMount(){
-    
-  }
-
   handleReceivedInformation = (info) => {
-    debugger
+    if (info.active_game){
+      this.props.addActiveGameUsers(info.active_game)
+    }
   }
 
   render() {
@@ -30,14 +31,15 @@ class ActiveGame extends React.Component {
          />
         <WaterLevel />
         <div className="board">
-          {this.props.tiles.map(tile => <Tile key={tile.id} tile={tile}/>)}
+          {this.props.tiles && this.props.tiles.map(tile => <Tile key={tile.id} tile={tile}/>)}
         </div>
         <TeamChat />
+        {(this.props.in_session) ? <GameInfo /> : <ReadyUp /> }
       </div>
     )
   }
 }
 
-const connectedActiveGame = connect(state => ({ ...state.activeGame.game, currentUser: state.currentUser.currentUser }))(ActiveGame)
+const connectedActiveGame = connect(state => ({ ...state.activeGame.game, in_session: state.activeGame.in_session, currentUser: state.currentUser.currentUser }), { addActiveGameUsers })(ActiveGame)
 
 export default LoggedIn(connectedActiveGame)

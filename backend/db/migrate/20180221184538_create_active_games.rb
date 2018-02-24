@@ -6,6 +6,7 @@ class CreateActiveGames < ActiveRecord::Migration[5.1]
       t.integer :position
       t.string :ability
       t.string :treasure_cards, array: true
+      t.boolean :ready_to_start, default: false
 
       t.timestamps
     end

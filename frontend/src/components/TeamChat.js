@@ -28,4 +28,4 @@ class TeamChat extends React.Component {
     )
   }
 }
-export default connect(state => ({messages: state.activeGame.game.messages, currentUser: state.currentUser.currentUser, newMessageInput: state.activeGame.newMessageInput }), { updateNewMessageInput })(TeamChat)
+export default connect(state => ({messages: state.activeGame.messages, currentUser: state.currentUser.currentUser, newMessageInput: state.activeGame.newMessageInput }), { updateNewMessageInput })(TeamChat)

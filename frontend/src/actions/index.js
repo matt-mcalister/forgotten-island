@@ -38,10 +38,17 @@ export function createNewGame(newGameForm) {
 }
 
 export function setActiveGame(game, user_id){
-  RestfulAdapter.createFetchToChannel("active_games", {user_id: user_id, game_id: game.id})
-  return { type: "SET_ACTIVE_GAME", game: game }
+  return async (dispatch) => {
+    await RestfulAdapter.createFetchToChannel("active_games", {user_id: user_id, game_id: game.id})
+    RestfulAdapter.showFetch("games", game.id)
+      .then(data => dispatch({ type: "SET_ACTIVE_GAME", game: data.game.game, active_games: data.active_games }))
+  }
 }
 
 export function updateNewMessageInput(newMessageInput){
   return { type: "UPDATE_NEW_MESSAGE_INPUT", newMessageInput: newMessageInput }
+}
+
+export function addActiveGameUsers(active_game){
+  return { type: "ADD_ACTIVE_GAME_USERS", active_game: active_game}
 }

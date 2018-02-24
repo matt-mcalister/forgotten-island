@@ -13,4 +13,4 @@ class WaterLevel extends React.Component {
     )
   }
 }
-export default connect(state => ({waterLevel: state.activeGame.game.water_level }))(WaterLevel)
+export default connect(state => ({waterLevel: state.activeGame.water_level }))(WaterLevel)

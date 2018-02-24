@@ -21,6 +21,7 @@ ActiveRecord::Schema.define(version: 20180221184605) do
     t.integer "position"
     t.string "ability"
     t.string "treasure_cards", array: true
+    t.boolean "ready_to_start", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["game_id"], name: "index_active_games_on_game_id"
@@ -34,6 +35,8 @@ ActiveRecord::Schema.define(version: 20180221184605) do
     t.string "flood_discards", array: true
     t.string "treasure_cards", array: true
     t.string "treasure_discards", array: true
+    t.boolean "in_session", default: true
+    t.integer "current_turn_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

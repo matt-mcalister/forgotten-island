@@ -7,6 +7,9 @@ class CreateGames < ActiveRecord::Migration[5.1]
       t.string :flood_discards, array: true
       t.string :treasure_cards, array: true
       t.string :treasure_discards, array: true
+      t.boolean :in_session, default: true
+      t.integer :current_turn_id
+
 
       t.timestamps
     end

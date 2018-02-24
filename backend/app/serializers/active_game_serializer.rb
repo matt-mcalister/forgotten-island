@@ -1,5 +1,5 @@
 class ActiveGameSerializer < ActiveModel::Serializer
-  attributes :id, :position, :ability, :treasure_cards
+  attributes :id, :position, :ability, :treasure_cards, :ready_to_start
   belongs_to :user
   belongs_to :game
   has_many :messages

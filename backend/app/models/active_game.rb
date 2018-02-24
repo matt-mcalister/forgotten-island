@@ -13,8 +13,7 @@ class ActiveGame < ApplicationRecord
       "Diver",
       "Engineer",
       "Messenger"
-    ].select {|ability_name| self.game.active_games.map {|active_game| active_game.ability}.include?(ability_name) }
-    byebug
+    ].select {|ability_name| !self.game.active_games.map {|active_game| active_game.ability}.include?(ability_name) }
     self.ability = abilities.sample
     self.save
     self.assign_position
@@ -29,7 +28,6 @@ class ActiveGame < ApplicationRecord
       "Messenger": "Silver Gate",
       "Navigator": "Gold Gate"
     }
-    byebug
     self.position = self.game.tiles.first {|tile| tile.name === positions[self.ability]}.position
     self.save
   end
