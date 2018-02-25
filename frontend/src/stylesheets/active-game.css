@@ -160,9 +160,22 @@ p.ready_up_message {
   margin-right: auto;
 }
 
+.player-token {
+  z-index: 10000;
+  width: 50%;
+  height: 50%;
+  background-color: red;
+  border-radius: 70%;
+  margin: auto;
+}
 
-
-
+.player-token-image {
+  color: red;
+  width: 70%;
+  position: relative;
+  left: 15%;
+  top: 15%
+}
 
 .cell-1 {
   grid-row: 1 / 2;

@@ -14,7 +14,6 @@ class TeamChat extends React.Component {
   }
 
   render() {
-    console.log("messageInput: ", this.props.newMessageInput)
     return (
       <div className="team-chat">
         <div className="messages-container">

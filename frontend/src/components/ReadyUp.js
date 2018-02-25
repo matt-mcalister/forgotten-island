@@ -5,7 +5,6 @@ import ReadyUpButton from "./ReadyUpButton"
 class ReadyUp extends React.Component {
 
   render() {
-    console.log(this.props)
     return (
       <div className="active-game-bottom ready-up">
         <div className="ready-up-container">
