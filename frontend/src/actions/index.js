@@ -57,3 +57,11 @@ export function toggleReadyUp(active_game){
   RestfulAdapter.editFetchToChannel("active_games", active_game.id, {active_game: {ready_to_start: !active_game.ready_to_start }})
   return { type: "TOGGLE_READY_UP" }
 }
+
+export function removeActiveGameUsers(active_game_id){
+  return { type: "REMOVE_ACTIVE_GAME_USERS", active_game_id: active_game_id }
+}
+
+export function resetActiveGameState(){
+  return { type: "RESET_ACTIVE_GAME_STATE" }
+}

@@ -10,7 +10,7 @@ import ReadyUp from "./ReadyUp"
 import TeamChat from "./TeamChat"
 import PlayerToken from "./PlayerToken"
 import { ActionCable } from 'react-actioncable-provider';
-import { addActiveGameUsers } from "../actions"
+import { addActiveGameUsers, removeActiveGameUsers } from "../actions"
 
 
 
@@ -19,6 +19,8 @@ class ActiveGame extends React.Component {
   handleReceivedData = (data) => {
     if (data.active_game){
       this.props.addActiveGameUsers(data)
+    } else if (data.removed_active_game){
+      this.props.removeActiveGameUsers(data.removed_active_game)
     }
   }
 
@@ -42,6 +44,6 @@ class ActiveGame extends React.Component {
   }
 }
 
-const connectedActiveGame = connect(state => ({ ...state.activeGame.game, in_session: state.activeGame.in_session, currentUser: state.currentUser.currentUser, active_games: state.activeGame.active_games }), { addActiveGameUsers })(ActiveGame)
+const connectedActiveGame = connect(state => ({ ...state.activeGame.game, in_session: state.activeGame.in_session, currentUser: state.currentUser.currentUser, active_games: state.activeGame.active_games }), { addActiveGameUsers, removeActiveGameUsers })(ActiveGame)
 
 export default LoggedIn(connectedActiveGame)

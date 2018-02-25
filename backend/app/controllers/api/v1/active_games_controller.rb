@@ -25,6 +25,15 @@ class Api::V1::ActiveGamesController < ApplicationController
     end
   end
 
+  def destroy
+    active_game = ActiveGame.find(params[:id])
+    game = active_game.game
+    data = {removed_active_game: active_game.id }
+    active_game.destroy
+    ActiveGamesChannel.broadcast_to(game, data)
+    head :ok
+  end
+
   private
     def active_game_params
       params.require(:active_game).permit(:id, :game_id, :user_id, :ready_to_start, :position, :treasure_cards)

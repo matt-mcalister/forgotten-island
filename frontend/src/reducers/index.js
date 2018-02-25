@@ -76,7 +76,21 @@ export function activeGameReducer(state = {
           messages: [...state.messages, {alert: "new_active_game", active_game: action.active_game.active_game, id: Date.now() }]
         })
       }
-
+    case "REMOVE_ACTIVE_GAME_USERS":
+      const filteredActiveGames = state.active_games.filter(ag => ag.active_game.id !== action.active_game_id)
+      return {
+        ...state,
+        active_games: filteredActiveGames
+      }
+    case "RESET_ACTIVE_GAME_STATE":
+      return {
+        game: null,
+        newMessageInput: "",
+        in_session: false,
+        messages: [],
+        active_games: [],
+        water_level: 0
+      }
     default:
       return state
   }
