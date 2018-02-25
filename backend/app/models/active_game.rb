@@ -28,7 +28,7 @@ class ActiveGame < ApplicationRecord
       "Messenger": "Silver Gate",
       "Navigator": "Gold Gate"
     }
-    self.position = self.game.tiles.first {|tile| tile.name === positions[self.ability]}.position
+    self.position = self.game.tiles.find {|tile| tile.name == positions[self.ability.to_sym]}.position
     self.save
   end
 end
