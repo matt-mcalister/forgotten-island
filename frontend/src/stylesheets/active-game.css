@@ -9,6 +9,74 @@
   grid-auto-flow: column;
 }
 
+.game-info {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr
+}
+
+.current-turn-interface {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.navigation-controls {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr
+}
+
+.arrow {
+  margin: auto;
+}
+
+.up {
+  grid-area: 1 / 2 / 2 / 3
+}
+
+.down {
+  grid-area: 3 / 2 / 4 / 3;
+  transform:rotate(180deg);
+}
+
+.left {
+  grid-area: 2 / 1 / 3 / 2;
+  transform:rotate(270deg);
+}
+
+.right {
+  grid-area: 2 / 3 / 3 / 4;
+  transform:rotate(90deg);
+}
+
+.current-location-pin {
+  grid-area: 2 / 2 / 3 / 3;
+  margin: auto;
+}
+
+.turn-action-buttons {
+  margin-top: auto;
+  margin-bottom: auto;
+  padding-left: auto;
+  padding-right: auto;
+}
+
+.turn-action-buttons div {
+  background: #cc9900;
+  width: 80%;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  padding-top: 0.1vmin;
+  padding-bottom: 0.1vmin;
+  border-radius: 1em;
+}
+
+.turn-action-buttons h3 {
+  font-size: 1em;
+}
+
 .current-user-msg {
   margin-left: auto;
   margin-right: 0.2em;

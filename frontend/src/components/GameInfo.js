@@ -1,11 +1,14 @@
 import React from "react";
+import CurrentTurnInterface from "./CurrentTurnInterface"
 
 class GameInfo extends React.Component {
 
   render() {
     return (
       <div className="active-game-bottom game-info">
-        <h3>Time to play the game!</h3>
+        <div className="team-inventory-container">Team Inventory</div>
+        <CurrentTurnInterface />
+        <div className="user-inventory-container">Team Inventory</div>
       </div>
     )
   }
