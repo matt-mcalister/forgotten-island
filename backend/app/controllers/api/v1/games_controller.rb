@@ -1,7 +1,7 @@
 class Api::V1::GamesController < ApplicationController
 
   def index
-    games = Game.all
+    games = Game.where(in_session: false)
     render json: games
   end
 
@@ -43,9 +43,19 @@ class Api::V1::GamesController < ApplicationController
     end
   end
 
+  def update
+    game = Game.find(params[:id])
+    if game.update(game_params)
+
+      ActionCable.server.broadcast 'games_channel', {game_in_session: game.id}
+      head :ok
+
+    end
+  end
+
   private
     def game_params
-      params.require(:game).permit(:id, :name, :water_level)
+      params.require(:game).permit(:id, :name, :water_level, :in_session, :flood_cards, :flood_discards, :treasure_cards, :treasure_discards, :current_turn_id)
     end
 
 end

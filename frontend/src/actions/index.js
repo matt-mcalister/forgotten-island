@@ -22,6 +22,10 @@ export function addGameToGamesList(game) {
   return { type: "ADD_GAME_TO_GAMES_LIST", game: game }
 }
 
+export function removeGameFromGamesList(game_id) {
+  return { type: "REMOVE_GAME_FROM_GAMES_LIST", game_id: game_id }
+}
+
 export function updateNewGameForm(e) {
   let value;
   if (e.target.name === "water_level") {
@@ -67,6 +71,10 @@ export function resetActiveGameState(){
 }
 
 export function addMessage(data){
-  console.log("message to be added: ", data)
   return { type: "ADD_MESSAGE", message: data}
+}
+
+export function beginGame(game){
+  RestfulAdapter.editFetchToChannel("games", game.id, {game: {in_session: true}})
+  return { type: "BEGIN_GAME" }
 }

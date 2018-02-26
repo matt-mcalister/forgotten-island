@@ -38,6 +38,12 @@ export function gamesReducer(state = {
         ...state,
         gamesList: [...state.gamesList, action.game.game]
       }
+    case "REMOVE_GAME_FROM_GAMES_LIST":
+      const filteredGamesList = state.gamesList.filter(game => game.id !== action.game_id)
+      return {
+        ...state,
+        gamesList: filteredGamesList
+      }
     default:
       return state
   }
@@ -101,6 +107,8 @@ export function activeGameReducer(state = {
       }
     case "ADD_MESSAGE":
       return { ...state, messages: [...state.messages, action.message.message]}
+    case "BEGIN_GAME":
+      return {...state, in_session: true}
     default:
       return state
   }
