@@ -1,7 +1,7 @@
 class ActiveGame < ApplicationRecord
   belongs_to :user
   belongs_to :game
-  has_many :messages
+  has_many :messages, dependent: :destroy
 
   after_create :assign_ability
 

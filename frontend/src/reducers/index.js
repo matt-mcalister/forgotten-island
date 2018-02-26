@@ -53,8 +53,15 @@ export function activeGameReducer(state = {
 }, action) {
   switch(action.type){
     case 'SET_ACTIVE_GAME':
-
-      return {...state, game: action.game, messages: action.game.messages, active_games: action.active_games, water_level: action.game.water_level}
+      const initMessages = action.messages.map(msg => msg.message)
+      const welcomeMessages = action.active_games.map(ag => {return {alert: "new_active_game", active_game: ag.active_game, id: Date.now() }} )
+      return ({
+        ...state,
+        game: action.game,
+        messages: [...initMessages, ...welcomeMessages],
+        active_games: action.active_games,
+        water_level: action.game.water_level
+      })
     case 'UPDATE_NEW_MESSAGE_INPUT':
       return {...state, newMessageInput: action.newMessageInput}
     case 'ADD_ACTIVE_GAME_USERS':
@@ -77,10 +84,11 @@ export function activeGameReducer(state = {
         })
       }
     case "REMOVE_ACTIVE_GAME_USERS":
-      const filteredActiveGames = state.active_games.filter(ag => ag.active_game.id !== action.active_game_id)
+      const filteredActiveGames = state.active_games.filter(ag => ag.active_game.id !== action.active_game.id)
       return {
         ...state,
-        active_games: filteredActiveGames
+        active_games: filteredActiveGames,
+        messages: [...state.messages, {alert: "removed_active_game", active_game: action.active_game, id: Date.now() }]
       }
     case "RESET_ACTIVE_GAME_STATE":
       return {
@@ -91,6 +99,8 @@ export function activeGameReducer(state = {
         active_games: [],
         water_level: 0
       }
+    case "ADD_MESSAGE":
+      return { ...state, messages: [...state.messages, action.message.message]}
     default:
       return state
   }

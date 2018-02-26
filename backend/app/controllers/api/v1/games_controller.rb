@@ -12,13 +12,20 @@ class Api::V1::GamesController < ApplicationController
     serialized_game = ActiveModelSerializers::Adapter::Json.new(
       GameSerializer.new(game)
     ).serializable_hash
+
     serialized_active_games = active_games.map do |ag|
       ActiveModelSerializers::Adapter::Json.new(
         ActiveGameSerializer.new(ag)
         ).serializable_hash
     end
 
-    render json: {game: serialized_game, active_games: serialized_active_games}
+    serialized_messages = game.messages.map do |msg|
+      ActiveModelSerializers::Adapter::Json.new(
+        MessageSerializer.new(msg)
+      ).serializable_hash
+    end
+
+    render json: {game: serialized_game, active_games: serialized_active_games, messages: serialized_messages}
 
   end
 

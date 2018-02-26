@@ -41,7 +41,7 @@ export function setActiveGame(game, user_id){
   return async (dispatch) => {
     await RestfulAdapter.createFetchToChannel("active_games", {user_id: user_id, game_id: game.id})
     RestfulAdapter.showFetch("games", game.id)
-      .then(data => dispatch({ type: "SET_ACTIVE_GAME", game: data.game.game, active_games: data.active_games }))
+      .then(data => dispatch({ type: "SET_ACTIVE_GAME", game: data.game.game, active_games: data.active_games, messages: data.messages }))
   }
 }
 
@@ -58,10 +58,15 @@ export function toggleReadyUp(active_game){
   return { type: "TOGGLE_READY_UP" }
 }
 
-export function removeActiveGameUsers(active_game_id){
-  return { type: "REMOVE_ACTIVE_GAME_USERS", active_game_id: active_game_id }
+export function removeActiveGameUsers(active_game){
+  return { type: "REMOVE_ACTIVE_GAME_USERS", active_game: active_game }
 }
 
 export function resetActiveGameState(){
   return { type: "RESET_ACTIVE_GAME_STATE" }
+}
+
+export function addMessage(data){
+  console.log("message to be added: ", data)
+  return { type: "ADD_MESSAGE", message: data}
 }
