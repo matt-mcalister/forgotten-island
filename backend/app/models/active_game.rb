@@ -5,6 +5,10 @@ class ActiveGame < ApplicationRecord
 
   after_create :assign_ability
 
+  def is_users_turn?
+    self.id === self.game.current_turn_id
+  end
+
   def assign_ability
     abilities = [
       "Pilot",

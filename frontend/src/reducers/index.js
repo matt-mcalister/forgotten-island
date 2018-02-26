@@ -55,7 +55,8 @@ export function activeGameReducer(state = {
   in_session: false,
   messages: [],
   active_games: [],
-  water_level: 0
+  water_level: 0,
+  tiles: []
 }, action) {
   switch(action.type){
     case 'SET_ACTIVE_GAME':
@@ -66,7 +67,8 @@ export function activeGameReducer(state = {
         game: action.game,
         messages: [...initMessages, ...welcomeMessages],
         active_games: action.active_games,
-        water_level: action.game.water_level
+        water_level: action.game.water_level,
+        tiles: action.tiles
       })
     case 'UPDATE_NEW_MESSAGE_INPUT':
       return {...state, newMessageInput: action.newMessageInput}
@@ -108,7 +110,13 @@ export function activeGameReducer(state = {
     case "ADD_MESSAGE":
       return { ...state, messages: [...state.messages, action.message.message]}
     case "BEGIN_GAME":
-      return {...state, in_session: true}
+      return {
+        ...state,
+        in_session: true,
+        game: action.game,
+        tiles: action.tiles,
+        active_games: action.active_games
+      }
     default:
       return state
   }

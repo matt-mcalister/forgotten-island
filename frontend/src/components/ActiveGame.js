@@ -24,11 +24,12 @@ class ActiveGame extends React.Component {
     } else if (data.message) {
       this.props.addMessage(data)
     } else if (data.game_in_session) {
-      this.props.beginGame()
+      this.props.beginGame(data.game_in_session)
     }
   }
 
   render() {
+    console.log("GAME PROPS: ", this.props)
     return (
       <div className="active-game">
         {this.props.id && (<ActionCable
@@ -37,7 +38,7 @@ class ActiveGame extends React.Component {
          />)}
         <WaterLevel />
         <div className="board">
-          {this.props.tiles && this.props.tiles.map(tile => <Tile key={tile.id} tile={tile}/>)}
+          {this.props.tiles && this.props.tiles.map(tile => <Tile key={tile.tile.id} tile={tile.tile}/>)}
           {!!this.props.active_games && this.props.active_games.map(ag => <PlayerToken key={ag.active_game.id} {...ag.active_game}/> )  }
         </div>
         <TeamChat />
@@ -47,6 +48,6 @@ class ActiveGame extends React.Component {
   }
 }
 
-const connectedActiveGame = connect(state => ({ ...state.activeGame.game, in_session: state.activeGame.in_session, currentUser: state.currentUser.currentUser, active_games: state.activeGame.active_games }), { addActiveGameUsers, removeActiveGameUsers, addMessage, beginGame })(ActiveGame)
+const connectedActiveGame = connect(state => ({ ...state.activeGame.game, tiles: state.activeGame.tiles, in_session: state.activeGame.in_session, currentUser: state.currentUser.currentUser, active_games: state.activeGame.active_games }), { addActiveGameUsers, removeActiveGameUsers, addMessage, beginGame })(ActiveGame)
 
-export default LoggedIn(connectedActiveGame)
+export default connectedActiveGame

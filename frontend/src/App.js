@@ -12,13 +12,14 @@ import { withRouter } from "react-router-dom"
 class App extends Component {
 
   render() {
-
+    const NewLobby = LoggedIn(Lobby)
+    const NewActiveGame = LoggedIn(ActiveGame)
     return(
     <div>
       <Switch>
-        <Route path="/games/:id" render={props => <ActiveGame currentUser={this.props.currentUser} />}/>
+        <Route path="/games/:id" render={props => <NewActiveGame currentUser={this.props.currentUser} />}/>
         <Route path="/login" render={props => <Welcome routerProps={props} />}/>
-        <Route exact path="/" render={props => <Lobby currentUser={this.props.currentUser} {...props}/>}/>
+        <Route exact path="/" render={props => <NewLobby currentUser={this.props.currentUser} {...props}/>}/>
       </Switch>
     </div>)
   }

@@ -25,7 +25,13 @@ class Api::V1::GamesController < ApplicationController
       ).serializable_hash
     end
 
-    render json: {game: serialized_game, active_games: serialized_active_games, messages: serialized_messages}
+    serialized_tiles = game.tiles.map do |tile|
+      ActiveModelSerializers::Adapter::Json.new(
+        TileSerializer.new(tile)
+        ).serializable_hash
+    end
+
+    render json: {game: serialized_game, active_games: serialized_active_games, messages: serialized_messages, tiles: serialized_tiles}
 
   end
 
@@ -45,13 +51,41 @@ class Api::V1::GamesController < ApplicationController
 
   def update
     game = Game.find(params[:id])
-    if game.update(game_params)
+    if params[:game][:in_session]
+      if game.update(game_params)
+        game.initiate_game_session
 
-      ActionCable.server.broadcast 'games_channel', {game_in_session: game.id}
-      ActiveGamesChannel.broadcast_to game, {game_in_session: game.id}
-      head :ok
 
+        serialized_game = ActiveModelSerializers::Adapter::Json.new(
+          GameSerializer.new(game)
+        ).serializable_hash
+
+        serialized_active_games = game.active_games.map do |ag|
+          ActiveModelSerializers::Adapter::Json.new(
+            ActiveGameSerializer.new(ag)
+            ).serializable_hash
+        end
+
+        serialized_tiles = game.tiles.map do |tile|
+          ActiveModelSerializers::Adapter::Json.new(
+            TileSerializer.new(tile)
+            ).serializable_hash
+        end
+
+        ActionCable.server.broadcast 'games_channel', {game_in_session: game.id}
+        ActiveGamesChannel.broadcast_to game, {game_in_session: {game: serialized_game, active_games: serialized_active_games, tiles: serialized_tiles}}
+        head :ok
+
+      end
+    else
+      if game.update(game_params)
+
+        ActiveGamesChannel.broadcast_to game, {game_in_session: game.id}
+        head :ok
+
+      end
     end
+
   end
 
   private

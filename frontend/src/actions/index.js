@@ -6,7 +6,7 @@ export function updateUserNameInput(username) {
 
 export function setUser(name) {
   return dispatch => {
-    RestfulAdapter.createFetch("users", {user: {name: name}})
+    return RestfulAdapter.createFetch("users", {user: {name: name}})
     .then(data => { dispatch({ type: "SET_USER", user: data }) } );
   }
 }
@@ -45,7 +45,7 @@ export function setActiveGame(game, user_id){
   return async (dispatch) => {
     await RestfulAdapter.createFetchToChannel("active_games", {user_id: user_id, game_id: game.id})
     RestfulAdapter.showFetch("games", game.id)
-      .then(data => dispatch({ type: "SET_ACTIVE_GAME", game: data.game.game, active_games: data.active_games, messages: data.messages }))
+      .then(data => dispatch({ type: "SET_ACTIVE_GAME", game: data.game.game, active_games: data.active_games, messages: data.messages, tiles: data.tiles }))
   }
 }
 
@@ -74,6 +74,6 @@ export function addMessage(data){
   return { type: "ADD_MESSAGE", message: data}
 }
 
-export function beginGame(){
-  return { type: "BEGIN_GAME" }
+export function beginGame(data){
+  return { type: "BEGIN_GAME", game: data.game, active_games: data.active_games, tiles: data.tiles }
 }

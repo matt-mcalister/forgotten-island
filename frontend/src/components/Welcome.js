@@ -11,10 +11,9 @@ class Welcome extends React.Component {
     this.props.updateUserNameInput(e.target.value)
   }
 
-  handleSubmit = async (e) => {
+  handleSubmit = (e) => {
     e.preventDefault()
-    await this.props.setUser(this.props.userNameInput)
-    this.props.routerProps.history.push("/")
+    this.props.setUser(this.props.userNameInput).then(() => this.props.routerProps.history.push("/"))
   }
 
   render() {

@@ -22,4 +22,4 @@ class Lobby extends React.Component {
 
 const connectedLobby = connect(state => ({ currentUser: state.currentUser.currentUser }) )(Lobby)
 
-export default LoggedIn(connectedLobby)
+export default connectedLobby
