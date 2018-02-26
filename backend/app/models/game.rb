@@ -58,19 +58,19 @@ class Game < ApplicationRecord
       "The Crystal of Fire",
       "The Crystal of Fire",
       "The Crystal of Fire",
-      "The Ocean's Chalice",
-      "The Ocean's Chalice",
-      "The Ocean's Chalice",
-      "The Ocean's Chalice",
-      "The Ocean's Chalice",
+      "The Ocean Chalice",
+      "The Ocean Chalice",
+      "The Ocean Chalice",
+      "The Ocean Chalice",
+      "The Ocean Chalice",
       "Sandbag",
       "Sandbag",
       "Helicopter Lift",
       "Helicopter Lift",
       "Helicopter Lift",
-      "Waters Rise!",
-      "Waters Rise!",
-      "Waters Rise!"
+      "Waters Rise",
+      "Waters Rise",
+      "Waters Rise"
     ].shuffle
     self.treasure_discards = []
     if self.valid?
@@ -95,7 +95,7 @@ class Game < ApplicationRecord
         tile.save
       else
         byebug
-      end 
+      end
     end
   end
 

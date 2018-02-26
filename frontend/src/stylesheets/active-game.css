@@ -2,7 +2,6 @@
   position: absolute;
   height: 100%;
   width: 100%;
-  border: 1px solid red;
   display: grid;
   grid-template-columns: 1fr 3fr 2fr;
   grid-template-rows: 2fr 1fr;
@@ -149,7 +148,6 @@ p.ready_up_message {
   height: 100%;
   width: 100%;
   margin: auto;
-  border: 1px solid blue;
 }
 
 .team-chat {

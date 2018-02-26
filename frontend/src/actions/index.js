@@ -75,6 +75,6 @@ export function addMessage(data){
 }
 
 export function beginGame(game){
-  RestfulAdapter.editFetchToChannel("games", game.id, {game: {in_session: true}})
+  // RestfulAdapter.editFetchToChannel("games", game.id, {game: {in_session: true}})
   return { type: "BEGIN_GAME" }
 }

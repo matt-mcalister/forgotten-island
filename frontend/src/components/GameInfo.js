@@ -1,16 +1,28 @@
 import React from "react";
+import { connect } from "react-redux"
 import CurrentTurnInterface from "./CurrentTurnInterface"
+import Inventory from "./Inventory"
 
-class GameInfo extends React.Component {
-
-  render() {
-    return (
-      <div className="active-game-bottom game-info">
-        <div className="team-inventory-container">Team Inventory</div>
-        <CurrentTurnInterface />
-        <div className="user-inventory-container">Team Inventory</div>
+const GameInfo = (props) => {
+  const teamActiveGames = props.active_games.filter(ag => ag.active_game.user.id !== props.currentUser.id)
+  const userActiveGame = props.active_games.find(ag => ag.active_game.user.id === props.currentUser.id)
+  return (
+    <div className="active-game-bottom game-info">
+      <div className="team-inventory-container">
+        {teamActiveGames.map(ag => <Inventory key={ag.active_game.id} {...ag.active_game}/>)}
       </div>
-    )
+      <CurrentTurnInterface />
+      <div className="user-inventory-container">
+        <Inventory key={userActiveGame.active_game.id} {...userActiveGame.active_game}/>
+      </div>
+    </div>
+  )
+}
+
+const mapStateToProps = (state) => {
+  return {
+    active_games: state.activeGame.active_games,
+    currentUser: state.currentUser.currentUser
   }
 }
-export default GameInfo
+export default connect(mapStateToProps)(GameInfo)
