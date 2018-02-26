@@ -6,6 +6,14 @@ class Game < ApplicationRecord
 
   after_create :generate_flood_cards
 
+  def initiate_game_session
+    # assign 2 treasure cards to each active_game
+    # draw flood cards
+    # set current_turn_id == active_game.id (turn order is active_games array ordered by id)
+    # commence first player turn
+  end
+
+
   def draw_flood_cards # draws flood cards and places in flood discard pile. returns drawn cards.
     self.water_level.times do
       self.flood_discards << self.flood_cards.shift

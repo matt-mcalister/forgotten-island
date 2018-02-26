@@ -48,6 +48,7 @@ class Api::V1::GamesController < ApplicationController
     if game.update(game_params)
 
       ActionCable.server.broadcast 'games_channel', {game_in_session: game.id}
+      ActiveGamesChannel.broadcast_to game, {game_in_session: game.id}
       head :ok
 
     end

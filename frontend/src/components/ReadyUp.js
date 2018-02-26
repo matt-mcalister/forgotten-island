@@ -2,11 +2,13 @@ import React from "react";
 import { connect } from "react-redux"
 import ReadyUpButton from "./ReadyUpButton"
 import { beginGame } from "../actions"
+import { RestfulAdapter } from "../connections/adapter"
 
 class ReadyUp extends React.Component {
   beginGameButton = () => {
+    const beginGameFetch = () => RestfulAdapter.editFetchToChannel("games", this.props.game.id, {game: {in_session: true}})
     if (this.props.active_games.length > 0 && this.props.active_games.every(ag => ag.active_game.ready_to_start)){
-      return <div className="begin-game-button" onClick={() => this.props.beginGame(this.props.game)}><h3>Begin Game</h3></div>
+      return <div className="begin-game-button" onClick={beginGameFetch}><h3>Begin Game</h3></div>
     }
   }
 
