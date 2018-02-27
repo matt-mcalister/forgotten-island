@@ -6,6 +6,10 @@ class Game < ApplicationRecord
 
   after_create :generate_flood_cards
 
+  def turn_order
+    self.active_games.sort_by {|ag| ag.id}
+  end
+
   def initiate_game_session
     result = {}
     self.active_games.each do |ag|
@@ -13,6 +17,7 @@ class Game < ApplicationRecord
     end
     flood_card_results = self.draw_flood_cards
     self.current_turn_id = self.active_games.first.id
+    self.active_games.first.update(actions_remaining: 3)
     self.save
   end
 
@@ -82,6 +87,21 @@ class Game < ApplicationRecord
     result
   end
 
+  def next_users_turn
+    self.assign_treasure_cards(ActiveGame.find(self.current_turn_id))
+
+    self.draw_flood_cards
+
+    current_turn_index = self.turn_order.map {|ag| ag.id}.index(self.current_turn_id)
+
+    if current_turn_index == self.active_games.length - 1
+      current_turn_index = -1
+    end
+    self.current_turn_id = self.turn_order[current_turn_index+1].id
+    self.save
+
+    ActiveGame.find(self.current_turn_id).update(actions_remaining: 3)
+  end
 
   def generate_flood_cards
     self.flood_cards = [

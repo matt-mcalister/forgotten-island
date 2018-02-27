@@ -10,7 +10,7 @@ import ReadyUp from "./ReadyUp"
 import TeamChat from "./TeamChat"
 import PlayerToken from "./PlayerToken"
 import { ActionCable } from 'react-actioncable-provider';
-import { addActiveGameUsers, removeActiveGameUsers, addMessage, beginGame } from "../actions"
+import { addActiveGameUsers, removeActiveGameUsers, addMessage, beginGame, updateGame } from "../actions"
 
 
 
@@ -25,7 +25,9 @@ class ActiveGame extends React.Component {
       this.props.addMessage(data)
     } else if (data.game_in_session) {
       this.props.beginGame(data.game_in_session)
-    } 
+    } else if (data.new_turn) {
+      this.props.updateGame(data.new_turn)
+    }
   }
 
   render() {
@@ -48,6 +50,14 @@ class ActiveGame extends React.Component {
   }
 }
 
-const connectedActiveGame = connect(state => ({ ...state.activeGame.game, tiles: state.activeGame.tiles, in_session: state.activeGame.in_session, currentUser: state.currentUser.currentUser, active_games: state.activeGame.active_games }), { addActiveGameUsers, removeActiveGameUsers, addMessage, beginGame })(ActiveGame)
+const mapStateToProps = state => {
+  return ({ ...state.activeGame.game,
+  tiles: state.activeGame.tiles,
+  in_session: state.activeGame.in_session,
+  currentUser: state.currentUser.currentUser,
+  active_games: state.activeGame.active_games})
+ }
+
+const connectedActiveGame = connect(mapStateToProps, { addActiveGameUsers, removeActiveGameUsers, addMessage, beginGame, updateGame })(ActiveGame)
 
 export default connectedActiveGame

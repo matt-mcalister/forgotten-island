@@ -18,8 +18,7 @@ class Tile extends React.Component {
         </div>
       )
     } else {
-      <div className={`tile abyss cell-${this.props.tile.position}`}>
-      </div>
+      return (<div className={`tile abyss cell-${this.props.tile.position}`}></div>)
     }
   }
 }

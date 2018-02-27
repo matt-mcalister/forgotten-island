@@ -117,6 +117,13 @@ export function activeGameReducer(state = {
         tiles: action.tiles,
         active_games: action.active_games
       }
+    case "UPDATE_GAME":
+      return {
+        ...state,
+        game: action.game.game,
+        tiles: action.tiles,
+        active_games: action.active_games
+      }
     default:
       return state
   }

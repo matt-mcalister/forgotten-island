@@ -77,3 +77,7 @@ export function addMessage(data){
 export function beginGame(data){
   return { type: "BEGIN_GAME", game: data.game, active_games: data.active_games, tiles: data.tiles }
 }
+
+export function updateGame(data){
+  return { type: "BEGIN_GAME", game: data.game, active_games: data.active_games, tiles: data.tiles }
+}

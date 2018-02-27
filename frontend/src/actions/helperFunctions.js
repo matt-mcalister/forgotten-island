@@ -141,5 +141,6 @@ function executeMove(active_game, direction){
       newPosition = moveRight(active_game.position)
       break;
   }
-  RestfulAdapter.editFetchToChannel("active_games", active_game.id, {position: newPosition})
+  const new_actions_remaining = active_game.actions_remaining - 1
+  RestfulAdapter.editFetchToChannel("active_games", active_game.id, {position: newPosition, actions_remaining: new_actions_remaining})
 }
