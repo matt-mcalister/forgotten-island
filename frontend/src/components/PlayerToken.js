@@ -24,7 +24,7 @@ class PlayerToken extends React.Component {
 
   render() {
     return (
-      <div className={`player-token cell-${this.props.position}`}>
+      <div className={`player-token cell-${this.props.position} ${this.props.ability}`}>
         <img className="player-token-image" src={require(`../player-icons/${this.props.ability.toLowerCase()}.png`)}/>
       </div>
     )

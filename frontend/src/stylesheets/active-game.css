@@ -297,13 +297,42 @@ p.ready_up_message {
   margin-right: auto;
 }
 
+.Explorer {
+  margin-top: 10%;
+  margin-left: 3%;
+}
+
+.Pilot {
+  margin-top: 10%;
+  margin-left: 68%;
+}
+
+.Diver {
+  margin-top: 10%;
+  margin-left: 35%;
+}
+
+.Engineer {
+  margin-left: 35%;
+  margin-top: 45%;
+}
+
+.Navigator {
+  margin-top: 45%;
+  margin-left: 3%;
+}
+
+.Messenger {
+  margin-top: 45%;
+  margin-left: 68%;
+}
+
 .player-token {
   z-index: 10000;
-  width: 50%;
-  height: 50%;
+  width: 30%;
+  height: 30%;
   background-color: red;
-  border-radius: 70%;
-  margin: auto;
+  border-radius: 100%;
 }
 
 .player-token-image {
