@@ -7,10 +7,11 @@ class Game < ApplicationRecord
   after_create :generate_flood_cards
 
   def initiate_game_session
+    result = {}
     self.active_games.each do |ag|
       self.assign_treasure_cards(ag)
     end
-    self.draw_flood_cards
+    flood_card_results = self.draw_flood_cards
     self.current_turn_id = self.active_games.first.id
     self.save
   end
@@ -54,16 +55,20 @@ class Game < ApplicationRecord
 
 
   def draw_flood_cards # draws flood cards and places in flood discard pile. returns drawn cards.
+    result = {}
     cards = self.flood_cards.pop(self.water_level_cards)
     cards.each do |card|
       tile = Tile.where(game_id: self.id, name: card).first
       if tile.status == "dry"
         tile.update(status: "wet")
         self.flood_discards << card
+        result[card] = "wet"
       elsif tile.status == "wet"
-        tile.update(status: "sunk")
+        tile.update(status: "abyss")
+        result[card] = "abyss"
       end
     end
+    result
   end
 
 
