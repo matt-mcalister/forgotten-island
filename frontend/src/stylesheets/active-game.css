@@ -10,7 +10,8 @@
 
 .game-info {
   display: grid;
-  grid-template-columns: 1fr 2fr 1fr
+  grid-template-columns: 1fr 2fr 1fr;
+  grid-template-rows: 30vmin
 }
 
 .current-turn-interface {
@@ -147,7 +148,7 @@ p.ready_up_message {
   grid-column: 1 / 3;
   height: 100%;
   width: 100%;
-  margin: auto;
+  /* margin: auto; */
 }
 
 .team-chat {
@@ -214,19 +215,38 @@ p.ready_up_message {
 
 .inventory {
   text-align: center;
+  height: 100%;
+  width: 100%;
+  border: 1px solid blue;
 }
 
-.treasure-cards-container {
+.user-inventory-container {
+  grid-area: 1 / 3 / 2 / 4
+}
+
+.team-inventory-container {
   display: grid;
-  grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr 1fr;
   width: 100%;
   height: 100%;
+  border: 1px solid green;
+}
+
+/* .team-inventory-container div {
+  height: 33%;
+} */
+
+.treasure-cards-container {
+  border: 1px solid purple;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
 }
 
 .treasure-card {
-  height: 100%;
-  width: 100%;
+  /* height: 100%;
+  width: 100%; */
+  border: 1px solid red;
 }
 
 .helicopter-lift {
