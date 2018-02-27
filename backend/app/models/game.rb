@@ -24,17 +24,28 @@ class Game < ApplicationRecord
     self.save
   end
 
+  def draw_treasure_card
+    treasure_cards = self.treasure_cards.shuffle
+    treasure_cards.pop
+  end
+
   def assign_treasure_cards(active_game)
-    cards = self.treasure_cards.pop(2)
-    self.save
-    cards.each do |card|
-      if card != "Waters Rise" || (!self.current_turn_id && card != "Waters Rise")
+    2.times do
+      card = self.draw_treasure_card
+      if !self.current_turn_id
+        while card == "Waters Rise"
+          self.treasure_cards.shuffle
+          card = self.draw_treasure_card
+        end
+      end
+      if card != "Waters Rise"
         active_game.treasure_cards ||= []
         active_game.treasure_cards << card
         active_game.save
       else
         self.waters_rise(card)
       end
+      self.save
     end
   end
 
@@ -131,11 +142,7 @@ class Game < ApplicationRecord
       "Waters Rise"
     ].shuffle
     self.treasure_discards = []
-    if self.valid?
-      self.save
-    else
-      byebug
-    end
+    self.save
     self.generate_tiles
   end
 
@@ -149,11 +156,7 @@ class Game < ApplicationRecord
   def shuffle_tiles
     positions = (1..24).to_a.shuffle
     self.tiles.each_with_index do |tile, idx|
-      if tile.update(position: positions[idx])
-        tile.save
-      else
-        byebug
-      end
+      tile.update(position: positions[idx])
     end
   end
 

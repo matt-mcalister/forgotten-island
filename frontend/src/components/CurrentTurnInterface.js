@@ -1,4 +1,5 @@
 import React from "react";
+import { canMove } from "../actions/helperFunctions"
 
 class CurrentTurnInterface extends React.Component {
 
@@ -7,16 +8,16 @@ class CurrentTurnInterface extends React.Component {
       <div className="current-turn-interface">
 
         <div className="navigation-controls">
-          <div className="up arrow">
+          <div className="up arrow" onClick={() => canMove(this.props.active_game, "up")}>
             <img src={require("../navigation-icons/arrow.png")} />
           </div>
-          <div className="down arrow">
+          <div className="down arrow" onClick={() => canMove(this.props.active_game, "down")}>
             <img src={require("../navigation-icons/arrow.png")} />
           </div>
-          <div className="left arrow">
+          <div className="left arrow" onClick={() => canMove(this.props.active_game, "left")}>
             <img src={require("../navigation-icons/arrow.png")} />
           </div>
-          <div className="right arrow">
+          <div className="right arrow" onClick={() => canMove(this.props.active_game, "right")}>
             <img src={require("../navigation-icons/arrow.png")} />
           </div>
           <div className="current-location-pin">

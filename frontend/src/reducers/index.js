@@ -113,7 +113,7 @@ export function activeGameReducer(state = {
       return {
         ...state,
         in_session: true,
-        game: action.game,
+        game: action.game.game,
         tiles: action.tiles,
         active_games: action.active_games
       }

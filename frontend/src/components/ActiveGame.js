@@ -25,7 +25,7 @@ class ActiveGame extends React.Component {
       this.props.addMessage(data)
     } else if (data.game_in_session) {
       this.props.beginGame(data.game_in_session)
-    }
+    } 
   }
 
   render() {

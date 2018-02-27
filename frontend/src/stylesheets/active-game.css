@@ -229,6 +229,11 @@ p.ready_up_message {
   width: 100%;
 }
 
+.helicopter-lift {
+  background-color: grey;
+  border-radius: 1em
+}
+
 .treasure-card img {
   height:6vmin;
 }
