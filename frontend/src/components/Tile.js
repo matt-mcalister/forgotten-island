@@ -9,8 +9,8 @@ class Tile extends React.Component {
         <div className={`tile cell-${this.props.tile.position}`}>
           <div className="tile-image-container" style={{
             "background": `linear-gradient(rgba(0,0,255,${opacity}), rgba(0,0,255,${opacity})), url(${require(`../tile-imgs/${this.props.tile.name.toLowerCase().replace(/ /g, "_")}.jpg`)})`,
-            "background-size": "auto 100%, auto 100%",
-            "background-repeat": "no-repeat, no-repeat"
+            "backgroundSize": "auto 100%, auto 100%",
+            "backgroundRepeat": "no-repeat, no-repeat"
           }}>
           </div>
           <div className="tile-name">

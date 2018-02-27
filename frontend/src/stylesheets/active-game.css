@@ -212,6 +212,27 @@ p.ready_up_message {
   text-align: center;
 }
 
+.inventory {
+  text-align: center;
+}
+
+.treasure-cards-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  width: 100%;
+  height: 100%;
+}
+
+.treasure-card {
+  height: 100%;
+  width: 100%;
+}
+
+.treasure-card img {
+  height:6vmin;
+}
+
 .board {
   width: 70vmin;
   height: 70vmin;

@@ -11,7 +11,7 @@ const GameInfo = (props) => {
       <div className="team-inventory-container">
         {teamActiveGames.map(ag => <Inventory key={ag.active_game.id} {...ag.active_game}/>)}
       </div>
-      <CurrentTurnInterface />
+      {userActiveGame.active_game["is_users_turn?"] && <CurrentTurnInterface />}
       <div className="user-inventory-container">
         <Inventory key={userActiveGame.active_game.id} {...userActiveGame.active_game}/>
       </div>
