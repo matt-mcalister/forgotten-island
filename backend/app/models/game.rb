@@ -30,6 +30,11 @@ class Game < ApplicationRecord
   end
 
   def draw_treasure_card
+    if self.treasure_cards.length == 0
+      self.treasure_cards = self.treasure_discards
+      self.treasure_discards = []
+      self.save
+    end
     treasure_cards = self.treasure_cards.shuffle
     treasure_cards.pop
   end

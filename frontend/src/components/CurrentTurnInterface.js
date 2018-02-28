@@ -2,9 +2,23 @@ import React from "react";
 import { handleArrowClick } from "../actions/helperFunctions"
 import { connect } from "react-redux"
 import { toggleShoringAction } from "../actions"
+import { RestfulAdapter } from "../connections/adapter"
 
 class CurrentTurnInterface extends React.Component {
-
+  canGetTreasure(){
+    const retrievableTreasure = this.props.active_game["can_get_treasure?"]
+    if (retrievableTreasure){
+      const currentTile = this.props.tiles.find(tile => tile.tile.position === this.props.active_game.position)
+      if (currentTile.tile.treasure === retrievableTreasure){
+        const new_actions_remaining = this.props.active_game.actions_remaining - 1
+        return (
+        <div className="cash-in-button" onClick={() => RestfulAdapter.editFetchToChannel("active_games", this.props.active_game.id, {get_treasure: retrievableTreasure, actions_remaining: new_actions_remaining})}>
+          <h3>Trade 4 Treasure Tokens for 1 Treasure</h3>
+        </div>
+        )
+      }
+    }
+  }
   render() {
     return (
       <div className="current-turn-interface">
@@ -34,9 +48,7 @@ class CurrentTurnInterface extends React.Component {
           <div className="give-treasure-button">
             <h3>Give 1 Treasure Token To Another Player</h3>
           </div>
-          <div className="cash-in-button">
-            <h3>Trade 4 Treasure Tokens for 1 Treasure</h3>
-          </div>
+          {this.canGetTreasure()}
         </div>
 
       </div>

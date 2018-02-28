@@ -30,6 +30,8 @@ class Api::V1::ActiveGamesController < ApplicationController
         TileSerializer.new(shored_tile)
         ).serializable_hash
 
+      active_game = ActiveGame.find_by(id: params[:id])
+
       serialized_active_game = ActiveModelSerializers::Adapter::Json.new(
         ActiveGameSerializer.new(active_game)
       ).serializable_hash
