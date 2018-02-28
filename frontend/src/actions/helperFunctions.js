@@ -1,6 +1,6 @@
 import {RestfulAdapter} from "../connections/adapter"
 
-export function canMove(active_game, direction, tiles) {
+export function handleArrowClick(active_game, direction, tiles, shoringAction) {
   switch (direction){
     case "up":
       switch (active_game.position){
@@ -12,7 +12,7 @@ export function canMove(active_game, direction, tiles) {
         case 12:
           return false;
         default:
-          executeMove(active_game, "up", tiles)
+          executeMove(active_game, "up", tiles, shoringAction)
           return true;
       }
       break;
@@ -26,7 +26,7 @@ export function canMove(active_game, direction, tiles) {
         case 18:
           return false;
         default:
-          executeMove(active_game, "down", tiles)
+          executeMove(active_game, "down", tiles, shoringAction)
           return true;
       }
       break;
@@ -40,7 +40,7 @@ export function canMove(active_game, direction, tiles) {
         case 23:
           return false;
         default:
-          executeMove(active_game, "left", tiles)
+          executeMove(active_game, "left", tiles, shoringAction)
           return true;
       }
       break;
@@ -54,9 +54,12 @@ export function canMove(active_game, direction, tiles) {
         case 24:
           return false;
         default:
-          executeMove(active_game, "right", tiles)
+          executeMove(active_game, "right", tiles, shoringAction)
           return true;
       }
+      break;
+    case "currentLocation":
+      executeMove(active_game, "currentLocation", tiles, shoringAction)
       break;
   }
 }
@@ -127,7 +130,6 @@ function moveLeft(position){
 
 function tileExists(tiles, newPosition) {
   let newTile = tiles.find(tile => tile.tile.position === newPosition)
-  console.log("newTile: ",newTile)
   if (newTile.tile.status === "abyss"){
     return false
   } else {
@@ -135,7 +137,7 @@ function tileExists(tiles, newPosition) {
   }
 }
 
-function executeMove(active_game, direction, tiles){
+function executeMove(active_game, direction, tiles, shoringAction){
   let newPosition;
   switch(direction){
     case "up":
@@ -150,9 +152,27 @@ function executeMove(active_game, direction, tiles){
     case "right":
       newPosition = moveRight(active_game.position)
       break;
+    case "currentLocation":
+      newPosition = active_game.position
+      break;
   }
   if (tileExists(tiles, newPosition)) {
     const new_actions_remaining = active_game.actions_remaining - 1
-    RestfulAdapter.editFetchToChannel("active_games", active_game.id, {position: newPosition, actions_remaining: new_actions_remaining})
+    if (shoringAction) {
+      if (canBeShored(tiles, newPosition)) {
+        RestfulAdapter.editFetchToChannel("active_games", active_game.id, {shoring: newPosition, actions_remaining: new_actions_remaining})
+      }
+    } else {
+      RestfulAdapter.editFetchToChannel("active_games", active_game.id, {position: newPosition, actions_remaining: new_actions_remaining})
+    }
+  }
+}
+
+function canBeShored(tiles, newPosition){
+  let newTile = tiles.find(tile => tile.tile.position === newPosition)
+  if (newTile.tile.status === "wet"){
+    return true
+  } else {
+    return false
   }
 }

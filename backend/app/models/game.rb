@@ -87,6 +87,7 @@ class Game < ApplicationRecord
         result[card] = "abyss"
       end
     end
+    self.save
     result
   end
 

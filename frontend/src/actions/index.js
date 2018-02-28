@@ -81,3 +81,11 @@ export function beginGame(data){
 export function updateGame(data){
   return { type: "BEGIN_GAME", game: data.game, active_games: data.active_games, tiles: data.tiles }
 }
+
+export function toggleShoringAction(){
+  return { type: "TOGGLE_SHORING_ACTION" }
+}
+
+export function handleShoredTile(data){
+  return { type: "HANDLE_SHORED_TILE", shored_tile: data.shored_tile, updated_active_game: data.updated_active_game}
+}

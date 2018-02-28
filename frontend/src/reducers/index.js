@@ -50,13 +50,13 @@ export function gamesReducer(state = {
 }
 
 export function activeGameReducer(state = {
-  game: null,
+  game: {water_level: 0},
   newMessageInput: "",
   in_session: false,
   messages: [],
   active_games: [],
-  water_level: 0,
-  tiles: []
+  tiles: [],
+  shoringAction: false
 }, action) {
   switch(action.type){
     case 'SET_ACTIVE_GAME':
@@ -120,9 +120,37 @@ export function activeGameReducer(state = {
     case "UPDATE_GAME":
       return {
         ...state,
+        shoringAction: false,
         game: action.game.game,
         tiles: action.tiles,
         active_games: action.active_games
+      }
+    case "TOGGLE_SHORING_ACTION":
+      let newShoringAction = !state.shoringAction
+      return {
+        ...state,
+        shoringAction: newShoringAction
+      }
+    case "HANDLE_SHORED_TILE":
+      let updatedTiles = state.tiles.map(tile => {
+        if (tile.tile.id === action.shored_tile.tile.id){
+          return action.shored_tile
+        } else {
+          return tile
+        }
+      })
+      let updatedActiveGames = state.active_games.map(ag => {
+        if (ag.active_game.id === action.updated_active_game.active_game.id){
+          return action.updated_active_game
+        } else {
+          return ag
+        }
+      })
+      return {
+        ...state,
+        shoringAction: false,
+        tiles: updatedTiles,
+        active_Games: updatedActiveGames
       }
     default:
       return state
