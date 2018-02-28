@@ -1,6 +1,6 @@
 import {RestfulAdapter} from "../connections/adapter"
 
-export function canMove(active_game, direction) {
+export function canMove(active_game, direction, tiles) {
   switch (direction){
     case "up":
       switch (active_game.position){
@@ -12,7 +12,7 @@ export function canMove(active_game, direction) {
         case 12:
           return false;
         default:
-          executeMove(active_game, "up")
+          executeMove(active_game, "up", tiles)
           return true;
       }
       break;
@@ -26,7 +26,7 @@ export function canMove(active_game, direction) {
         case 18:
           return false;
         default:
-          executeMove(active_game, "down")
+          executeMove(active_game, "down", tiles)
           return true;
       }
       break;
@@ -40,7 +40,7 @@ export function canMove(active_game, direction) {
         case 23:
           return false;
         default:
-          executeMove(active_game, "left")
+          executeMove(active_game, "left", tiles)
           return true;
       }
       break;
@@ -54,7 +54,7 @@ export function canMove(active_game, direction) {
         case 24:
           return false;
         default:
-          executeMove(active_game, "right")
+          executeMove(active_game, "right", tiles)
           return true;
       }
       break;
@@ -125,7 +125,17 @@ function moveLeft(position){
   return position - 1
 }
 
-function executeMove(active_game, direction){
+function tileExists(tiles, newPosition) {
+  let newTile = tiles.find(tile => tile.tile.position === newPosition)
+  console.log("newTile: ",newTile)
+  if (newTile.tile.status === "abyss"){
+    return false
+  } else {
+    return true
+  }
+}
+
+function executeMove(active_game, direction, tiles){
   let newPosition;
   switch(direction){
     case "up":
@@ -141,6 +151,8 @@ function executeMove(active_game, direction){
       newPosition = moveRight(active_game.position)
       break;
   }
-  const new_actions_remaining = active_game.actions_remaining - 1
-  RestfulAdapter.editFetchToChannel("active_games", active_game.id, {position: newPosition, actions_remaining: new_actions_remaining})
+  if (tileExists(tiles, newPosition)) {
+    const new_actions_remaining = active_game.actions_remaining - 1
+    RestfulAdapter.editFetchToChannel("active_games", active_game.id, {position: newPosition, actions_remaining: new_actions_remaining})
+  }
 }

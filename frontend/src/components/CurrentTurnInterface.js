@@ -1,5 +1,6 @@
 import React from "react";
 import { canMove } from "../actions/helperFunctions"
+import { connect } from "react-redux"
 
 class CurrentTurnInterface extends React.Component {
 
@@ -8,16 +9,16 @@ class CurrentTurnInterface extends React.Component {
       <div className="current-turn-interface">
 
         <div className="navigation-controls">
-          <div className="up arrow" onClick={() => canMove(this.props.active_game, "up")}>
+          <div className="up arrow" onClick={() => canMove(this.props.active_game, "up", this.props.tiles)}>
             <img src={require("../navigation-icons/arrow.png")} />
           </div>
-          <div className="down arrow" onClick={() => canMove(this.props.active_game, "down")}>
+          <div className="down arrow" onClick={() => canMove(this.props.active_game, "down", this.props.tiles)}>
             <img src={require("../navigation-icons/arrow.png")} />
           </div>
-          <div className="left arrow" onClick={() => canMove(this.props.active_game, "left")}>
+          <div className="left arrow" onClick={() => canMove(this.props.active_game, "left", this.props.tiles)}>
             <img src={require("../navigation-icons/arrow.png")} />
           </div>
-          <div className="right arrow" onClick={() => canMove(this.props.active_game, "right")}>
+          <div className="right arrow" onClick={() => canMove(this.props.active_game, "right", this.props.tiles)}>
             <img src={require("../navigation-icons/arrow.png")} />
           </div>
           <div className="current-location-pin">
@@ -41,4 +42,6 @@ class CurrentTurnInterface extends React.Component {
     )
   }
 }
-export default CurrentTurnInterface
+
+
+export default connect(state => ({ tiles: state.activeGame.tiles }))(CurrentTurnInterface)
