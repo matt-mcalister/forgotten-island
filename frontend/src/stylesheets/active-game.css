@@ -269,10 +269,15 @@ p.ready_up_message {
   grid-column: 2 / 3;
 }
 
+
 .tile {
   border-radius: 1em;
   overflow: hidden;
   background-color: #cc9900;
+}
+
+.abyss {
+  background-color: black;
 }
 
 .tile-image-container {
