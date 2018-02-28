@@ -37,6 +37,7 @@ class Game < ApplicationRecord
   def assign_treasure_cards(active_game)
     2.times do
       card = self.draw_treasure_card
+      puts "-----------------------#{card}-----------------------"
       if !self.current_turn_id
         while card == "Waters Rise"
           self.treasure_cards.shuffle
@@ -48,6 +49,7 @@ class Game < ApplicationRecord
         active_game.treasure_cards << card
         active_game.save
       else
+        puts "-----------------WATERS RISE----------------"
         self.waters_rise(card)
       end
       self.save
@@ -80,6 +82,7 @@ class Game < ApplicationRecord
         self.flood_discards << card
         result[card] = "wet"
       elsif tile.status == "wet"
+        puts "-----------------A TILE HAS SUNKEN INTO THE ABYSS-------------------"
         tile.update(status: "abyss")
         result[card] = "abyss"
       end
