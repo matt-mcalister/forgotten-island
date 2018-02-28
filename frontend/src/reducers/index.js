@@ -100,12 +100,13 @@ export function activeGameReducer(state = {
       }
     case "RESET_ACTIVE_GAME_STATE":
       return {
-        game: null,
+        game: {water_level: 0},
         newMessageInput: "",
         in_session: false,
         messages: [],
         active_games: [],
-        water_level: 0
+        tiles: [],
+        shoringAction: false
       }
     case "ADD_MESSAGE":
       return { ...state, messages: [...state.messages, action.message.message]}

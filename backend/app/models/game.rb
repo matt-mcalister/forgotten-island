@@ -172,7 +172,20 @@ class Game < ApplicationRecord
 
   def generate_tiles
     self.flood_cards.each do |tile_name|
-      Tile.create(game: self, status: "dry", name: tile_name)
+      case tile_name
+      when "Cave of Embers", "Cave of Shadows"
+        Tile.create(game: self, status: "dry", name: tile_name, treasure: "The Crystal of Fire")
+      when "Coral Palace", "Tidal Palace"
+        Tile.create(game: self, status: "dry", name: tile_name, treasure: "The Ocean Chalice")
+      when "Whispering Garden", "Howling Garden"
+        Tile.create(game: self, status: "dry", name: tile_name, treasure: "The Statue of the Wind")
+      when "Temple of the Sun", "Temple of the Moon"
+        Tile.create(game: self, status: "dry", name: tile_name, treasure: "The Earth stone")
+      else
+        Tile.create(game: self, status: "dry", name: tile_name)
+      end
+
+
     end
     self.shuffle_tiles
   end

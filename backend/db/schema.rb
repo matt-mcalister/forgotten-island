@@ -38,6 +38,7 @@ ActiveRecord::Schema.define(version: 20180221184605) do
     t.string "treasure_discards", array: true
     t.boolean "in_session", default: false
     t.integer "current_turn_id"
+    t.string "treasures_obtained", array: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -55,6 +56,7 @@ ActiveRecord::Schema.define(version: 20180221184605) do
     t.string "name"
     t.string "status"
     t.integer "position"
+    t.string "treasure"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["game_id"], name: "index_tiles_on_game_id"

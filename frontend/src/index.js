@@ -8,6 +8,9 @@ import thunk from "redux-thunk"
 import { ActionCableProvider } from 'react-actioncable-provider';
 import { BrowserRouter as Router } from 'react-router-dom'
 
+import { composeWithDevTools } from 'redux-devtools-extension';
+
+
 import "./stylesheets/index.css"
 import "./stylesheets/lobby.css"
 import "./stylesheets/welcome.css"
@@ -22,7 +25,9 @@ const rootReducer = combineReducers({
   activeGame: activeGameReducer
 })
 
-const store = createStore(rootReducer, applyMiddleware(thunk));
+
+
+const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk)));
 
 ReactDOM.render(
   <ActionCableProvider url={API_WS_ROOT}>

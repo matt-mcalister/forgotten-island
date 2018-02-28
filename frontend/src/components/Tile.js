@@ -3,6 +3,10 @@ import React from "react";
 class Tile extends React.Component {
 
   render() {
+    let formattedTreasure;
+    if (this.props.tile.treasure){
+      formattedTreasure = this.props.tile.treasure.toLowerCase().replace(/ /g, "-")
+    }
     if (this.props.tile.status !== "abyss"){
       const opacity = (this.props.tile.status === "wet") ? 0.4 : 0
       return (
@@ -13,6 +17,7 @@ class Tile extends React.Component {
           }}>
           </div>
           <div className="tile-name">
+            {this.props.tile.treasure && <div className="treasure-icon"><img className="treasure-icon-img" src={require(`../treasure-card-icons/${formattedTreasure}.png`)}/></div>}
             <p>{this.props.tile.name}</p>
           </div>
         </div>

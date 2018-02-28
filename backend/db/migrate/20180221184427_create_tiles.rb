@@ -5,6 +5,7 @@ class CreateTiles < ActiveRecord::Migration[5.1]
       t.string :name
       t.string :status
       t.integer :position
+      t.string :treasure
 
       t.timestamps
     end

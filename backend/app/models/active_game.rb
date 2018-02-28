@@ -10,6 +10,20 @@ class ActiveGame < ApplicationRecord
     self.id === self.game.current_turn_id
   end
 
+  def can_get_treasure?
+    if self.treasure_cards && self.treasure_cards.length > 3
+      counter = self.treasure_cards.each_with_object(Hash.new(0)) { |treasure,counter| counter[treasure] += 1 }
+      treasure = counter.find {|treasure_card, count| count >= 4}
+      if treasure.empty?
+        false
+      else
+        treasure.first
+      end
+    else
+      false
+    end
+  end
+
   def assign_ability
     abilities = [
       "Pilot",

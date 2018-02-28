@@ -9,6 +9,7 @@ class CreateGames < ActiveRecord::Migration[5.1]
       t.string :treasure_discards, array: true
       t.boolean :in_session, default: false
       t.integer :current_turn_id
+      t.string :treasures_obtained, array: true
 
 
       t.timestamps
