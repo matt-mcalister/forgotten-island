@@ -15,7 +15,6 @@ export function handleArrowClick(active_game, direction, tiles, shoringAction) {
           executeMove(active_game, "up", tiles, shoringAction)
           return true;
       }
-      break;
     case "down":
       switch (active_game.position){
         case 24:
@@ -29,7 +28,6 @@ export function handleArrowClick(active_game, direction, tiles, shoringAction) {
           executeMove(active_game, "down", tiles, shoringAction)
           return true;
       }
-      break;
     case "left":
       switch (active_game.position){
         case 1:
@@ -43,7 +41,6 @@ export function handleArrowClick(active_game, direction, tiles, shoringAction) {
           executeMove(active_game, "left", tiles, shoringAction)
           return true;
       }
-      break;
     case "right":
       switch (active_game.position){
         case 2:
@@ -57,10 +54,11 @@ export function handleArrowClick(active_game, direction, tiles, shoringAction) {
           executeMove(active_game, "right", tiles, shoringAction)
           return true;
       }
-      break;
     case "currentLocation":
       executeMove(active_game, "currentLocation", tiles, shoringAction)
       break;
+    default:
+      return false
   }
 }
 
@@ -89,6 +87,8 @@ function moveUp(position){
     case 5:
     case 4:
       return (position - 3)
+    default:
+      return false
   }
 }
 
@@ -117,6 +117,8 @@ function moveDown(position){
     case 20:
     case 21:
       return (position + 3)
+    default:
+      return false
   }
 }
 
@@ -155,6 +157,8 @@ function executeMove(active_game, direction, tiles, shoringAction){
     case "currentLocation":
       newPosition = active_game.position
       break;
+    default:
+      return false
   }
   if (tileExists(tiles, newPosition)) {
     const new_actions_remaining = active_game.actions_remaining - 1

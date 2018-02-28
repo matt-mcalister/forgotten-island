@@ -1,6 +1,5 @@
 import React from "react";
 import { connect } from "react-redux";
-import LoggedIn from "../hoc/LoggedIn"
 import Tile from "./Tile"
 import WaterLevel from "./WaterLevel"
 import GameInfo from "./GameInfo"

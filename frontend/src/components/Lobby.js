@@ -2,8 +2,6 @@ import React from "react";
 import GamesContainer from "./GamesContainer"
 import NewGameForm from "./NewGameForm"
 import { connect } from "react-redux"
-import LoggedIn from "../hoc/LoggedIn"
-import { withRouter } from "react-router-dom"
 
 class Lobby extends React.Component {
 
