@@ -22,8 +22,8 @@ class ActiveGame < ApplicationRecord
   end
 
   def give_treasure_card(treasure_card, active_game_id)
-    new_treasure_cards = self.treasure_cards.delete_at(self.treasure_cards.index(treasure_card))
-    self.update(treasure_cards: new_treasure_cards)
+    self.treasure_cards.delete_at(self.treasure_cards.index(treasure_card))
+    self.update(treasure_cards: self.treasure_cards)
     active_game = ActiveGame.find(active_game_id)
     new_treasure_cards = [active_game.treasure_cards, treasure_card].flatten
     active_game.update(treasure_cards: new_treasure_cards )

@@ -130,6 +130,7 @@ export function activeGameReducer(state = {
         game: action.game.game,
         tiles: action.tiles,
         active_games: action.active_games,
+        giveTreasureAction: false,
         treasureToGive: null
       }
     case "TOGGLE_SHORING_ACTION":
