@@ -4,8 +4,6 @@ import Tile from "./Tile"
 import WaterLevel from "./WaterLevel"
 import GameInfo from "./GameInfo"
 import ReadyUp from "./ReadyUp"
-// import FloodCards from "./FloodCards"
-// import TreasureCards from "./TreasureCards"
 import TeamChat from "./TeamChat"
 import PlayerToken from "./PlayerToken"
 import { ActionCable } from 'react-actioncable-provider';
@@ -26,8 +24,6 @@ class ActiveGame extends React.Component {
       this.props.beginGame(data.game_in_session)
     } else if (data.new_turn) {
       this.props.updateGame(data.new_turn)
-    } else if (data.shored_tile){
-      this.props.handleShoredTile(data)
     }
   }
 

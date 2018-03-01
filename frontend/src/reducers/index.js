@@ -56,7 +56,9 @@ export function activeGameReducer(state = {
   messages: [],
   active_games: [],
   tiles: [],
-  shoringAction: false
+  shoringAction: false,
+  giveTreasureAction: false,
+  treasureToGive: null
 }, action) {
   switch(action.type){
     case 'SET_ACTIVE_GAME':
@@ -106,17 +108,20 @@ export function activeGameReducer(state = {
         messages: [],
         active_games: [],
         tiles: [],
-        shoringAction: false
+        shoringAction: false,
+        treasureToGive: null
       }
     case "ADD_MESSAGE":
       return { ...state, messages: [...state.messages, action.message.message]}
     case "BEGIN_GAME":
       return {
         ...state,
+        shoringAction: false,
         in_session: true,
         game: action.game.game,
         tiles: action.tiles,
-        active_games: action.active_games
+        active_games: action.active_games,
+        treasureToGive: null
       }
     case "UPDATE_GAME":
       return {
@@ -124,13 +129,34 @@ export function activeGameReducer(state = {
         shoringAction: false,
         game: action.game.game,
         tiles: action.tiles,
-        active_games: action.active_games
+        active_games: action.active_games,
+        treasureToGive: null
       }
     case "TOGGLE_SHORING_ACTION":
       let newShoringAction = !state.shoringAction
       return {
         ...state,
         shoringAction: newShoringAction
+      }
+    case "TOGGLE_GIVE_TREASURE_ACTION":
+      let newGiveTreasureAction = !state.giveTreasureAction
+      let newMessages;
+      if (newGiveTreasureAction){
+        newMessages =  [...state.messages, {alert: "select_treasure_to_give", id: Date.now() }]
+      } else {
+        newMessages = state.messages
+      }
+      return {
+        ...state,
+        messages: newMessages,
+        giveTreasureAction: newGiveTreasureAction,
+        treasureToGive: null
+      }
+    case "SELECT_TREASURE_TO_GIVE":
+      return {
+        ...state,
+        treasureToGive: action.treasure,
+        messages: [...state.messages, {alert: "select_active_game_to_give_to", treasure: action.treasure, id: Date.now() }]
       }
     case "HANDLE_SHORED_TILE":
       let updatedTiles = state.tiles.map(tile => {

@@ -16,9 +16,21 @@ class ActiveGame < ApplicationRecord
 
     tiles = Tile.where(game_id: self.game.id, treasure: treasure)
 
-    tile.each do |tile|
+    tiles.each do |tile|
       tile.update(treasure: nil)
     end
+  end
+
+  def give_treasure_card(treasure_card, active_game_id)
+    new_treasure_cards = self.treasure_cards.delete_at(self.treasure_cards.index(treasure_card))
+    self.update(treasure_cards: new_treasure_cards)
+    active_game = ActiveGame.find(active_game_id)
+    new_treasure_cards = [active_game.treasure_cards, treasure_card].flatten
+    active_game.update(treasure_cards: new_treasure_cards )
+  end
+
+  def can_trade_cards_with_user?
+    self.game.active_games.any? {|ag| ag.id != self.id && ag.position == self.position}
   end
 
   def is_users_turn?

@@ -1,7 +1,7 @@
 import React from "react";
 import { handleArrowClick } from "../actions/helperFunctions"
 import { connect } from "react-redux"
-import { toggleShoringAction } from "../actions"
+import { toggleShoringAction, toggleGiveTreasureAction } from "../actions"
 import { RestfulAdapter } from "../connections/adapter"
 
 class CurrentTurnInterface extends React.Component {
@@ -17,6 +17,15 @@ class CurrentTurnInterface extends React.Component {
         </div>
         )
       }
+    }
+  }
+
+  canTrade(){
+    if (this.props.active_game["can_trade_cards_with_user?"]){
+      return (
+        <div className="give-treasure-button" onClick={this.props.toggleGiveTreasureAction}>
+          {(!this.props.giveTreasureAction) ? <h3>Give 1 Treasure Token To Another Player</h3> : <h3>Cancel Give Treasure</h3>}
+        </div>)
     }
   }
   render() {
@@ -45,9 +54,7 @@ class CurrentTurnInterface extends React.Component {
           <div className="shore-up-button" onClick={this.props.toggleShoringAction}>
             {(this.props.shoringAction) ? <h3>Cancel Shore</h3> : <h3>Shore Up 1 tile</h3>}
           </div>
-          <div className="give-treasure-button">
-            <h3>Give 1 Treasure Token To Another Player</h3>
-          </div>
+          {this.canTrade()}
           {this.canGetTreasure()}
         </div>
 
@@ -57,4 +64,4 @@ class CurrentTurnInterface extends React.Component {
 }
 
 
-export default connect(state => ({ tiles: state.activeGame.tiles, shoringAction: state.activeGame.shoringAction }), { toggleShoringAction })(CurrentTurnInterface)
+export default connect(state => ({ tiles: state.activeGame.tiles, shoringAction: state.activeGame.shoringAction, giveTreasureAction: state.activeGame.giveTreasureAction }), { toggleShoringAction, toggleGiveTreasureAction })(CurrentTurnInterface)

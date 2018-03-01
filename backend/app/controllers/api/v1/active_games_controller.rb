@@ -16,36 +16,28 @@ class Api::V1::ActiveGamesController < ApplicationController
   end
 
   def update
+
     active_game = ActiveGame.find_by(id: params[:id])
 
     active_game.update(active_game_params)
 
     game = active_game.game
 
-    if params[:shoring] && active_game.actions_remaining > 0
-      shored_tile = Tile.find_by(game_id: active_game.game_id, position: params[:shoring])
-      shored_tile.update(status: "dry")
+    if !active_game_params.keys.include?("ready_to_start")
 
-      serialized_tile = ActiveModelSerializers::Adapter::Json.new(
-        TileSerializer.new(shored_tile)
-        ).serializable_hash
-
-      active_game = ActiveGame.find_by(id: params[:id])
-
-      serialized_active_game = ActiveModelSerializers::Adapter::Json.new(
-        ActiveGameSerializer.new(active_game)
-      ).serializable_hash
-
-      ActiveGamesChannel.broadcast_to game, {shored_tile: serialized_tile, updated_active_game: serialized_active_game}
-      head :ok
-
-    elsif active_game.is_users_turn? && active_game.actions_remaining == 0
       if params[:shoring]
         shored_tile = Tile.find_by(game_id: active_game.game_id, position: params[:shoring])
         shored_tile.update(status: "dry")
+      elsif params[:get_treasure]
+        active_game.trade_treasure_cards(params[:get_treasure])
+      elsif params[:gift_treasure]
+        active_game.give_treasure_card(params[:gift_treasure], params[:gift_to])
       end
 
-      game.next_users_turn
+      if active_game.is_users_turn? && active_game.actions_remaining == 0
+        game.next_users_turn
+      end
+
       active_game = ActiveGame.find_by(id: params[:id])
       game = active_game.game
 
@@ -82,15 +74,20 @@ class Api::V1::ActiveGamesController < ApplicationController
 
   def destroy
     active_game = ActiveGame.find(params[:id])
-    game = active_game.game
+    if active_game
+      game = active_game.game
 
-    serialized_active_game = ActiveModelSerializers::Adapter::Json.new(
-      ActiveGameSerializer.new(active_game)
-    ).serializable_hash
-    data = {removed_active_game: serialized_active_game[:active_game] }
-    active_game.destroy
-    ActiveGamesChannel.broadcast_to(game, data)
-    head :ok
+      serialized_active_game = ActiveModelSerializers::Adapter::Json.new(
+        ActiveGameSerializer.new(active_game)
+      ).serializable_hash
+      data = {removed_active_game: serialized_active_game[:active_game] }
+      active_game.destroy
+      ActiveGamesChannel.broadcast_to(game, data)
+      head :ok
+    else
+      render json: {message: "ActiveGame has already been destroyed"}
+      head :ok
+    end
   end
 
   private

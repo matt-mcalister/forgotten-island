@@ -85,7 +85,14 @@ export function updateGame(data){
 export function toggleShoringAction(){
   return { type: "TOGGLE_SHORING_ACTION" }
 }
+export function toggleGiveTreasureAction(){
+  return { type: "TOGGLE_GIVE_TREASURE_ACTION" }
+}
 
 export function handleShoredTile(data){
   return { type: "HANDLE_SHORED_TILE", shored_tile: data.shored_tile, updated_active_game: data.updated_active_game}
+}
+
+export function selectTreasureToGive(treasure){
+  return { type: "SELECT_TREASURE_TO_GIVE", treasure: treasure }
 }

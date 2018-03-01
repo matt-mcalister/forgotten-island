@@ -21,6 +21,19 @@ const Message = (props) => {
               <div className="alert">
                 <p>{`${props.message.active_game.user.name} has exited the Island.`}</p>
               </div>)
+      case "select_treasure_to_give":
+        return (
+          <div className="alert">
+            <p>CLICK ON AN ITEM IN YOUR INVENTORY TO GIVE:</p>
+          </div>
+        )
+      case "select_active_game_to_give_to":
+        return (
+          <div className="alert">
+            <p>CLICK ON A FELLOW ADVENTURER'S INVENTORY TO GIVE THEM YOUR {props.message.treasure.replace(/THE /, "").toUpperCase()} TOKEN </p>
+            <p>NOTE: ADVENTURER MUST BE ON THE SAME TILE</p>
+          </div>
+        )
       default:
         return (<div>BIG OLD MESSAGE</div>)
     }
