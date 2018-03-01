@@ -63,7 +63,7 @@ export function activeGameReducer(state = {
   switch(action.type){
     case 'SET_ACTIVE_GAME':
       const initMessages = action.messages.map(msg => msg.message)
-      const welcomeMessages = action.active_games.map(ag => {return {alert: "new_active_game", active_game: ag.active_game, id: Date.now() }} )
+      const welcomeMessages = action.active_games.map(ag => {return {alert: "new_active_game", active_game: ag.active_game, id: `${ag.active_game.id} - ${Date.now()}` }} )
       return ({
         ...state,
         game: action.game,
@@ -90,7 +90,7 @@ export function activeGameReducer(state = {
         return ({
           ...state,
           active_games: [...state.active_games, action.active_game],
-          messages: [...state.messages, {alert: "new_active_game", active_game: action.active_game.active_game, id: Date.now() }]
+          messages: [...state.messages, {alert: "new_active_game", active_game: action.active_game.active_game, id: `${action.active_game.active_game.id} - ${Date.now()}` }]
         })
       }
     case "REMOVE_ACTIVE_GAME_USERS":
@@ -98,7 +98,7 @@ export function activeGameReducer(state = {
       return {
         ...state,
         active_games: filteredActiveGames,
-        messages: [...state.messages, {alert: "removed_active_game", active_game: action.active_game, id: Date.now() }]
+        messages: [...state.messages, {alert: "removed_active_game", active_game: action.active_game, id: `${action.active_game.active_game.id} - ${Date.now()}` }]
       }
     case "RESET_ACTIVE_GAME_STATE":
       return {
@@ -112,10 +112,11 @@ export function activeGameReducer(state = {
         treasureToGive: null
       }
     case "ADD_MESSAGE":
-      return { ...state, messages: [...state.messages, action.message.message]}
+      return { ...state, newMessageInput: "", messages: [...state.messages, action.message.message]}
     case "BEGIN_GAME":
       return {
         ...state,
+        newMessageInput: "",
         shoringAction: false,
         in_session: true,
         game: action.game.game,
@@ -124,15 +125,18 @@ export function activeGameReducer(state = {
         treasureToGive: null
       }
     case "UPDATE_GAME":
+      const messagesIds = state.messages.map(msg => msg.id)
+      const onlyNewMessages = action.messages.filter(msg => !messagesIds.includes(msg.id))
       return {
         ...state,
         shoringAction: false,
+        newMessageInput: "",
         game: action.game.game,
         tiles: action.tiles,
         active_games: action.active_games,
         giveTreasureAction: false,
         treasureToGive: null,
-        messages: [...state.messages, ...action.messages]
+        messages: [...state.messages, ...onlyNewMessages]
       }
     case "TOGGLE_SHORING_ACTION":
       let newShoringAction = !state.shoringAction

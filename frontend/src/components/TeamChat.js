@@ -21,11 +21,26 @@ class TeamChat extends React.Component {
     this.props.updateNewMessageInput(e.target.value)
   }
 
+  scrollToBottom = () => {
+    this.messagesEnd.scrollIntoView({ behavior: "smooth" });
+  }
+
+  componentDidMount() {
+    this.scrollToBottom();
+  }
+
+  componentDidUpdate() {
+    this.scrollToBottom();
+  }
+
   render() {
     return (
       <div className="team-chat">
         <div className="messages-container">
         {this.props.messages.map(msg => <Message key={msg.id} message={msg}/>)}
+          <div style={{ float:"left", clear: "both" }}
+               ref={(el) => { this.messagesEnd = el; }}>
+          </div>
         </div>
         <form className="new-message-form" onSubmit={this.handleSubmit}>
           <input type="text" value={this.props.newMessageInput} onChange={this.handleChange} placeholder="Type here to chat" />

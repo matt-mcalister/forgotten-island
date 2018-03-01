@@ -6,6 +6,29 @@ class Game < ApplicationRecord
 
   after_create :generate_flood_cards
 
+  def game_over
+    if Tile.where(name: "Fools Landing", game_id: self.id).empty? || self.any_treasure_unobtainable?
+      return "GAME OVER"
+    elsif self.victory?
+      return "VICTORY"
+    else
+      return false
+    end
+  end
+
+  def any_treasure_unobtainable?
+    ["The Earth Stone","The Statue of the Wind","The Crystal of Fire","The Ocean Chalice"].any? do |treasure|
+      Tile.where(game_id: self.id, treasure: treasure, status: "abyss").count == 2
+    end
+  end
+
+  def victory?
+    self.treasures_obtained ||= []
+    self.treasures_obtained.length == 4 &&
+      self.active_games.all? {|ag| ag.position == Tile.where(name: "Fools Landing", game_id: self.id).position} &&
+        self.active_games.any? {|ag| ag.treasure_cards.include?("Helicopter Lift")}
+  end
+
   def halt_game_for_discard?
     self.active_games.any? {|ag| ag.must_discard? }
   end
@@ -189,7 +212,7 @@ class Game < ApplicationRecord
       when "Whispering Garden", "Howling Garden"
         Tile.create(game: self, status: "dry", name: tile_name, treasure: "The Statue of the Wind")
       when "Temple of the Sun", "Temple of the Moon"
-        Tile.create(game: self, status: "dry", name: tile_name, treasure: "The Earth stone")
+        Tile.create(game: self, status: "dry", name: tile_name, treasure: "The Earth Stone")
       else
         Tile.create(game: self, status: "dry", name: tile_name)
       end

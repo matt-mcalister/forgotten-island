@@ -160,6 +160,7 @@ p.ready_up_message {
 
 .messages-container {
   height: 92%;
+  overflow: scroll;
   display: block;
 }
 
