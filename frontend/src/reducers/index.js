@@ -131,7 +131,8 @@ export function activeGameReducer(state = {
         tiles: action.tiles,
         active_games: action.active_games,
         giveTreasureAction: false,
-        treasureToGive: null
+        treasureToGive: null,
+        messages: [...state.messages, ...action.messages]
       }
     case "TOGGLE_SHORING_ACTION":
       let newShoringAction = !state.shoringAction

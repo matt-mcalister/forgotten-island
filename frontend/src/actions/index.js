@@ -79,7 +79,8 @@ export function beginGame(data){
 }
 
 export function updateGame(data){
-  return { type: "BEGIN_GAME", game: data.game, active_games: data.active_games, tiles: data.tiles }
+  let alertMessages = data.messages.map(msg => msg.message)
+  return { type: "UPDATE_GAME", game: data.game, active_games: data.active_games, tiles: data.tiles, messages: alertMessages }
 }
 
 export function toggleShoringAction(){

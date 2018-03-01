@@ -8,15 +8,20 @@ import { RestfulAdapter } from "../connections/adapter"
 class Inventory extends React.Component {
 
   handleCardClick = (card) => {
-    if (this.props.id === this.props.currentUserActiveGame.id && this.props.giveTreasureAction){
-      this.props.selectTreasureToGive(card)
+    if (this.props.id === this.props.currentUserActiveGame.id) {
+      if (this.props.giveTreasureAction){
+        this.props.selectTreasureToGive(card)
+      } else if (this.props.currentUserActiveGame["must_discard?"]){
+        let body = {card_to_discard: card, actions_remaining: this.props.currentUserActiveGame.actions_remaining}
+        RestfulAdapter.editFetchToChannel("active_games", this.props.currentUserActiveGame.id, body)
+      }
     }
   }
 
   handleInventoryClick = () => {
     if (this.props.id !== this.props.currentUserActiveGame.id && this.props.position === this.props.currentUserActiveGame.position && this.props.treasureToGive){
       const new_actions_remaining = this.props.currentUserActiveGame.actions_remaining - 1
-      const body = {gift_treasure: this.props.treasureToGive, gift_to: this.props.id, actions_remaining: this.props.currentUserActiveGame}
+      let body = {gift_treasure: this.props.treasureToGive, gift_to: this.props.id, actions_remaining: this.props.currentUserActiveGame}
       RestfulAdapter.editFetchToChannel("active_games", this.props.currentUserActiveGame.id, body)
     }
   }
@@ -33,4 +38,11 @@ class Inventory extends React.Component {
   }
 }
 
-export default connect(state => ({ giveTreasureAction: state.activeGame.giveTreasureAction, treasureToGive: state.activeGame.treasureToGive }), { selectTreasureToGive })(Inventory)
+const mapStateToProps = (state) => {
+  return ({
+    giveTreasureAction: state.activeGame.giveTreasureAction,
+    treasureToGive: state.activeGame.treasureToGive
+  })
+}
+
+export default connect(mapStateToProps, { selectTreasureToGive })(Inventory)

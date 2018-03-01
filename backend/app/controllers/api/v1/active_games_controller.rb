@@ -32,7 +32,11 @@ class Api::V1::ActiveGamesController < ApplicationController
         active_game.trade_treasure_cards(params[:get_treasure])
       elsif params[:gift_treasure]
         active_game.give_treasure_card(params[:gift_treasure], params[:gift_to])
+      elsif params[:card_to_discard]
+        active_game.discard(params[:card_to_discard])
       end
+
+
 
       if active_game.is_users_turn? && active_game.actions_remaining == 0
         game.next_users_turn
@@ -57,7 +61,19 @@ class Api::V1::ActiveGamesController < ApplicationController
           ).serializable_hash
       end
 
-      ActiveGamesChannel.broadcast_to game, {new_turn: {game: serialized_game, active_games: serialized_active_games, tiles: serialized_tiles}}
+      if game.halt_game_for_discard?
+        discarding_active_game = game.active_games.find {|ag| ag.must_discard?}
+        Message.create(alert: "halt_game_for_discard", text: "#{discarding_active_game.user.name.upcase} MUST DISCARD", active_game: discarding_active_game)
+        game = Game.find(game.id)
+      end
+
+      serialized_messages = game.messages.map do |message|
+        ActiveModelSerializers::Adapter::Json.new(
+          MessageSerializer.new(message)
+          ).serializable_hash
+      end
+
+      ActiveGamesChannel.broadcast_to game, {new_turn: {game: serialized_game, active_games: serialized_active_games, tiles: serialized_tiles, messages: serialized_messages}}
       head :ok
 
     else

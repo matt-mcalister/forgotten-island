@@ -28,7 +28,6 @@ class ActiveGame extends React.Component {
   }
 
   render() {
-    console.log("GAME PROPS: ", this.props)
     return (
       <div className="active-game">
         {this.props.id && (<ActionCable

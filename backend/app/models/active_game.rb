@@ -5,6 +5,19 @@ class ActiveGame < ApplicationRecord
 
   after_create :assign_ability
 
+  def must_discard?
+    self.treasure_cards ||= []
+    self.treasure_cards.length > 5
+  end
+
+  def discard(card)
+    self.treasure_cards.delete_at(self.treasure_cards.index(card))
+    self.update(treasure_cards: self.treasure_cards)
+    self.game.treasure_discards ||= []
+    self.game.treasure_discards << card
+    self.game.save
+  end
+
 
   def trade_treasure_cards(treasure)
     newTreasureCards = self.treasure_cards.reject {|treasure_card| treasure_card == treasure}

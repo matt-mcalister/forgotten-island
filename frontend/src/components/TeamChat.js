@@ -22,7 +22,6 @@ class TeamChat extends React.Component {
   }
 
   render() {
-    console.log("teamchat messages: ", this.props.messages)
     return (
       <div className="team-chat">
         <div className="messages-container">

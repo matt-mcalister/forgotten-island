@@ -6,6 +6,10 @@ class Game < ApplicationRecord
 
   after_create :generate_flood_cards
 
+  def halt_game_for_discard?
+    self.active_games.any? {|ag| ag.must_discard? }
+  end
+
   def turn_order
     self.active_games.sort_by {|ag| ag.id}
   end
