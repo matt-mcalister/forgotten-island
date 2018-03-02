@@ -1,8 +1,7 @@
 import React from "react";
+import { connect } from "react-redux"
 
-// one type for treasure card
-// one type for shore up and helicopter
-// one type for water's rise
+
 const TreasureCard = (props) => {
   switch (props.card){
     case "Waters Rise":
@@ -13,7 +12,7 @@ const TreasureCard = (props) => {
     case "Sandbag":
       return (
         <div className="treasure-card sandbag" onClick={() => props.handleClick(props.card)}>
-          <h3>Sandbag</h3>
+          {props.sandbag ? <h3>Cancel Sandbag</h3> : <h3>Sandbag</h3>}
         </div>)
     case "Helicopter Lift":
       return (
@@ -30,4 +29,4 @@ const TreasureCard = (props) => {
   }
 }
 
-export default TreasureCard
+export default connect(state => ({ sandbag: state.activeGame.sandbag }))(TreasureCard)

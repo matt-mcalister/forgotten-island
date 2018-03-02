@@ -16,7 +16,6 @@ class Api::V1::ActiveGamesController < ApplicationController
   end
 
   def update
-
     active_game = ActiveGame.find_by(id: params[:id])
 
     active_game.update(active_game_params)
@@ -24,7 +23,6 @@ class Api::V1::ActiveGamesController < ApplicationController
     game = active_game.game
 
     if !active_game_params.keys.include?("ready_to_start")
-
       if params[:shoring]
         shored_tile = Tile.find_by(game_id: active_game.game_id, position: params[:shoring])
         shored_tile.update(status: "dry")
@@ -34,7 +32,10 @@ class Api::V1::ActiveGamesController < ApplicationController
         active_game.give_treasure_card(params[:gift_treasure], params[:gift_to])
       elsif params[:card_to_discard]
         active_game.discard(params[:card_to_discard])
+      elsif params[:sandbag]
+        active_game.sandbag(Tile.find(params[:sandbag]))
       end
+
 
 
 

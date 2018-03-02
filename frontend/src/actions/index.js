@@ -86,6 +86,11 @@ export function updateGame(data){
 export function toggleShoringAction(){
   return { type: "TOGGLE_SHORING_ACTION" }
 }
+
+export function toggleSandbag(){
+  return { type: "TOGGLE_SANDBAG" }
+}
+
 export function toggleGiveTreasureAction(){
   return { type: "TOGGLE_GIVE_TREASURE_ACTION" }
 }

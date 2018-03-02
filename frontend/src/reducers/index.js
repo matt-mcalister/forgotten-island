@@ -58,7 +58,8 @@ export function activeGameReducer(state = {
   tiles: [],
   shoringAction: false,
   giveTreasureAction: false,
-  treasureToGive: null
+  treasureToGive: null,
+  sandbag: false
 }, action) {
   switch(action.type){
     case 'SET_ACTIVE_GAME':
@@ -109,7 +110,8 @@ export function activeGameReducer(state = {
         active_games: [],
         tiles: [],
         shoringAction: false,
-        treasureToGive: null
+        treasureToGive: null,
+        sandbag: false
       }
     case "ADD_MESSAGE":
       return { ...state, newMessageInput: "", messages: [...state.messages, action.message.message]}
@@ -143,6 +145,12 @@ export function activeGameReducer(state = {
       return {
         ...state,
         shoringAction: newShoringAction
+      }
+    case "TOGGLE_SANDBAG":
+      let newSandbag = !state.sandbag
+      return {
+        ...state,
+        sandbag: newSandbag
       }
     case "TOGGLE_GIVE_TREASURE_ACTION":
       let newGiveTreasureAction = !state.giveTreasureAction

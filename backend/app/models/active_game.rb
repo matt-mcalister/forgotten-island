@@ -5,6 +5,11 @@ class ActiveGame < ApplicationRecord
 
   after_create :assign_ability
 
+  def sandbag(tile)
+    tile.update(status: "dry")
+    self.discard("Sandbag")
+  end
+
   def must_discard?
     self.treasure_cards ||= []
     self.treasure_cards.length > 5
