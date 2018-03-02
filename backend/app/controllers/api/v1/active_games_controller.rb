@@ -34,6 +34,8 @@ class Api::V1::ActiveGamesController < ApplicationController
         active_game.discard(params[:card_to_discard])
       elsif params[:sandbag]
         active_game.sandbag(Tile.find(params[:sandbag]))
+      elsif params[:lift_destination]
+        active_game.helicopter_lift(params[:players_to_lift], params[:lift_destination])
       end
 
 

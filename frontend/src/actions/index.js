@@ -91,6 +91,10 @@ export function toggleSandbag(){
   return { type: "TOGGLE_SANDBAG" }
 }
 
+export function toggleHelicopterLift(){
+  return { type: "TOGGLE_HELICOPTER_LIFT" }
+}
+
 export function toggleGiveTreasureAction(){
   return { type: "TOGGLE_GIVE_TREASURE_ACTION" }
 }
@@ -101,4 +105,8 @@ export function handleShoredTile(data){
 
 export function selectTreasureToGive(treasure){
   return { type: "SELECT_TREASURE_TO_GIVE", treasure: treasure }
+}
+
+export function addToPlayersToLift(active_game){
+  return {type: "ADD_TO_PLAYERS_TO_LIFT", active_game: active_game }
 }

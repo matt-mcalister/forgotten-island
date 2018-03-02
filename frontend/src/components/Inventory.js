@@ -1,7 +1,7 @@
 import React from "react";
 import TreasureCard from "./TreasureCard"
 import { connect } from "react-redux"
-import { selectTreasureToGive, toggleSandbag } from "../actions"
+import { selectTreasureToGive, toggleSandbag, toggleHelicopterLift } from "../actions"
 import { RestfulAdapter } from "../connections/adapter"
 
 
@@ -14,8 +14,10 @@ class Inventory extends React.Component {
       } else if (this.props.currentUserActiveGame["must_discard?"]){
         let body = {card_to_discard: card, actions_remaining: this.props.currentUserActiveGame.actions_remaining}
         RestfulAdapter.editFetchToChannel("active_games", this.props.currentUserActiveGame.id, body)
-      } else if (card == "Sandbag") {
+      } else if (card === "Sandbag") {
         this.props.toggleSandbag()
+      } else if (card === "Helicopter Lift"){
+        this.props.toggleHelicopterLift()
       }
     }
   }
@@ -47,4 +49,4 @@ const mapStateToProps = (state) => {
   })
 }
 
-export default connect(mapStateToProps, { selectTreasureToGive, toggleSandbag })(Inventory)
+export default connect(mapStateToProps, { selectTreasureToGive, toggleSandbag, toggleHelicopterLift })(Inventory)

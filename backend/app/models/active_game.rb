@@ -10,6 +10,13 @@ class ActiveGame < ApplicationRecord
     self.discard("Sandbag")
   end
 
+  def helicopter_lift(active_games, destination_tile_position)
+    active_games.each do |ag|
+      ActiveGame.find(ag["id"]).update(position: destination_tile_position)
+    end
+    self.discard("Helicopter Lift")
+  end
+
   def must_discard?
     self.treasure_cards ||= []
     self.treasure_cards.length > 5

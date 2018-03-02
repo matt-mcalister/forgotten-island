@@ -59,7 +59,9 @@ export function activeGameReducer(state = {
   shoringAction: false,
   giveTreasureAction: false,
   treasureToGive: null,
-  sandbag: false
+  sandbag: false,
+  helicopterLift: false,
+  playersToLift: []
 }, action) {
   switch(action.type){
     case 'SET_ACTIVE_GAME':
@@ -111,7 +113,9 @@ export function activeGameReducer(state = {
         tiles: [],
         shoringAction: false,
         treasureToGive: null,
-        sandbag: false
+        sandbag: false,
+        helicopterLift: false,
+        playersToLift: []
       }
     case "ADD_MESSAGE":
       return { ...state, newMessageInput: "", messages: [...state.messages, action.message.message]}
@@ -138,7 +142,10 @@ export function activeGameReducer(state = {
         active_games: action.active_games,
         giveTreasureAction: false,
         treasureToGive: null,
-        messages: [...state.messages, ...onlyNewMessages]
+        messages: [...state.messages, ...onlyNewMessages],
+        sandbag: false,
+        helicopterLift: false,
+        playersToLift: []
       }
     case "TOGGLE_SHORING_ACTION":
       let newShoringAction = !state.shoringAction
@@ -150,7 +157,25 @@ export function activeGameReducer(state = {
       let newSandbag = !state.sandbag
       return {
         ...state,
-        sandbag: newSandbag
+        sandbag: newSandbag,
+        helicopterLift: false
+      }
+    case "TOGGLE_HELICOPTER_LIFT":
+      let newHelicopterLift = !state.helicopterLift
+      let newPlayersToLift = state.playersToLift
+      if (!newHelicopterLift){
+        newPlayersToLift = []
+      }
+      return {
+        ...state,
+        helicopterLift: newHelicopterLift,
+        playersToLift: newPlayersToLift,
+        sandbag: false
+      }
+    case "ADD_TO_PLAYERS_TO_LIFT":
+      return {
+        ...state,
+        playersToLift: [...state.playersToLift, action.active_game]
       }
     case "TOGGLE_GIVE_TREASURE_ACTION":
       let newGiveTreasureAction = !state.giveTreasureAction

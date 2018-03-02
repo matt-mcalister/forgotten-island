@@ -8,6 +8,10 @@ class Tile extends React.Component {
     if (this.props.sandbag && this.props.tile.status === "wet"){
       let sandbagBody = { actions_remaining: this.props.currentUserActiveGame.actions_remaining, sandbag: this.props.tile.id }
       RestfulAdapter.editFetchToChannel("active_games", this.props.currentUserActiveGame.id, sandbagBody )
+    } else if (this.props.helicopterLift && this.props.playersToLift[0]) {
+      console.log("players to lift: ", this.props.playersToLift)
+      let helicopterBody = { actions_remaining: this.props.currentUserActiveGame.actions_remaining, players_to_lift: this.props.playersToLift, lift_destination: this.props.tile.position }
+      RestfulAdapter.editFetchToChannel("active_games", this.props.currentUserActiveGame.id, helicopterBody )
     }
   }
 
@@ -38,10 +42,16 @@ class Tile extends React.Component {
 }
 
 const mapStateToProps = state => {
-  const currentUserActiveGame = state.activeGame.active_games.find(ag => ag.active_game.user.id === state.currentUser.currentUser.id).active_game
+  let currentUserActiveGame = state.activeGame.active_games.find(ag => ag.active_game.user.id === state.currentUser.currentUser.id)
+  if (currentUserActiveGame) {
+    currentUserActiveGame = currentUserActiveGame.active_game
+  }
+
   return {
     sandbag: state.activeGame.sandbag,
-    currentUserActiveGame: currentUserActiveGame
+    currentUserActiveGame: currentUserActiveGame,
+    helicopterLift: state.activeGame.helicopterLift,
+    playersToLift: state.activeGame.playersToLift
   }
 }
 export default connect(mapStateToProps)(Tile)

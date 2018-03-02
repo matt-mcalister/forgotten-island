@@ -17,7 +17,7 @@ const TreasureCard = (props) => {
     case "Helicopter Lift":
       return (
         <div className="treasure-card helicopter-lift" onClick={() => props.handleClick(props.card)}>
-          <h3>Helicopter Lift</h3>
+          {props.helicopterLift ? <h3>Cancel Helicopter</h3> : <h3>Helicopter Lift</h3>}
         </div>)
     default:
       const formattedInventoryItem = props.card.toLowerCase().replace(/ /g, "-")
@@ -29,4 +29,4 @@ const TreasureCard = (props) => {
   }
 }
 
-export default connect(state => ({ sandbag: state.activeGame.sandbag }))(TreasureCard)
+export default connect(state => ({ sandbag: state.activeGame.sandbag, helicopterLift: state.activeGame.helicopterLift }))(TreasureCard)
