@@ -28,6 +28,11 @@ class CurrentTurnInterface extends React.Component {
         </div>)
     }
   }
+
+  endTurn = () => {
+    RestfulAdapter.editFetchToChannel("active_games", this.props.active_game.id, {actions_remaining: 0})
+  }
+
   render() {
     return (
       <div className="current-turn-interface">
@@ -56,6 +61,9 @@ class CurrentTurnInterface extends React.Component {
           </div>
           {this.canTrade()}
           {this.canGetTreasure()}
+          <div className="end-turn-buton" onClick={this.endTurn}>
+            <h3>End Turn</h3>
+          </div>
         </div>
 
       </div>

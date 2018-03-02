@@ -34,14 +34,11 @@ const Message = (props) => {
             <p>NOTE: ADVENTURER MUST BE ON THE SAME TILE</p>
           </div>
         )
-      case "halt_game_for_discard":
+      default:
         return (
           <div className="alert">
             <p>{props.message.text}</p>
-          </div>
-        )
-      default:
-        return (<div>BIG OLD MESSAGE</div>)
+          </div>)
     }
   } else {
     if (props.message.user.id === props.currentUser.id) {

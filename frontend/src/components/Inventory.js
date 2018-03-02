@@ -21,7 +21,7 @@ class Inventory extends React.Component {
   handleInventoryClick = () => {
     if (this.props.id !== this.props.currentUserActiveGame.id && this.props.position === this.props.currentUserActiveGame.position && this.props.treasureToGive){
       const new_actions_remaining = this.props.currentUserActiveGame.actions_remaining - 1
-      let body = {gift_treasure: this.props.treasureToGive, gift_to: this.props.id, actions_remaining: this.props.currentUserActiveGame}
+      let body = {gift_treasure: this.props.treasureToGive, gift_to: this.props.id, actions_remaining: new_actions_remaining}
       RestfulAdapter.editFetchToChannel("active_games", this.props.currentUserActiveGame.id, body)
     }
   }

@@ -45,6 +45,8 @@ class Api::V1::ActiveGamesController < ApplicationController
       active_game = ActiveGame.find_by(id: params[:id])
       game = active_game.game
 
+      game.game_over
+
       serialized_game = ActiveModelSerializers::Adapter::Json.new(
         GameSerializer.new(game)
       ).serializable_hash
