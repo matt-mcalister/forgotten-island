@@ -101,7 +101,7 @@ export function activeGameReducer(state = {
       return {
         ...state,
         active_games: filteredActiveGames,
-        messages: [...state.messages, {alert: "removed_active_game", active_game: action.active_game, id: `${action.active_game.active_game.id} - ${Date.now()}` }]
+        messages: [...state.messages, {alert: "removed_active_game", active_game: action.active_game, id: `${action.active_game.id} - ${Date.now()}` }]
       }
     case "RESET_ACTIVE_GAME_STATE":
       return {

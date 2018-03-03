@@ -51,30 +51,38 @@ class Game < ApplicationRecord
   end
 
   def waters_rise(card)
-    # newWaterLevel = self.water_level + 1
-    #
-    # newTreasureDiscards = self.treasure_discards
-    # newTreasureDiscards << card
-    #
-    # newFloodDiscards = self.flood_discards.shuffle
-    #
-    # newFloodCards = self.flood_cards
-    # newFloodCards = [newFloodCards, newFloodDiscards].flatten
-    #
-    # newFloodDiscards = []
+    newWaterLevel = self.water_level + 1
 
-    self.water_level = self.water_level + 1
-    self.treasure_discards << card
-    self.flood_discards = self.flood_discards.shuffle
-    self.flood_cards = [self.flood_cards, self.flood_discards].flatten
-    self.flood_discards = []
-    self.save
+    newFloodDiscards = self.flood_discards.shuffle
+
+    newFloodCards = self.flood_cards
+    newFloodCards = [newFloodCards, newFloodDiscards].flatten
+
+    newFloodDiscards = []
+
+    self.update(water_level: newWaterLevel, flood_cards: newFloodCards, flood_discards: newFloodDiscards)
+
+    self.add_to_treasure_discards(card)
   end
 
-  def duplicate_flood_cards?
-    flood_card_counter = self.flood_cards.each_with_object(Hash.new(0)) { |tile_name,counter| counter[tile_name] += 1 }
-    flood_discard_counter = self.flood_discards.each_with_object(Hash.new(0)) { |tile_name,counter| counter[tile_name] += 1 }
-    self.flood_cards.any? {|card| self.flood_discards.include?(card)} || flood_card_counter.values.include?(2) || flood_discard_counter.values.include?(2)
+  def add_to_treasure_discards(card)
+    newTreasureDiscards = self.treasure_discards || []
+    newTreasureDiscards << card
+    self.update(treasure_discards: newTreasureDiscards)
+  end
+
+
+  def too_many_flood_cards?
+    self.flood_cards.length + self.flood_discards.length != 24 - Tile.where(status: "abyss", game_id: self.id).count
+  end
+
+  def too_many_treasure_cards?
+    total_inventory_cards = 0
+    self.active_games.each do |ag|
+      ag.treasure_cards ||= []
+      total_inventory_cards += ag.treasure_cards.length
+    end
+    self.treasure_cards.length + self.treasure_discards.length + total_inventory_cards != 28
   end
 
   def draw_treasure_card
@@ -84,7 +92,9 @@ class Game < ApplicationRecord
       self.save
     end
     treasure_cards = self.treasure_cards.shuffle
-    treasure_cards.pop
+    card = treasure_cards.pop
+    self.update(treasure_cards: treasure_cards)
+    card
   end
 
   def assign_treasure_cards(active_game)
@@ -93,7 +103,9 @@ class Game < ApplicationRecord
       puts "-----------------------#{card}-----------------------"
       if !self.current_turn_id
         while card == "Waters Rise"
+          self.treasure_cards << card
           self.treasure_cards.shuffle
+          self.save
           card = self.draw_treasure_card
         end
       end
@@ -107,6 +119,10 @@ class Game < ApplicationRecord
         Message.create(alert: "waters_rise", text: "WATERS RISE! New water level: #{self.water_level*10}%", active_game: active_game )
       end
       self.save
+    end
+
+    if self.too_many_treasure_cards?
+      byebug
     end
   end
 
@@ -125,16 +141,19 @@ class Game < ApplicationRecord
     end
   end
 
+  def reset_flood_cards?
+    if self.flood_cards.length == 0
+      self.flood_cards = self.flood_discards.shuffle
+      self.flood_discards = []
+    end
+  end
+
 
   def draw_flood_cards
-    # draws flood cards and places in flood discard pile. returns drawn cards.
-    puts "WATER LEVEL:              #{self.water_level}"
-    puts "FLOOD CARDS:      #{self.flood_cards}"
-    puts "FLOOD DISCARDS:       #{self.flood_discards}"
     result = {}
-    cards = self.flood_cards.pop(self.water_level_cards)
-    puts "CARDS DRAWN:       #{cards}"
-    cards.each do |card|
+    self.water_level_cards.times do
+      self.reset_flood_cards?
+      card = self.flood_cards.pop
       tile = Tile.where(game_id: self.id, name: card).first
       if tile.status == "dry"
         tile.update(status: "wet")
@@ -147,6 +166,9 @@ class Game < ApplicationRecord
       end
     end
     self.save
+    if self.too_many_flood_cards?
+      byebug
+    end
     result
   end
 
@@ -155,10 +177,6 @@ class Game < ApplicationRecord
 
 
     self.draw_flood_cards
-
-    if self.duplicate_flood_cards?
-      byebug
-    end
 
     current_turn_index = self.turn_order.map {|ag| ag.id}.index(self.current_turn_id)
 

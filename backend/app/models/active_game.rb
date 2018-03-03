@@ -23,17 +23,21 @@ class ActiveGame < ApplicationRecord
   end
 
   def discard(card)
-    self.treasure_cards.delete_at(self.treasure_cards.index(card))
-    self.update(treasure_cards: self.treasure_cards)
-    self.game.treasure_discards ||= []
-    self.game.treasure_discards << card
-    self.game.save
+    newTreasureCards = self.treasure_cards
+    newTreasureCards.delete_at(newTreasureCards.index(card))
+
+    self.update(treasure_cards: newTreasureCards)
+    self.game.add_to_treasure_discards(card)
   end
 
 
   def trade_treasure_cards(treasure)
+    startingTreasureCardsLength = self.treasure_cards.length
     newTreasureCards = self.treasure_cards.reject {|treasure_card| treasure_card == treasure}
     self.update(treasure_cards: newTreasureCards)
+    (startingTreasureCardsLength - newTreasureCards.length).times do
+      self.game.add_to_treasure_discards(treasure)
+    end
 
     arr = self.game.treasures_obtained || []
     arr << treasure
