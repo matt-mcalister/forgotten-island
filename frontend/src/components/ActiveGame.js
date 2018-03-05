@@ -1,7 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
 import Tile from "./Tile"
-import WaterLevel from "./WaterLevel"
 import UserGameInfo from "./UserGameInfo"
 import TeamGameInfo from "./TeamGameInfo"
 import ReadyUp from "./ReadyUp"

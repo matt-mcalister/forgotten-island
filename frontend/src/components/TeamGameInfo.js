@@ -1,6 +1,5 @@
 import React from "react";
 import { connect } from "react-redux"
-import CurrentTurnInterface from "./CurrentTurnInterface"
 import Inventory from "./Inventory"
 import TreasureCard from "./TreasureCard"
 

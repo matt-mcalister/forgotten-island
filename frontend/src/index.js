@@ -15,6 +15,10 @@ import "./stylesheets/index.css"
 import "./stylesheets/lobby.css"
 import "./stylesheets/welcome.css"
 import "./stylesheets/active-game.css"
+import "./stylesheets/game-board.css"
+import "./stylesheets/inventory.css"
+import "./stylesheets/turn-interface.css"
+import "./stylesheets/chat.css"
 
 import { API_WS_ROOT } from './connections/constants';
 import { gamesReducer, currentUserReducer, activeGameReducer } from './reducers';

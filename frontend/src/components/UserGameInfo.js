@@ -4,7 +4,6 @@ import CurrentTurnInterface from "./CurrentTurnInterface"
 import Inventory from "./Inventory"
 
 const UserGameInfo = (props) => {
-  const teamActiveGames = props.active_games.filter(ag => ag.active_game.user.id !== props.currentUser.id)
   const userActiveGame = props.active_games.find(ag => ag.active_game.user.id === props.currentUser.id)
   return (
     <div className="active-game-bottom game-info">
