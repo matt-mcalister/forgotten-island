@@ -1,4 +1,3 @@
-
 .current-turn-interface {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -43,6 +42,11 @@
   margin-bottom: auto;
   padding-left: auto;
   padding-right: auto;
+  text-align: center;
+}
+
+.turn-action-buttons h3 {
+  line-height: 1em;
 }
 
 .turn-action-buttons div {

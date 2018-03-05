@@ -18,7 +18,7 @@
   grid-row: 1 / 2;
   grid-column: 2 / 3;
   background: url("../tile-imgs/ocean.jpg") center center / auto;
-  box-shadow: 2em 2em 4em 0 white inset, -2em -2em 4em 0 white inset;
+  box-shadow: 3em 3em 4em 0 white inset, -3em -3em 4em 0 white inset;
 }
 
 

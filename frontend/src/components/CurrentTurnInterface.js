@@ -13,7 +13,7 @@ class CurrentTurnInterface extends React.Component {
         const new_actions_remaining = this.props.active_game.actions_remaining - 1
         return (
         <div className="cash-in-button" onClick={() => RestfulAdapter.editFetchToChannel("active_games", this.props.active_game.id, {get_treasure: retrievableTreasure, actions_remaining: new_actions_remaining})}>
-          <h3>Trade 4 Treasure Tokens for 1 Treasure</h3>
+          <h3>Retrieve Treasure</h3>
         </div>
         )
       }
@@ -24,7 +24,7 @@ class CurrentTurnInterface extends React.Component {
     if (this.props.active_game["can_trade_cards_with_user?"]){
       return (
         <div className="give-treasure-button" onClick={this.props.toggleGiveTreasureAction}>
-          {(!this.props.giveTreasureAction) ? <h3>Give 1 Treasure Token To Another Player</h3> : <h3>Cancel Give Treasure</h3>}
+          {(!this.props.giveTreasureAction) ? <h3>Give 1 Treasure Token</h3> : <h3>Cancel Give Treasure</h3>}
         </div>)
     }
   }
@@ -56,6 +56,7 @@ class CurrentTurnInterface extends React.Component {
         </div>
 
         <div className="turn-action-buttons">
+          <h3>{`${this.props.active_game.actions_remaining} Actions Remaining`}</h3>
           <div className="shore-up-button" onClick={this.props.toggleShoringAction}>
             {(this.props.shoringAction) ? <h3>Cancel Shore</h3> : <h3>Shore Up 1 tile</h3>}
           </div>
