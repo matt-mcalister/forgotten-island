@@ -110,3 +110,15 @@ export function selectTreasureToGive(treasure){
 export function addToPlayersToLift(active_game){
   return {type: "ADD_TO_PLAYERS_TO_LIFT", active_game: active_game }
 }
+
+export function userMustDiscard(){
+  return { type: "USER_MUST_DISCARD" }
+}
+
+export function removeTemporaryMessages(){
+  return { type: "REMOVE_TEMPORARY_MESSAGES"}
+}
+
+export function resetMessageInput(){
+  return { type: "RESET_MESSAGE_INPUT"}
+}

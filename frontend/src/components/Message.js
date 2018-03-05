@@ -30,8 +30,14 @@ const Message = (props) => {
       case "select_active_game_to_give_to":
         return (
           <div className="alert">
-            <p>CLICK ON A FELLOW ADVENTURER'S INVENTORY TO GIVE THEM YOUR {props.message.treasure.replace(/THE /, "").toUpperCase()} TOKEN </p>
+            <p>CLICK ON A FELLOW ADVENTURERs INVENTORY TO GIVE THEM YOUR {props.message.treasure.replace(/THE /, "").toUpperCase()} TOKEN </p>
             <p>NOTE: ADVENTURER MUST BE ON THE SAME TILE</p>
+          </div>
+        )
+      case "user_must_discard":
+        return (
+          <div className="alert">
+            <p>Select a card to discard before continuing</p>
           </div>
         )
       default:

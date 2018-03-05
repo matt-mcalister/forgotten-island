@@ -103,6 +103,17 @@ export function activeGameReducer(state = {
         active_games: filteredActiveGames,
         messages: [...state.messages, {alert: "removed_active_game", active_game: action.active_game, id: `${action.active_game.id} - ${Date.now()}` }]
       }
+    case "USER_MUST_DISCARD":
+      return {
+        ...state,
+        messages: [...state.messages, {alert: "user_must_discard", temporary: true}]
+      }
+    case "REMOVE_TEMPORARY_MESSAGES":
+    let filteredMessages = state.messages.filter(msg => !msg.temporary)
+      return {
+        ...state,
+        messages: filteredMessages
+      }
     case "RESET_ACTIVE_GAME_STATE":
       return {
         game: {water_level: 0},
@@ -117,12 +128,14 @@ export function activeGameReducer(state = {
         helicopterLift: false,
         playersToLift: []
       }
+    case "RESET_MESSAGE_INPUT":
+      return {...state, newMessageInput: ""}
     case "ADD_MESSAGE":
-      return { ...state, newMessageInput: "", messages: [...state.messages, action.message.message]}
+      return { ...state, messages: [...state.messages, action.message.message]}
     case "BEGIN_GAME":
       return {
         ...state,
-        newMessageInput: "",
+
         shoringAction: false,
         in_session: true,
         game: action.game.game,
@@ -136,7 +149,7 @@ export function activeGameReducer(state = {
       return {
         ...state,
         shoringAction: false,
-        newMessageInput: "",
+
         game: action.game.game,
         tiles: action.tiles,
         active_games: action.active_games,
@@ -181,7 +194,7 @@ export function activeGameReducer(state = {
       let newGiveTreasureAction = !state.giveTreasureAction
       let newMessages;
       if (newGiveTreasureAction){
-        newMessages =  [...state.messages, {alert: "select_treasure_to_give", id: Date.now() }]
+        newMessages =  [...state.messages, {alert: "select_treasure_to_give", id: Date.now(), temporary: true }]
       } else {
         newMessages = state.messages
       }
@@ -195,7 +208,7 @@ export function activeGameReducer(state = {
       return {
         ...state,
         treasureToGive: action.treasure,
-        messages: [...state.messages, {alert: "select_active_game_to_give_to", treasure: action.treasure, id: Date.now() }]
+        messages: [...state.messages, {alert: "select_active_game_to_give_to", treasure: action.treasure, id: Date.now(), temporary: true }]
       }
     case "HANDLE_SHORED_TILE":
       let updatedTiles = state.tiles.map(tile => {

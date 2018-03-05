@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux"
 import Message from "./Message"
-import { updateNewMessageInput } from "../actions"
+import { updateNewMessageInput, resetMessageInput } from "../actions"
 import { RestfulAdapter } from "../connections/adapter.js"
 
 
@@ -15,6 +15,7 @@ class TeamChat extends React.Component {
       game_id: this.props.game.id
     }
     RestfulAdapter.createFetchToChannel("messages", messageBody)
+    this.props.resetMessageInput()
   }
 
   handleChange = (e) => {
@@ -60,4 +61,4 @@ const mapStateToProps = (state) => {
   })
 }
 
-export default connect(mapStateToProps, { updateNewMessageInput })(TeamChat)
+export default connect(mapStateToProps, { updateNewMessageInput, resetMessageInput })(TeamChat)
