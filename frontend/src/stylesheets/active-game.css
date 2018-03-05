@@ -10,7 +10,7 @@
 
 .game-info {
   display: grid;
-  grid-template-columns: 1fr 2fr 1fr;
+  grid-template-columns: 2fr 1fr;
   grid-template-rows: 30vmin
 }
 
@@ -145,10 +145,9 @@ p.ready_up_message {
 
 .active-game-bottom {
   grid-row: 2 / 3;
-  grid-column: 1 / 3;
+  grid-column: 2 / 3;
   height: 100%;
   width: 100%;
-  /* margin: auto; */
 }
 
 .team-chat {
@@ -204,59 +203,84 @@ p.ready_up_message {
   text-align: center;
 }
 
-.treasure-cards {
-  background: #cc9900;
-}
 
-.treasure-cards h3 {
-  margin-top: 50%;
-  font-size: 1.4em;
-  text-align: center;
+.treasure-cards-container {
+  height: 100%;
+  display: grid;
+  grid-row: 2 / 3;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
 }
 
 .inventory {
   text-align: center;
   height: 100%;
-  width: 100%;
-  border: 1px solid blue;
+  width: 95%;
+  margin-left:auto;
+  margin-right:auto;
+  display: grid;
+  grid-template-rows: 1fr 5fr
+}
+
+.inventory-name {
+  margin: auto;
+  padding: 1em;
+  background-color: blue;
+  border-radius: 1em;
 }
 
 .user-inventory-container {
-  grid-area: 1 / 3 / 2 / 4
+  grid-area: 1 / 2 / 2 / 3
 }
 
 .team-inventory-container {
-  display: grid;
-  grid-template-rows: 1fr 1fr 1fr;
+  display:flex;
   width: 100%;
   height: 100%;
   border: 1px solid green;
 }
 
-/* .team-inventory-container div {
-  height: 33%;
-} */
+.team-game-info {
+  grid-row: 1 / 3;
+  grid-column: 1 / 2;
+  height: 100%;
+  display: grid;
+  grid-template-rows: 3fr 1fr
+}
 
-.treasure-cards-container {
-  border: 1px solid purple;
+.treasures-obtained {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
 }
 
 .treasure-card {
-  /* height: 100%;
-  width: 100%; */
-  border: 1px solid red;
+  border-radius: 1em;
+  padding: auto;
+  align-self: center;
+  height: 100%;
+  width: 100%;
+  display:flex;
+}
+
+.treasure-card h3 {
+  margin: 0;
+  line-height: 1.2em;
+  align-self: center;
+  text-align: center
 }
 
 .helicopter-lift {
   background-color: grey;
-  border-radius: 1em
+}
+
+.sandbag {
+  background-color: beige;
 }
 
 .treasure-card img {
   height:6vmin;
+  margin: auto;
 }
 
 .board {
@@ -351,40 +375,71 @@ p.ready_up_message {
   margin-right: auto;
 }
 
+
 .Explorer {
   margin-top: 10%;
   margin-left: 3%;
+  background-color: green;
+}
+
+.explorer {
+  background-color: green;
 }
 
 .Pilot {
   margin-top: 10%;
   margin-left: 68%;
+  background-color: blue;
+}
+
+.pilot {
+  background-color: blue;
 }
 
 .Diver {
   margin-top: 10%;
   margin-left: 35%;
+  background-color: white;
+}
+
+.diver {
+  background-color: white;
+  border: 1px solid black;
 }
 
 .Engineer {
   margin-top: 45%;
   margin-left: 35%;
+  background-color: red;
+}
+
+.engineer {
+  background-color: red;
 }
 
 .Navigator {
   margin-top: 45%;
   margin-left: 3%;
+  background-color: yellow;
+}
+
+.navigator {
+  background-color: yellow;
 }
 
 .Messenger {
   margin-top: 45%;
   margin-left: 68%;
+  background-color: grey;
+}
+
+.messenger {
+  background-color: grey;
 }
 
 .player-token {
   width: 3.5vmin;
   height: 3.5vmin;
-  background-color: red;
   border-radius: 100%;
 }
 

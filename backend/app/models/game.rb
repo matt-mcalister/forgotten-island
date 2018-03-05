@@ -248,6 +248,7 @@ class Game < ApplicationRecord
       "Waters Rise"
     ].shuffle
     self.treasure_discards = []
+    self.treasures_obtained = []
     self.save
     self.generate_tiles
   end

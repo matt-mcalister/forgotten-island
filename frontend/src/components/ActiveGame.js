@@ -2,7 +2,8 @@ import React from "react";
 import { connect } from "react-redux";
 import Tile from "./Tile"
 import WaterLevel from "./WaterLevel"
-import GameInfo from "./GameInfo"
+import UserGameInfo from "./UserGameInfo"
+import TeamGameInfo from "./TeamGameInfo"
 import ReadyUp from "./ReadyUp"
 import TeamChat from "./TeamChat"
 import PlayerToken from "./PlayerToken"
@@ -40,7 +41,8 @@ class ActiveGame extends React.Component {
           {!!this.props.active_games && this.props.active_games.map(ag => <PlayerToken key={ag.active_game.id} {...ag.active_game}/> )  }
         </div>
         <TeamChat />
-        {(this.props.in_session) ? <GameInfo /> : <ReadyUp /> }
+        {this.props.in_session ? <UserGameInfo /> : <ReadyUp /> }
+        {this.props.in_session && <TeamGameInfo /> }
       </div>
     )
   }

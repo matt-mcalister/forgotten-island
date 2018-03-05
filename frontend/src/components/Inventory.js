@@ -33,7 +33,7 @@ class Inventory extends React.Component {
   render(){
     return (
       <div className="inventory" onClick={this.handleInventoryClick}>
-        <p>{`${this.props.user.name}'s Inventory`}</p>
+        <p className={`inventory-name ${this.props.ability.toLowerCase()}`}>{`${this.props.user.name}'s Inventory`}</p>
         <div className="treasure-cards-container">
         {this.props.treasure_cards && this.props.treasure_cards.map((card, index) => <TreasureCard key={`card-${index}`} handleClick={this.handleCardClick} card={card}/>)}
         </div>
