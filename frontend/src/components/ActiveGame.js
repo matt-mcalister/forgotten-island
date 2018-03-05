@@ -34,7 +34,7 @@ class ActiveGame extends React.Component {
          channel={{ channel: 'ActiveGamesChannel', game_id: this.props.id }}
          onReceived={this.handleReceivedData}
          />)}
-        <WaterLevel />
+        <div className="ocean" style={{"opacity":`${this.props.water_level/10}`}} />
         <div className="board">
           {this.props.tiles && this.props.tiles.map(tile => <Tile key={tile.tile.id} tile={tile.tile}/>)}
           {!!this.props.active_games && this.props.active_games.map(ag => <PlayerToken key={ag.active_game.id} {...ag.active_game}/> )  }
@@ -51,7 +51,8 @@ const mapStateToProps = state => {
   tiles: state.activeGame.tiles,
   in_session: state.activeGame.in_session,
   currentUser: state.currentUser.currentUser,
-  active_games: state.activeGame.active_games})
+  active_games: state.activeGame.active_games,
+  water_level: state.activeGame.game.water_level})
  }
 
 const connectedActiveGame = connect(mapStateToProps, { addActiveGameUsers, removeActiveGameUsers, addMessage, beginGame, updateGame, handleShoredTile })(ActiveGame)
