@@ -79,14 +79,15 @@
   width: 3.5vmin;
   height: 3.5vmin;
   border-radius: 100%;
+  display:flex;
 }
 
 .player-token-image {
   color: red;
   width: 2.3vmin;
-  position: relative;
-  left: 15%;
-  top: 15%
+  align-self: center;
+  margin-left:auto;
+  margin-right:auto;
 }
 
 .cell-1 {

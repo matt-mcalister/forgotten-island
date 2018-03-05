@@ -65,13 +65,7 @@ class Api::V1::ActiveGamesController < ApplicationController
           TileSerializer.new(tile)
           ).serializable_hash
       end
-
-      # if game.halt_game_for_discard?
-      #   discarding_active_game = game.active_games.find {|ag| ag.must_discard?}
-      #   Message.create(alert: "halt_game_for_discard", text: "#{discarding_active_game.user.name.upcase} MUST DISCARD", active_game: discarding_active_game)
-      #   game = Game.find(game.id)
-      # end
-
+      
       serialized_messages = game.messages.map do |message|
         ActiveModelSerializers::Adapter::Json.new(
           MessageSerializer.new(message)

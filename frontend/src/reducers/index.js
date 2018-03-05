@@ -190,6 +190,12 @@ export function activeGameReducer(state = {
         ...state,
         playersToLift: [...state.playersToLift, action.active_game]
       }
+    case "REMOVE_PLAYERS_TO_LIFT":
+    let filteredPlayersToLift = state.playersToLift.filter(ag => ag.id !== action.active_game_id)
+      return {
+        ...state,
+        playersToLift: filteredPlayersToLift
+      }
     case "TOGGLE_GIVE_TREASURE_ACTION":
       let newGiveTreasureAction = !state.giveTreasureAction
       let newMessages;

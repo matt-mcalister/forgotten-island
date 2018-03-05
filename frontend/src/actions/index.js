@@ -122,3 +122,7 @@ export function removeTemporaryMessages(){
 export function resetMessageInput(){
   return { type: "RESET_MESSAGE_INPUT"}
 }
+
+export function removePlayersToLift(id){
+  return { type: "REMOVE_PLAYERS_TO_LIFT", active_game_id: id}
+}
