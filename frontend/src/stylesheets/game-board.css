@@ -1,7 +1,7 @@
 
 
 .board {
-  z-index: 1000;
+  z-index: 999;
   margin: auto;
   width: 70vmin;
   height: 70vmin;

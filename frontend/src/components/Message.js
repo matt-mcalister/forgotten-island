@@ -40,6 +40,12 @@ const Message = (props) => {
             <p>Select a card to discard before continuing</p>
           </div>
         )
+      case "user_must_relocate":
+        return (
+          <div className="alert">
+            <p>Your current tile has sunken into the abyss! Move to an adjacent tile before continuing</p>
+          </div>
+        )
       default:
         return (
           <div className="alert">

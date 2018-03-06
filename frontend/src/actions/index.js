@@ -115,6 +115,10 @@ export function userMustDiscard(){
   return { type: "USER_MUST_DISCARD" }
 }
 
+export function userMustRelocate(){
+  return { type: "USER_MUST_RELOCATE" }
+}
+
 export function removeTemporaryMessages(){
   return { type: "REMOVE_TEMPORARY_MESSAGES"}
 }

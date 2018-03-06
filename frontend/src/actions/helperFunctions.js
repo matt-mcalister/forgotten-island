@@ -161,7 +161,10 @@ function executeMove(active_game, direction, tiles, shoringAction){
       return false
   }
   if (tileExists(tiles, newPosition)) {
-    const new_actions_remaining = active_game.actions_remaining - 1
+    let new_actions_remaining = active_game.actions_remaining
+    if (!active_game["must_relocate?"]){
+      new_actions_remaining = new_actions_remaining - 1
+    }
     if (shoringAction) {
       if (canBeShored(tiles, newPosition)) {
         RestfulAdapter.editFetchToChannel("active_games", active_game.id, {shoring: newPosition, actions_remaining: new_actions_remaining})

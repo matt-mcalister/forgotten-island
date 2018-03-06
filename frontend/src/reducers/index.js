@@ -110,6 +110,11 @@ export function activeGameReducer(state = {
         ...state,
         messages: [...state.messages, {alert: "user_must_discard", temporary: true, id:`temporary - ${Date.now()}`}]
       }
+    case "USER_MUST_RELOCATE":
+      return {
+        ...state,
+        messages: [...state.messages, {alert: "user_must_relocate", temporary: true, id:`temporary - ${Date.now()}`}]
+      }
     case "REMOVE_TEMPORARY_MESSAGES":
     let filteredMessages = state.messages.filter(msg => !msg.temporary)
       return {

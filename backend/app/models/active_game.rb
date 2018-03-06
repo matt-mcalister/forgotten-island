@@ -17,6 +17,10 @@ class ActiveGame < ApplicationRecord
     self.discard("Helicopter Lift")
   end
 
+  def must_relocate?
+    Tile.find_by(game_id: self.game.id, position: self.position).status == "abyss"
+  end
+
   def must_discard?
     self.treasure_cards ||= []
     self.treasure_cards.length > 5

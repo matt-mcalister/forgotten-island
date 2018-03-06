@@ -38,7 +38,7 @@ class ActiveGame extends React.Component {
          channel={{ channel: 'ActiveGamesChannel', game_id: this.props.id }}
          onReceived={this.handleReceivedData}
          />)}
-        <div className="ocean" style={{"opacity":`${this.props.water_level/10}`}} />
+        <div className="ocean" style={{"opacity":`${this.props.water_level/10}`, "z-index":`${this.props.water_level*100}`}} />
         <div className="board">
           {this.props.tiles && this.props.tiles.map(tile => <Tile key={tile.tile.id} tile={tile.tile}/>)}
           {!!this.props.active_games && this.renderPlayerTokens() }

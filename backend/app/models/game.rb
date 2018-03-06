@@ -31,8 +31,8 @@ class Game < ApplicationRecord
         self.active_games.any? {|ag| ag.treasure_cards.include?("Helicopter Lift")}
   end
 
-  def halt_game_for_discard?
-    self.active_games.any? {|ag| ag.must_discard? }
+  def halt_game?
+    self.active_games.any? {|ag| ag.must_discard? || ag.must_relocate? }
   end
 
   def turn_order
@@ -120,10 +120,6 @@ class Game < ApplicationRecord
       end
       self.save
     end
-
-    if self.too_many_treasure_cards?
-      byebug
-    end
   end
 
   def water_level_cards
@@ -154,6 +150,9 @@ class Game < ApplicationRecord
     self.water_level_cards.times do
       self.reset_flood_cards?
       card = self.flood_cards.pop
+      if !card
+        byebug
+      end
       tile = Tile.where(game_id: self.id, name: card).first
       if tile.status == "dry"
         tile.update(status: "wet")
@@ -164,10 +163,7 @@ class Game < ApplicationRecord
         tile.update(status: "abyss")
         result[card] = "abyss"
       end
-    end
-    self.save
-    if self.too_many_flood_cards?
-      byebug
+      self.save
     end
     result
   end
