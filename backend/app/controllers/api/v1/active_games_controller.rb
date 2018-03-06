@@ -46,9 +46,9 @@ class Api::V1::ActiveGamesController < ApplicationController
       end
 
       active_game = ActiveGame.find_by(id: params[:id])
-      game = active_game.game
+      active_game.game.game_over?
 
-      game.game_over?
+      game = Game.find(active_game.game_id)
 
       serialized_game = ActiveModelSerializers::Adapter::Json.new(
         GameSerializer.new(game)
@@ -91,10 +91,13 @@ class Api::V1::ActiveGamesController < ApplicationController
     active_game = ActiveGame.find(params[:id])
     if active_game
       active_game.exit_game
-      game = Game.find(active_game.game_id)
       serialized_active_game = ActiveModelSerializers::Adapter::Json.new(
         ActiveGameSerializer.new(active_game)
       ).serializable_hash
+      game_id = active_game.game_id
+      active_game.destroy
+
+      game = Game.find(game_id)
 
       serialized_game = ActiveModelSerializers::Adapter::Json.new(
         GameSerializer.new(game)
@@ -105,9 +108,7 @@ class Api::V1::ActiveGamesController < ApplicationController
           ActiveGameSerializer.new(ag)
           ).serializable_hash
       end
-
       data = {removed_active_game: serialized_active_game[:active_game], game: serialized_game, active_games: serialized_active_games }
-      active_game.destroy
       ActiveGamesChannel.broadcast_to(game, data)
       head :ok
     else

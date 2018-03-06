@@ -11,8 +11,11 @@ export function currentUserReducer(state = {
       return { ...state, currentUser: action.user}
     case "SET_ACTIVE_GAME":
     let activeGameId;
-    if (action.active_games.length && state.currentUser){
-      activeGameId = action.active_games.find(ag => ag.active_game.user.id === state.currentUser.id).active_game.id
+    if (action.active_games.length && state.currentUser && action.active_games[0].active_game){
+      const activeGame = action.active_games.find(ag => ag.active_game.user.id === state.currentUser.id)
+      if (activeGame){
+        activeGameId = activeGame.active_game.id
+      }
     }
       return {...state, activeGameId: activeGameId}
     default:
@@ -68,9 +71,12 @@ export function activeGameReducer(state = {
   treasureToGive: null,
   sandbag: undefined,
   helicopterLift: undefined,
-  playersToLift: []
+  playersToLift: [],
+  loading: false
 }, action) {
   switch(action.type){
+    case 'SET_LOADING_TO_TRUE':
+      return {...state, loading: true}
     case 'SET_ACTIVE_GAME':
       const initMessages = action.messages.map(msg => msg.message)
       const welcomeMessages = action.active_games.map(ag => {return {alert: "new_active_game", active_game: ag.active_game, id: `${ag.active_game.id} - ${Date.now()}` }} )
@@ -81,7 +87,8 @@ export function activeGameReducer(state = {
         game: action.game,
         messages: [...initMessages, ...welcomeMessages],
         active_games: activeGamesObject,
-        tiles: action.tiles
+        tiles: action.tiles,
+        loading:false
       })
     case 'UPDATE_NEW_MESSAGE_INPUT':
       return {...state, newMessageInput: action.newMessageInput}
@@ -102,7 +109,7 @@ export function activeGameReducer(state = {
       action.active_games.forEach(ag => newActiveGamesObject[ag.active_game.id] = ag.active_game)
       return {
         ...state,
-        game: action.game,
+        game: action.game.game,
         active_games: newActiveGamesObject,
         messages: [...state.messages, {alert: "removed_active_game", active_game: action.removed_active_game, id: `${action.removed_active_game.id} - ${Date.now()}` }]
       }

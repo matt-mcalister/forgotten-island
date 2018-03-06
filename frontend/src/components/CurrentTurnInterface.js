@@ -50,7 +50,7 @@ class CurrentTurnInterface extends React.Component {
           <div className="right arrow" onClick={() => handleArrowClick(this.props.active_game, "right", this.props.tiles, this.props.shoringAction)}>
             <img src={require("../navigation-icons/arrow.png")} />
           </div>
-          <div className="current-location-pin" onClick={() => handleArrowClick(this.props.active_game, "currentLocation", this.props.tiles, this.props.shoringAction)}>
+          <div className="current-location-pin" onClick={() => this.props.shoringAction && handleArrowClick(this.props.active_game, "currentLocation", this.props.tiles, this.props.shoringAction)}>
             <img src={require("../navigation-icons/current_location_pin.png")} />
           </div>
         </div>

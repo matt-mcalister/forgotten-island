@@ -6,8 +6,10 @@ class ActiveGame < ApplicationRecord
   after_create :assign_ability
 
   def exit_game
-    self.treasure_cards.each do |card|
-      self.game.add_to_treasure_discards(card)
+    if self.treasure_cards
+      self.treasure_cards.each do |card|
+        self.game.add_to_treasure_discards(card)
+      end
     end
     if self.game.current_turn_id == self.id && self.game.active_games.length > 1
       current_turn_index = self.game.turn_order.map {|ag| ag.id}.index(self.game.current_turn_id)
@@ -149,9 +151,16 @@ class ActiveGame < ApplicationRecord
       "Engineer",
       "Messenger"
     ].select {|ability_name| !self.game.active_games.map {|active_game| active_game.ability}.include?(ability_name) }
-    self.ability = abilities.sample
-    self.save
-    self.assign_position
+    if abilities.length > 1
+      self.ability = abilities.sample
+      if self.save
+        self.assign_position
+      else
+        byebug
+      end
+    else
+      byebug
+    end
   end
 
   def assign_position
@@ -163,7 +172,14 @@ class ActiveGame < ApplicationRecord
       "Messenger": "Silver Gate",
       "Navigator": "Gold Gate"
     }
-    self.position = self.game.tiles.find {|tile| tile.name == positions[self.ability.to_sym]}.position
-    self.save
+    starting_tile = self.game.tiles.find {|tile| tile.name == positions[self.ability.to_sym]}
+    if starting_tile
+      self.position = starting_tile.position
+      self.save
+    elsif positions.keys.include?(self.ability)
+      self.assign_position
+    else
+      self.assign_ability
+    end
   end
 end

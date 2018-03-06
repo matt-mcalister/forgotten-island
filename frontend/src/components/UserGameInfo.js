@@ -6,14 +6,16 @@ import { userMustDiscard, removeTemporaryMessages, userMustRelocate } from "../a
 
 class UserGameInfo extends React.Component {
   componentDidUpdate(){
-    if (this.props.currentUserActiveGame["must_discard?"]) {
-      this.props.userMustDiscard()
-    } else if (this.props.giveTreasureAction){
-      return null
-    } else if (this.props.currentUserActiveGame["must_relocate?"]){
-      this.props.userMustRelocate()
-    } else {
-      this.props.removeTemporaryMessages()
+    if (!this.props.hide_interface){
+      if (this.props.currentUserActiveGame["must_discard?"]) {
+        this.props.userMustDiscard()
+      } else if (this.props.giveTreasureAction){
+        return null
+      } else if (this.props.currentUserActiveGame["must_relocate?"]){
+        this.props.userMustRelocate()
+      } else {
+        this.props.removeTemporaryMessages()
+      }
     }
   }
 

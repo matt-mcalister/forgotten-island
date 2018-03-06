@@ -8,6 +8,23 @@
   grid-auto-flow: column;
 }
 
+.loader {
+    position:fixed;
+    top: 20%;
+    left: 30%;
+    border: 4em solid #f3f3f3; /* Light grey */
+    border-top: 4em solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 30em;
+    height: 30em;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
 .game-info {
   display: grid;
   grid-template-columns: 2fr 1fr;

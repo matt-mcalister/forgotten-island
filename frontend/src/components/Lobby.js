@@ -10,6 +10,7 @@ class Lobby extends React.Component {
       <div id="lobby">
         <div id="lobby-welcome-message">
         <h1>Welcome!</h1>
+          <p>Select or create a game session to begin.</p>
         </div>
         <NewGameForm/>
         <GamesContainer />

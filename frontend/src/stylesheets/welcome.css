@@ -2,6 +2,7 @@
   position:absolute;
   height:100%;
   width:100%;
+  background-image: linear-gradient(to bottom, rgba(255,255,255,0.2) 0%,rgba(255,255,255,0.2) 100%), url("../tile-imgs/landing-image.jpg");
 }
 
 #welcome-message {
@@ -10,10 +11,12 @@
   top: 20%;
   margin: auto;
   text-align: center;
+  color: white;
 }
 
 #welcome-message h1 {
-  font-size: 4em
+  font-size: 5em;
+  color: white;
 }
 
 #login-form {

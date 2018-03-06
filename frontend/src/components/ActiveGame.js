@@ -28,28 +28,28 @@ class ActiveGame extends React.Component {
     }
   }
 
-  // renderPlayerTokens = () => {
-  //   return this.props.active_games.map(ag => <PlayerToken key={ag.id} {...ag}/> )
-  // }
-
   render() {
-    return (
-      <div className="active-game">
-        {this.props.id && (<ActionCable
-         channel={{ channel: 'ActiveGamesChannel', game_id: this.props.id }}
-         onReceived={this.handleReceivedData}
-         />)}
-        {this.props.end_game && <GameOver result={this.props.end_game}/>}
-        <div className="ocean" style={{"opacity":`${this.props.water_level/10}`, "zIndex":`${this.props.water_level*100}`}} />
-        <div className="board">
-          {this.props.tiles && this.props.tiles.map(tile => <Tile key={tile.tile.id} tile={tile.tile}/>)}
-          {!!this.props.active_games && this.props.active_games.map(ag => <PlayerToken key={ag.id} {...ag}/> ) }
+    if (this.props.loading){
+      return <div className="loader"></div>
+    } else {
+      return (
+        <div className="active-game">
+          {this.props.id && (<ActionCable
+           channel={{ channel: 'ActiveGamesChannel', game_id: this.props.id }}
+           onReceived={this.handleReceivedData}
+           />)}
+          {this.props.end_game && <GameOver result={this.props.end_game}/>}
+          <div className="ocean" style={{"opacity":`${this.props.water_level/10}`, "zIndex":`${this.props.water_level*100}`}} />
+          <div className="board">
+            {this.props.tiles && this.props.tiles.map(tile => <Tile key={tile.tile.id} tile={tile.tile}/>)}
+            {!!this.props.active_games && this.props.active_games.map(ag => <PlayerToken key={ag.id} {...ag}/> ) }
+          </div>
+          <TeamChat />
+          {this.props.in_session ? <UserGameInfo /> : <ReadyUp /> }
+          {this.props.in_session && <TeamGameInfo /> }
         </div>
-        <TeamChat />
-        {this.props.in_session ? <UserGameInfo /> : <ReadyUp /> }
-        {this.props.in_session && <TeamGameInfo /> }
-      </div>
-    )
+      )
+    }
   }
 }
 
@@ -60,7 +60,8 @@ const mapStateToProps = state => {
   in_session: state.activeGame.in_session,
   currentUser: state.currentUser.currentUser,
   active_games: Object.keys(state.activeGame.active_games).map(id => state.activeGame.active_games[id]),
-  water_level: state.activeGame.game.water_level})
+  water_level: state.activeGame.game.water_level,
+  loading: state.activeGame.loading})
  }
 
 const connectedActiveGame = connect(mapStateToProps, { addActiveGameUsers, removeActiveGameUsers, addMessage, beginGame, updateGame, handleShoredTile })(ActiveGame)
