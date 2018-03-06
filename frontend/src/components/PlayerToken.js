@@ -36,7 +36,7 @@ class PlayerToken extends React.Component {
 
   handleClick = (e) => {
     if (this.props.helicopterLift && (this.props.helicopterStartingPosition === 0 || this.props.helicopterStartingPosition === this.props.position)) {
-      if (this.props.borderWidth == 1){
+      if (this.props.borderWidth === 1){
         this.props.removePlayersToLift(this.props.id)
       } else {
         this.props.addToPlayersToLift({id: this.props.id, position: this.props.position})

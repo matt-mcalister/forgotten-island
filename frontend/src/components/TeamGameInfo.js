@@ -4,12 +4,10 @@ import Inventory from "./Inventory"
 import Treasure from "./Treasure"
 
 const TeamGameInfo = (props) => {
-  const teamActiveGames = props.active_games.filter(ag => ag.active_game.user.id !== props.currentUser.id)
-  const userActiveGame = props.active_games.find(ag => ag.active_game.user.id === props.currentUser.id)
   return (
     <div className="team-game-info">
       <div className="team-inventory-container">
-        {teamActiveGames.map(ag => <Inventory key={ag.active_game.id} currentUserActiveGame={userActiveGame.active_game} {...ag.active_game}/>)}
+        {props.teamActiveGames.map(ag => <Inventory key={ag.id} currentUserActiveGame={props.currentUserActiveGame} {...ag}/>)}
       </div>
       <div className="treasures-obtained">
         <h3>Treasures Obtained:</h3>
@@ -22,9 +20,10 @@ const TeamGameInfo = (props) => {
 }
 
 const mapStateToProps = (state) => {
+  const teamActiveGames = Object.keys(state.activeGame.active_games).filter(id => parseInt(id, 10) !== state.currentUser.activeGameId).map(id => state.activeGame.active_games[id])
   return {
-    active_games: state.activeGame.active_games,
-    currentUser: state.currentUser.currentUser,
+    currentUserActiveGame: state.activeGame.active_games[state.currentUser.activeGameId],
+    teamActiveGames: teamActiveGames,
     treasures_obtained: state.activeGame.game.treasures_obtained
   }
 }

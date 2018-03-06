@@ -1,6 +1,7 @@
 export function currentUserReducer(state = {
   currentUser: null,
-  userNameInput: ""
+  userNameInput: "",
+  activeGameId: null
 }, action) {
   switch(action.type) {
 
@@ -8,6 +9,12 @@ export function currentUserReducer(state = {
       return {...state, userNameInput: action.userNameInput};
     case "SET_USER":
       return { ...state, currentUser: action.user}
+    case "SET_ACTIVE_GAME":
+    let activeGameId;
+    if (action.active_games.length){
+      activeGameId = action.active_games.find(ag => ag.active_game.user.id === state.currentUser.id).active_game.id
+    }
+      return {...state, activeGameId: activeGameId}
     default:
       return state;
   }
@@ -54,7 +61,7 @@ export function activeGameReducer(state = {
   newMessageInput: "",
   in_session: false,
   messages: [],
-  active_games: [],
+  active_games: {},
   tiles: [],
   shoringAction: false,
   giveTreasureAction: false,
@@ -67,46 +74,41 @@ export function activeGameReducer(state = {
     case 'SET_ACTIVE_GAME':
       const initMessages = action.messages.map(msg => msg.message)
       const welcomeMessages = action.active_games.map(ag => {return {alert: "new_active_game", active_game: ag.active_game, id: `${ag.active_game.id} - ${Date.now()}` }} )
+      const activeGamesObject = {}
+      action.active_games.forEach(ag => activeGamesObject[ag.active_game.id] = ag.active_game)
       return ({
         ...state,
         game: action.game,
         messages: [...initMessages, ...welcomeMessages],
-        active_games: action.active_games,
-        water_level: action.game.water_level,
+        active_games: activeGamesObject,
         tiles: action.tiles
       })
     case 'UPDATE_NEW_MESSAGE_INPUT':
       return {...state, newMessageInput: action.newMessageInput}
     case 'ADD_ACTIVE_GAME_USERS':
-      if (state.active_games.find(ag => ag.active_game.id === action.active_game.active_game.id)){
-        const newActiveGames = state.active_games.map(ag => {
-          if (ag.active_game.id === action.active_game.active_game.id){
-            return action.active_game
-          }
-          return ag
-        })
-        return ({
-          ...state,
-          active_games: newActiveGames
-        })
-      } else {
-        return ({
-          ...state,
-          active_games: [...state.active_games, action.active_game],
-          messages: [...state.messages, {alert: "new_active_game", active_game: action.active_game.active_game, id: `${action.active_game.active_game.id} - ${Date.now()}` }]
-        })
+      const newActiveGamesObject = state.active_games
+      newActiveGamesObject[action.active_game.active_game.id] = action.active_game.active_game
+      let messages = state.messages
+      if (Object.keys(state.active_games).length !== Object.keys(newActiveGamesObject).length){
+        messages = [...state.messages, {alert: "new_active_game", active_game: action.active_game.active_game, id: `${action.active_game.active_game.id} - ${Date.now()}` }]
       }
+      return ({
+        ...state,
+        active_games: newActiveGamesObject,
+        messages: messages
+      })
     case "REMOVE_ACTIVE_GAME_USERS":
-      const filteredActiveGames = state.active_games.filter(ag => ag.active_game.id !== action.active_game.id)
+      const filteredActiveGamesObject = state.active_games
+      delete filteredActiveGamesObject[action.active_game.id]
       return {
         ...state,
-        active_games: filteredActiveGames,
+        active_games: filteredActiveGamesObject,
         messages: [...state.messages, {alert: "removed_active_game", active_game: action.active_game, id: `${action.active_game.id} - ${Date.now()}` }]
       }
     case "USER_MUST_DISCARD":
       return {
         ...state,
-        messages: [...state.messages, {alert: "user_must_discard", temporary: true}]
+        messages: [...state.messages, {alert: "user_must_discard", temporary: true, id:`temporary - ${Date.now()}`}]
       }
     case "REMOVE_TEMPORARY_MESSAGES":
     let filteredMessages = state.messages.filter(msg => !msg.temporary)
@@ -120,7 +122,7 @@ export function activeGameReducer(state = {
         newMessageInput: "",
         in_session: false,
         messages: [],
-        active_games: [],
+        active_games: {},
         tiles: [],
         shoringAction: false,
         treasureToGive: null,
@@ -133,26 +135,28 @@ export function activeGameReducer(state = {
     case "ADD_MESSAGE":
       return { ...state, messages: [...state.messages, action.message.message]}
     case "BEGIN_GAME":
+      const beginGameActiveGamesObject = {}
+      action.active_games.forEach(ag => beginGameActiveGamesObject[ag.active_game.id] = ag.active_game)
       return {
         ...state,
-
         shoringAction: false,
         in_session: true,
         game: action.game.game,
         tiles: action.tiles,
-        active_games: action.active_games,
+        active_games: beginGameActiveGamesObject,
         treasureToGive: null
       }
     case "UPDATE_GAME":
       const messagesIds = state.messages.map(msg => msg.id)
       const onlyNewMessages = action.messages.filter(msg => !messagesIds.includes(msg.id))
+      const updatedActiveGamesObject = {}
+      action.active_games.forEach(ag => updatedActiveGamesObject[ag.active_game.id] = ag.active_game)
       return {
         ...state,
         shoringAction: false,
-
         game: action.game.game,
         tiles: action.tiles,
-        active_games: action.active_games,
+        active_games: updatedActiveGamesObject,
         giveTreasureAction: false,
         treasureToGive: null,
         messages: [...state.messages, ...onlyNewMessages],
@@ -224,18 +228,13 @@ export function activeGameReducer(state = {
           return tile
         }
       })
-      let updatedActiveGames = state.active_games.map(ag => {
-        if (ag.active_game.id === action.updated_active_game.active_game.id){
-          return action.updated_active_game
-        } else {
-          return ag
-        }
-      })
+      const shoredTileActiveGamesObject = {}
+      action.active_games.forEach(ag => shoredTileActiveGamesObject[ag.active_game.id] = ag.active_game)
       return {
         ...state,
         shoringAction: false,
         tiles: updatedTiles,
-        active_Games: updatedActiveGames
+        active_games: shoredTileActiveGamesObject
       }
     default:
       return state

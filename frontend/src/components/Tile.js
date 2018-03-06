@@ -41,14 +41,10 @@ class Tile extends React.Component {
 }
 
 const mapStateToProps = state => {
-  let currentUserActiveGame = state.activeGame.active_games.find(ag => ag.active_game.user.id === state.currentUser.currentUser.id)
-  if (currentUserActiveGame) {
-    currentUserActiveGame = currentUserActiveGame.active_game
-  }
 
   return {
     sandbag: state.activeGame.sandbag,
-    currentUserActiveGame: currentUserActiveGame,
+    currentUserActiveGame: state.activeGame.active_games[state.currentUser.activeGameId],
     helicopterLift: state.activeGame.helicopterLift,
     playersToLift: state.activeGame.playersToLift
   }

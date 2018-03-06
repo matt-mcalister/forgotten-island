@@ -27,6 +27,10 @@ class ActiveGame extends React.Component {
     }
   }
 
+  renderPlayerTokens = () => {
+    return Object.keys(this.props.active_games).map(id => <PlayerToken key={id} {...this.props.active_games[id]}/> )
+  }
+
   render() {
     return (
       <div className="active-game">
@@ -37,7 +41,7 @@ class ActiveGame extends React.Component {
         <div className="ocean" style={{"opacity":`${this.props.water_level/10}`}} />
         <div className="board">
           {this.props.tiles && this.props.tiles.map(tile => <Tile key={tile.tile.id} tile={tile.tile}/>)}
-          {!!this.props.active_games && this.props.active_games.map(ag => <PlayerToken key={ag.active_game.id} {...ag.active_game}/> )  }
+          {!!this.props.active_games && this.renderPlayerTokens() }
         </div>
         <TeamChat />
         {this.props.in_session ? <UserGameInfo /> : <ReadyUp /> }
@@ -48,6 +52,7 @@ class ActiveGame extends React.Component {
 }
 
 const mapStateToProps = state => {
+
   return ({ ...state.activeGame.game,
   tiles: state.activeGame.tiles,
   in_session: state.activeGame.in_session,

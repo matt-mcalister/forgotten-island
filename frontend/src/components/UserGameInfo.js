@@ -4,27 +4,33 @@ import CurrentTurnInterface from "./CurrentTurnInterface"
 import Inventory from "./Inventory"
 import { userMustDiscard, removeTemporaryMessages } from "../actions"
 
-const UserGameInfo = (props) => {
-  const userActiveGame = props.active_games.find(ag => ag.active_game.user.id === props.currentUser.id)
-  if (userActiveGame.active_game["must_discard?"]) {
-    props.userMustDiscard()
-  } else {
-    props.removeTemporaryMessages()
+class UserGameInfo extends React.Component {
+  componentDidUpdate(){
+    if (this.props.currentUserActiveGame["must_discard?"]) {
+      this.props.userMustDiscard()
+    } else if (this.props.giveTreasureAction){
+      null
+    } else {
+      this.props.removeTemporaryMessages()
+    }
   }
-  return (
-    <div className="active-game-bottom game-info">
-      {!props.halt_game_for_discard && userActiveGame.active_game["is_users_turn?"] && <CurrentTurnInterface active_game={userActiveGame.active_game}/>}
-      <div className="user-inventory-container">
-        <Inventory key={userActiveGame.active_game.id} currentUserActiveGame={userActiveGame.active_game} {...userActiveGame.active_game}/>
+
+  render(){
+    return (
+      <div className="active-game-bottom game-info">
+        {!this.props.halt_game_for_discard && this.props.currentUserActiveGame["is_users_turn?"] && <CurrentTurnInterface active_game={this.props.currentUserActiveGame}/>}
+        <div className="user-inventory-container">
+          <Inventory key={this.props.currentUserActiveGame.id} currentUserActiveGame={this.props.currentUserActiveGame} {...this.props.currentUserActiveGame}/>
+        </div>
       </div>
-    </div>
-  )
+    )
+  }
 }
 
 const mapStateToProps = (state) => {
   return {
-    active_games: state.activeGame.active_games,
-    currentUser: state.currentUser.currentUser,
+    giveTreasureAction: state.activeGame.giveTreasureAction,
+    currentUserActiveGame: state.activeGame.active_games[state.currentUser.activeGameId],
     halt_game_for_discard: state.activeGame.game["halt_game_for_discard?"]
   }
 }
