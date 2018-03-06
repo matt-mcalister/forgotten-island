@@ -48,7 +48,7 @@ class Api::V1::ActiveGamesController < ApplicationController
       active_game = ActiveGame.find_by(id: params[:id])
       game = active_game.game
 
-      game.game_over
+      game.game_over?
 
       serialized_game = ActiveModelSerializers::Adapter::Json.new(
         GameSerializer.new(game)
@@ -65,7 +65,7 @@ class Api::V1::ActiveGamesController < ApplicationController
           TileSerializer.new(tile)
           ).serializable_hash
       end
-      
+
       serialized_messages = game.messages.map do |message|
         ActiveModelSerializers::Adapter::Json.new(
           MessageSerializer.new(message)

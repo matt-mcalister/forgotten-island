@@ -6,20 +6,35 @@ class Game < ApplicationRecord
 
   after_create :generate_flood_cards
 
-  def game_over
-    if self.water_level >= 10 || Tile.find_by(name: "Fools Landing", game_id: self.id).status == "abyss"|| self.any_treasure_unobtainable?
-      Message.create(alert: "game_over", text: "GAME OVER", active_game: self.active_games.first)
-      return "GAME OVER"
+  def game_over?
+    if self.water_level >= 10
+      self.update(end_game: "Game Over! The island has sunken into the abyss, you could not escape...", current_turn_id: nil)
+    elsif Tile.find_by(name: "Fools Landing", game_id: self.id).status == "abyss"
+      self.update(end_game: "Game Over! Fools Landing has sunken into the abyss, your escape route with it...", current_turn_id: nil)
+    elsif self.any_treasure_unobtainable?
+      self.update(end_game: "Game Over! #{self.any_treasure_unobtainable?} has sunken into the abyss before you could retrieve it...", current_turn_id: nil)
+    elsif self.dead_adventurer?
+      self.update(end_game: "Game Over! #{self.dead_adventurer?} has fallen into the abyss...", current_turn_id: nil)
     elsif self.victory?
-        Message.create(alert: "victory", text: "VICTORY!", active_game: self.active_games.first)
-      return "VICTORY"
-    else
-      return false
+      self.update(end_game: "Congratulations! You have captured all of the treasures and made it off the island alive.", current_turn_id: nil)
+    end
+    if self.end_game
+      self.sink_all_tiles
     end
   end
 
+  def sink_all_tiles
+    self.tiles.each do |tile|
+      tile.update(status: "abyss")
+    end
+  end
+
+  def dead_adventurer?
+    self.active_games.find {|ag| ag.must_relocate? && !ag.can_relocate?}
+  end
+
   def any_treasure_unobtainable?
-    ["The Earth Stone","The Statue of the Wind","The Crystal of Fire","The Ocean Chalice"].any? do |treasure|
+    ["The Earth Stone","The Statue of the Wind","The Crystal of Fire","The Ocean Chalice"].find do |treasure|
       Tile.where(game_id: self.id, treasure: treasure, status: "abyss").count == 2
     end
   end
@@ -169,20 +184,22 @@ class Game < ApplicationRecord
   end
 
   def next_users_turn
-    self.assign_treasure_cards(ActiveGame.find(self.current_turn_id))
+    unless self.end_game
+      self.assign_treasure_cards(ActiveGame.find(self.current_turn_id))
 
 
-    self.draw_flood_cards
+      self.draw_flood_cards
 
-    current_turn_index = self.turn_order.map {|ag| ag.id}.index(self.current_turn_id)
+      current_turn_index = self.turn_order.map {|ag| ag.id}.index(self.current_turn_id)
 
-    if current_turn_index == self.active_games.length - 1
-      current_turn_index = -1
+      if current_turn_index == self.active_games.length - 1
+        current_turn_index = -1
+      end
+      self.current_turn_id = self.turn_order[current_turn_index+1].id
+      self.save
+
+      ActiveGame.find(self.current_turn_id).update(actions_remaining: 3)
     end
-    self.current_turn_id = self.turn_order[current_turn_index+1].id
-    self.save
-
-    ActiveGame.find(self.current_turn_id).update(actions_remaining: 3)
   end
 
   def generate_flood_cards

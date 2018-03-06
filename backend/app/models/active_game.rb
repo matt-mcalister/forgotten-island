@@ -18,7 +18,47 @@ class ActiveGame < ApplicationRecord
   end
 
   def must_relocate?
-    Tile.find_by(game_id: self.game.id, position: self.position).status == "abyss"
+    self.position && self.game_id && Tile.find_by(game_id: self.game_id, position: self.position).status == "abyss"
+  end
+
+  def can_relocate?
+    self.can_move_up? || self.can_move_down || self.can_move_left? || self.can_move_right?
+  end
+
+  def can_move_up?
+    case self.position
+    when 23..24, 19..22, 13..18, 8..11, 4..5
+      true
+    else
+      false
+    end
+  end
+
+  def can_move_down?
+    case self.position
+    when 1..2, 3..6, 7..12, 14..17, 20..21
+      true
+    else
+      false
+    end
+  end
+
+  def can_move_right?
+    case self.position
+    when 7, 13, 3, 8, 14, 19, 1, 4, 9, 15, 20, 23, 5, 10, 16, 21, 11, 17
+      true
+    else
+      false
+    end
+  end
+
+  def can_move_left?
+    case self.position
+    when 12, 18, 6, 11, 17, 22, 2, 5, 10, 16, 21, 24, 4, 9, 15, 20, 8, 14
+      true
+    else
+      false
+    end
   end
 
   def must_discard?

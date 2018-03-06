@@ -86,15 +86,15 @@ export function activeGameReducer(state = {
     case 'UPDATE_NEW_MESSAGE_INPUT':
       return {...state, newMessageInput: action.newMessageInput}
     case 'ADD_ACTIVE_GAME_USERS':
-      const newActiveGamesObject = state.active_games
-      newActiveGamesObject[action.active_game.active_game.id] = action.active_game.active_game
+      const startingActiveGamesNumber = Object.keys(state.active_games).length
+      state.active_games[action.active_game.id] = action.active_game
       let messages = state.messages
-      if (Object.keys(state.active_games).length !== Object.keys(newActiveGamesObject).length){
-        messages = [...state.messages, {alert: "new_active_game", active_game: action.active_game.active_game, id: `${action.active_game.active_game.id} - ${Date.now()}` }]
+      if (Object.keys(state.active_games).length !== startingActiveGamesNumber){
+        messages = [...state.messages, {alert: "new_active_game", active_game: action.active_game, id: `${action.active_game.id} - ${Date.now()}` }]
       }
       return ({
         ...state,
-        active_games: newActiveGamesObject,
+        active_games: state.active_games,
         messages: messages
       })
     case "REMOVE_ACTIVE_GAME_USERS":

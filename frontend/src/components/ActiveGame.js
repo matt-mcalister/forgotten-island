@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import Tile from "./Tile"
 import UserGameInfo from "./UserGameInfo"
 import TeamGameInfo from "./TeamGameInfo"
+import GameOver from "./GameOver"
 import ReadyUp from "./ReadyUp"
 import TeamChat from "./TeamChat"
 import PlayerToken from "./PlayerToken"
@@ -15,7 +16,7 @@ class ActiveGame extends React.Component {
 
   handleReceivedData = (data) => {
     if (data.active_game) {
-      this.props.addActiveGameUsers(data)
+      this.props.addActiveGameUsers(data.active_game)
     } else if (data.removed_active_game){
       this.props.removeActiveGameUsers(data.removed_active_game)
     } else if (data.message) {
@@ -27,9 +28,9 @@ class ActiveGame extends React.Component {
     }
   }
 
-  renderPlayerTokens = () => {
-    return Object.keys(this.props.active_games).map(id => <PlayerToken key={id} {...this.props.active_games[id]}/> )
-  }
+  // renderPlayerTokens = () => {
+  //   return this.props.active_games.map(ag => <PlayerToken key={ag.id} {...ag}/> )
+  // }
 
   render() {
     return (
@@ -38,10 +39,11 @@ class ActiveGame extends React.Component {
          channel={{ channel: 'ActiveGamesChannel', game_id: this.props.id }}
          onReceived={this.handleReceivedData}
          />)}
-        <div className="ocean" style={{"opacity":`${this.props.water_level/10}`, "z-index":`${this.props.water_level*100}`}} />
+        {this.props.end_game && <GameOver result={this.props.end_game}/>}
+        <div className="ocean" style={{"opacity":`${this.props.water_level/10}`, "zIndex":`${this.props.water_level*100}`}} />
         <div className="board">
           {this.props.tiles && this.props.tiles.map(tile => <Tile key={tile.tile.id} tile={tile.tile}/>)}
-          {!!this.props.active_games && this.renderPlayerTokens() }
+          {!this.props.end_game && !!this.props.active_games && this.props.active_games.map(ag => <PlayerToken key={ag.id} {...ag}/> ) }
         </div>
         <TeamChat />
         {this.props.in_session ? <UserGameInfo /> : <ReadyUp /> }
@@ -57,7 +59,7 @@ const mapStateToProps = state => {
   tiles: state.activeGame.tiles,
   in_session: state.activeGame.in_session,
   currentUser: state.currentUser.currentUser,
-  active_games: state.activeGame.active_games,
+  active_games: Object.keys(state.activeGame.active_games).map(id => state.activeGame.active_games[id]),
   water_level: state.activeGame.game.water_level})
  }
 
