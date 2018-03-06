@@ -5,10 +5,10 @@ import { RestfulAdapter } from "../connections/adapter"
 class Tile extends React.Component {
 
   handleClick = (e) => {
-    if (this.props.sandbag && this.props.tile.status === "wet"){
+    if (this.props.sandbag >= 0 && this.props.tile.status === "wet"){
       let sandbagBody = { actions_remaining: this.props.currentUserActiveGame.actions_remaining, sandbag: this.props.tile.id }
       RestfulAdapter.editFetchToChannel("active_games", this.props.currentUserActiveGame.id, sandbagBody )
-    } else if (this.props.helicopterLift && this.props.playersToLift[0]) {
+    } else if (this.props.helicopterLift >= 0 && this.props.playersToLift[0]) {
       let helicopterBody = { actions_remaining: this.props.currentUserActiveGame.actions_remaining, players_to_lift: this.props.playersToLift, lift_destination: this.props.tile.position }
       RestfulAdapter.editFetchToChannel("active_games", this.props.currentUserActiveGame.id, helicopterBody )
     }

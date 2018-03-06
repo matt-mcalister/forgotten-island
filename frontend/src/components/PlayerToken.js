@@ -35,7 +35,7 @@ class PlayerToken extends React.Component {
   }
 
   handleClick = (e) => {
-    if (this.props.helicopterLift && (this.props.helicopterStartingPosition === 0 || this.props.helicopterStartingPosition === this.props.position)) {
+    if ((this.props.helicopterLift >= 0) && (this.props.helicopterStartingPosition === 0 || this.props.helicopterStartingPosition === this.props.position)) {
       if (this.props.borderWidth === 1){
         this.props.removePlayersToLift(this.props.id)
       } else {
@@ -49,15 +49,19 @@ class PlayerToken extends React.Component {
   }
 
   render() {
-    return (
-      <div className={`player-token cell-${this.props.position} ${this.props.ability}`}
-      style={{ "border": `${this.props.borderWidth}em solid orange`, "height":this.state.height, "width":this.state.width }}
-      onMouseOver={this.handleMouseOver}
-      onMouseOut={this.handleMouseOut}
-      onClick={this.handleClick}>
-        <img className="player-token-image" src={require(`../player-icons/${this.props.ability.toLowerCase()}.png`)}/>
-      </div>
-    )
+    if (!this.props.end_game){
+      return (
+        <div className={`player-token cell-${this.props.position} ${this.props.ability}`}
+        style={{ "border": `${this.props.borderWidth}em solid orange`, "height":this.state.height, "width":this.state.width }}
+        onMouseOver={this.handleMouseOver}
+        onMouseOut={this.handleMouseOut}
+        onClick={this.handleClick}>
+          <img className="player-token-image" src={require(`../player-icons/${this.props.ability.toLowerCase()}.png`)}/>
+        </div>
+      )
+    } else {
+      return <div />
+    }
   }
 }
 
@@ -76,6 +80,7 @@ const mapStateToProps = (state, props) => {
     helicopterLift: state.activeGame.helicopterLift,
     helicopterStartingPosition: helicopterStartingPosition,
     playersToLift: state.activeGame.playersToLift,
+    end_game: state.activeGame.game.end_game,
     borderWidth: borderWidth}
 }
 export default connect(mapStateToProps, { resetActiveGameState, addToPlayersToLift, removePlayersToLift })(PlayerToken)

@@ -165,20 +165,19 @@ class Game < ApplicationRecord
     self.water_level_cards.times do
       self.reset_flood_cards?
       card = self.flood_cards.pop
-      if !card
-        byebug
+      unless !card
+        tile = Tile.where(game_id: self.id, name: card).first
+        if tile.status == "dry"
+          tile.update(status: "wet")
+          self.flood_discards << card
+          result[card] = "wet"
+        elsif tile.status == "wet"
+          puts "-----------------A TILE HAS SUNKEN INTO THE ABYSS-------------------"
+          tile.update(status: "abyss")
+          result[card] = "abyss"
+        end
+        self.save
       end
-      tile = Tile.where(game_id: self.id, name: card).first
-      if tile.status == "dry"
-        tile.update(status: "wet")
-        self.flood_discards << card
-        result[card] = "wet"
-      elsif tile.status == "wet"
-        puts "-----------------A TILE HAS SUNKEN INTO THE ABYSS-------------------"
-        tile.update(status: "abyss")
-        result[card] = "abyss"
-      end
-      self.save
     end
     result
   end

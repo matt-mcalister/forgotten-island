@@ -11,7 +11,7 @@ export function currentUserReducer(state = {
       return { ...state, currentUser: action.user}
     case "SET_ACTIVE_GAME":
     let activeGameId;
-    if (action.active_games.length){
+    if (action.active_games.length && state.currentUser){
       activeGameId = action.active_games.find(ag => ag.active_game.user.id === state.currentUser.id).active_game.id
     }
       return {...state, activeGameId: activeGameId}
@@ -66,8 +66,8 @@ export function activeGameReducer(state = {
   shoringAction: false,
   giveTreasureAction: false,
   treasureToGive: null,
-  sandbag: false,
-  helicopterLift: false,
+  sandbag: undefined,
+  helicopterLift: undefined,
   playersToLift: []
 }, action) {
   switch(action.type){
@@ -98,12 +98,13 @@ export function activeGameReducer(state = {
         messages: messages
       })
     case "REMOVE_ACTIVE_GAME_USERS":
-      const filteredActiveGamesObject = state.active_games
-      delete filteredActiveGamesObject[action.active_game.id]
+      const newActiveGamesObject = {}
+      action.active_games.forEach(ag => newActiveGamesObject[ag.active_game.id] = ag.active_game)
       return {
         ...state,
-        active_games: filteredActiveGamesObject,
-        messages: [...state.messages, {alert: "removed_active_game", active_game: action.active_game, id: `${action.active_game.id} - ${Date.now()}` }]
+        game: action.game,
+        active_games: newActiveGamesObject,
+        messages: [...state.messages, {alert: "removed_active_game", active_game: action.removed_active_game, id: `${action.removed_active_game.id} - ${Date.now()}` }]
       }
     case "USER_MUST_DISCARD":
       return {
@@ -131,8 +132,8 @@ export function activeGameReducer(state = {
         tiles: [],
         shoringAction: false,
         treasureToGive: null,
-        sandbag: false,
-        helicopterLift: false,
+        sandbag: undefined,
+        helicopterLift: undefined,
         playersToLift: []
       }
     case "RESET_MESSAGE_INPUT":
@@ -165,8 +166,8 @@ export function activeGameReducer(state = {
         giveTreasureAction: false,
         treasureToGive: null,
         messages: [...state.messages, ...onlyNewMessages],
-        sandbag: false,
-        helicopterLift: false,
+        sandbag: undefined,
+        helicopterLift: undefined,
         playersToLift: []
       }
     case "TOGGLE_SHORING_ACTION":
@@ -176,23 +177,29 @@ export function activeGameReducer(state = {
         shoringAction: newShoringAction
       }
     case "TOGGLE_SANDBAG":
-      let newSandbag = !state.sandbag
+      let newSandbag = action.index
+      if (newSandbag === state.sandbag){
+        newSandbag = false
+      }
       return {
         ...state,
         sandbag: newSandbag,
-        helicopterLift: false
+        helicopterLift: undefined
       }
     case "TOGGLE_HELICOPTER_LIFT":
-      let newHelicopterLift = !state.helicopterLift
+      let newHelicopterLift = action.index
+      if (newHelicopterLift === state.helicopterLift){
+        newHelicopterLift = false
+      }
       let newPlayersToLift = state.playersToLift
-      if (!newHelicopterLift){
+      if (!newHelicopterLift && newHelicopterLift !== 0){
         newPlayersToLift = []
       }
       return {
         ...state,
         helicopterLift: newHelicopterLift,
         playersToLift: newPlayersToLift,
-        sandbag: false
+        sandbag: undefined
       }
     case "ADD_TO_PLAYERS_TO_LIFT":
       return {

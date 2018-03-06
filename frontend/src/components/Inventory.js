@@ -7,17 +7,17 @@ import { RestfulAdapter } from "../connections/adapter"
 
 class Inventory extends React.Component {
 
-  handleCardClick = (card) => {
-    if (this.props.id === this.props.currentUserActiveGame.id) {
+  handleCardClick = (card, index) => {
+    if (this.props.id === this.props.currentUserActiveGame.id && !this.props.currentUserActiveGame["must_relocate?"]) {
       if (this.props.giveTreasureAction){
         this.props.selectTreasureToGive(card)
       } else if (this.props.currentUserActiveGame["must_discard?"]){
         let body = {card_to_discard: card, actions_remaining: this.props.currentUserActiveGame.actions_remaining}
         RestfulAdapter.editFetchToChannel("active_games", this.props.currentUserActiveGame.id, body)
       } else if (card === "Sandbag") {
-        this.props.toggleSandbag()
+        this.props.toggleSandbag(index)
       } else if (card === "Helicopter Lift"){
-        this.props.toggleHelicopterLift()
+        this.props.toggleHelicopterLift(index)
       }
     }
   }
@@ -36,7 +36,7 @@ class Inventory extends React.Component {
       <div className={`inventory ${inventoryClass}`} onClick={this.handleInventoryClick}>
         <p className={`inventory-name ${this.props.ability.toLowerCase()}`}>{`${this.props.user.name}'s Inventory`}</p>
         <div className="treasure-cards-container">
-        {this.props.treasure_cards && this.props.treasure_cards.map((card, index) => <TreasureCard key={`card-${index}`} handleClick={this.handleCardClick} card={card}/>)}
+        {this.props.treasure_cards && this.props.treasure_cards.map((card, index) => <TreasureCard key={`card-${index}`} userId={this.props.id} handleClick={this.handleCardClick} id={index} card={card}/>)}
         </div>
       </div>
     )

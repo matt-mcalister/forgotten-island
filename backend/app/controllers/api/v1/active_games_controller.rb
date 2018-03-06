@@ -90,12 +90,23 @@ class Api::V1::ActiveGamesController < ApplicationController
   def destroy
     active_game = ActiveGame.find(params[:id])
     if active_game
-      game = active_game.game
-
+      active_game.exit_game
+      game = Game.find(active_game.game_id)
       serialized_active_game = ActiveModelSerializers::Adapter::Json.new(
         ActiveGameSerializer.new(active_game)
       ).serializable_hash
-      data = {removed_active_game: serialized_active_game[:active_game] }
+
+      serialized_game = ActiveModelSerializers::Adapter::Json.new(
+        GameSerializer.new(game)
+      ).serializable_hash
+
+      serialized_active_games = game.active_games.map do |ag|
+        ActiveModelSerializers::Adapter::Json.new(
+          ActiveGameSerializer.new(ag)
+          ).serializable_hash
+      end
+
+      data = {removed_active_game: serialized_active_game[:active_game], game: serialized_game, active_games: serialized_active_games }
       active_game.destroy
       ActiveGamesChannel.broadcast_to(game, data)
       head :ok

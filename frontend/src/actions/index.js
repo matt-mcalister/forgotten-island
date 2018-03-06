@@ -62,8 +62,8 @@ export function toggleReadyUp(active_game){
   return { type: "TOGGLE_READY_UP" }
 }
 
-export function removeActiveGameUsers(active_game){
-  return { type: "REMOVE_ACTIVE_GAME_USERS", active_game: active_game }
+export function removeActiveGameUsers(game, removed_active_game, active_games){
+  return { type: "REMOVE_ACTIVE_GAME_USERS", removed_active_game: removed_active_game, game: game, active_games: active_games}
 }
 
 export function resetActiveGameState(){
@@ -87,12 +87,12 @@ export function toggleShoringAction(){
   return { type: "TOGGLE_SHORING_ACTION" }
 }
 
-export function toggleSandbag(){
-  return { type: "TOGGLE_SANDBAG" }
+export function toggleSandbag(index){
+  return { type: "TOGGLE_SANDBAG", index: index }
 }
 
-export function toggleHelicopterLift(){
-  return { type: "TOGGLE_HELICOPTER_LIFT" }
+export function toggleHelicopterLift(index){
+  return { type: "TOGGLE_HELICOPTER_LIFT", index: index }
 }
 
 export function toggleGiveTreasureAction(){

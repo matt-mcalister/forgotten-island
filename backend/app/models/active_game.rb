@@ -5,6 +5,22 @@ class ActiveGame < ApplicationRecord
 
   after_create :assign_ability
 
+  def exit_game
+    self.treasure_cards.each do |card|
+      self.game.add_to_treasure_discards(card)
+    end
+    if self.game.current_turn_id == self.id && self.game.active_games.length > 1
+      current_turn_index = self.game.turn_order.map {|ag| ag.id}.index(self.game.current_turn_id)
+
+      if current_turn_index == self.game.active_games.length - 1
+        current_turn_index = -1
+      end
+      current_turn_id = self.game.turn_order[current_turn_index+1].id
+      self.game.update(current_turn_id: current_turn_id)
+      ActiveGame.find(current_turn_id).update(actions_remaining: 3)
+    end
+  end
+
   def sandbag(tile)
     tile.update(status: "dry")
     self.discard("Sandbag")
@@ -22,7 +38,7 @@ class ActiveGame < ApplicationRecord
   end
 
   def can_relocate?
-    self.can_move_up? || self.can_move_down || self.can_move_left? || self.can_move_right?
+    self.can_move_up? || self.can_move_down? || self.can_move_left? || self.can_move_right?
   end
 
   def can_move_up?

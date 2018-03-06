@@ -18,7 +18,7 @@ class ActiveGame extends React.Component {
     if (data.active_game) {
       this.props.addActiveGameUsers(data.active_game)
     } else if (data.removed_active_game){
-      this.props.removeActiveGameUsers(data.removed_active_game)
+      this.props.removeActiveGameUsers(data.game, data.removed_active_game, data.active_games)
     } else if (data.message) {
       this.props.addMessage(data)
     } else if (data.game_in_session) {
@@ -43,7 +43,7 @@ class ActiveGame extends React.Component {
         <div className="ocean" style={{"opacity":`${this.props.water_level/10}`, "zIndex":`${this.props.water_level*100}`}} />
         <div className="board">
           {this.props.tiles && this.props.tiles.map(tile => <Tile key={tile.tile.id} tile={tile.tile}/>)}
-          {!this.props.end_game && !!this.props.active_games && this.props.active_games.map(ag => <PlayerToken key={ag.id} {...ag}/> ) }
+          {!!this.props.active_games && this.props.active_games.map(ag => <PlayerToken key={ag.id} {...ag}/> ) }
         </div>
         <TeamChat />
         {this.props.in_session ? <UserGameInfo /> : <ReadyUp /> }
