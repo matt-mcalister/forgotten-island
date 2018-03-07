@@ -3,8 +3,8 @@
   height: 100%;
   width: 100%;
   display: grid;
-  grid-template-columns: 1fr 3fr 2fr;
-  grid-template-rows: 2fr 1fr;
+  grid-template-columns: 16% 50% 33%;
+  grid-template-rows: 66% 33%;
   grid-auto-flow: column;
 }
 
