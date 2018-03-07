@@ -203,6 +203,19 @@ function tileExists(tiles, newPosition) {
   }
 }
 
+function diverSwimming(tiles, newPosition, active_game){
+  if (active_game.ability === "Diver"){
+    let newTile = tiles.find(tile => tile.tile.position === newPosition)
+    if (newTile.tile.status === "dry") {
+      return false
+    } else {
+      return true
+    }
+  } else {
+    return false
+  }
+}
+
 function executeMove(active_game, direction, tiles, shoringAction){
   let newPosition;
   switch(direction){
@@ -236,9 +249,10 @@ function executeMove(active_game, direction, tiles, shoringAction){
     default:
       return false
   }
-  if (tileExists(tiles, newPosition)) {
+  let diverAction = diverSwimming(tiles, newPosition, active_game)
+  if (diverAction || tileExists(tiles, newPosition)) {
     let new_actions_remaining = active_game.actions_remaining
-    if (!active_game["must_relocate?"]){
+    if (!active_game["must_relocate?"] && !diverAction){
       new_actions_remaining = new_actions_remaining - 1
     }
     if (shoringAction) {

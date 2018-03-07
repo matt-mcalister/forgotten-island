@@ -36,7 +36,11 @@ class ActiveGame < ApplicationRecord
   end
 
   def must_relocate?
-    self.position && self.game_id && Tile.find_by(game_id: self.game_id, position: self.position).status == "abyss"
+    if (self.is_users_turn? && self.ability == "Diver")
+      false
+    else
+      self.position && self.game_id && Tile.find_by(game_id: self.game_id, position: self.position).status == "abyss"
+    end
   end
 
   def can_relocate?
