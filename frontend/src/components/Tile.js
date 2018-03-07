@@ -11,6 +11,9 @@ class Tile extends React.Component {
     } else if (this.props.helicopterLift >= 0 && this.props.playersToLift[0]) {
       let helicopterBody = { actions_remaining: this.props.currentUserActiveGame.actions_remaining, players_to_lift: this.props.playersToLift, lift_destination: this.props.tile.position }
       RestfulAdapter.editFetchToChannel("active_games", this.props.currentUserActiveGame.id, helicopterBody )
+    } else if (this.props.pilotFly) {
+      let pilotFlyBody = {actions_remaining: this.props.currentUserActiveGame.actions_remaining-1, turn_action: false, position: this.props.tile.position}
+      RestfulAdapter.editFetchToChannel("active_games", this.props.currentUserActiveGame.id, pilotFlyBody )
     }
   }
 
@@ -46,7 +49,8 @@ const mapStateToProps = state => {
     sandbag: state.activeGame.sandbag,
     currentUserActiveGame: state.activeGame.active_games[state.currentUser.activeGameId],
     helicopterLift: state.activeGame.helicopterLift,
-    playersToLift: state.activeGame.playersToLift
+    playersToLift: state.activeGame.playersToLift,
+    pilotFly: state.activeGame.pilotFly
   }
 }
 export default connect(mapStateToProps)(Tile)

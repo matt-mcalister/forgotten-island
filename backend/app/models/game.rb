@@ -60,8 +60,8 @@ class Game < ApplicationRecord
       self.assign_treasure_cards(ag)
     end
     flood_card_results = self.draw_flood_cards
-    self.current_turn_id = self.active_games.first.id
-    self.active_games.first.update(actions_remaining: 3)
+    self.current_turn_id = self.turn_order.first.id
+    self.active_games.first.update(actions_remaining: 3, turn_action: true)
     self.save
   end
 
@@ -197,7 +197,7 @@ class Game < ApplicationRecord
       self.current_turn_id = self.turn_order[current_turn_index+1].id
       self.save
 
-      ActiveGame.find(self.current_turn_id).update(actions_remaining: 3)
+      ActiveGame.find(self.current_turn_id).update(actions_remaining: 3, turn_action: true)
     end
   end
 

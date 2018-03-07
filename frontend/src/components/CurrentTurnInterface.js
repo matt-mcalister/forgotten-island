@@ -1,7 +1,7 @@
 import React from "react";
 import { handleArrowClick } from "../actions/helperFunctions"
 import { connect } from "react-redux"
-import { toggleShoringAction, toggleGiveTreasureAction } from "../actions"
+import { toggleShoringAction, toggleGiveTreasureAction, togglePilotFly } from "../actions"
 import { RestfulAdapter } from "../connections/adapter"
 
 class CurrentTurnInterface extends React.Component {
@@ -85,6 +85,16 @@ class CurrentTurnInterface extends React.Component {
     }
   }
 
+  canFly = () => {
+    if (this.props.active_game.can_fly){
+      return (
+        <div className="pilot-fly-button" onClick={this.props.togglePilotFly}>
+          {!this.props.pilotFly ? <h3>Fly to another tile</h3> : <h3>Cancel Flight</h3>}
+        </div>
+      )
+    }
+  }
+
   render() {
     return (
       <div className="current-turn-interface">
@@ -98,7 +108,8 @@ class CurrentTurnInterface extends React.Component {
           </div>
           {this.canTrade()}
           {this.canGetTreasure()}
-          <div className="end-turn-buton" onClick={this.endTurn}>
+          {this.canFly()}
+          <div className="end-turn-button" onClick={this.endTurn}>
             <h3>End Turn</h3>
           </div>
         </div>
@@ -109,4 +120,4 @@ class CurrentTurnInterface extends React.Component {
 }
 
 
-export default connect(state => ({ tiles: state.activeGame.tiles, shoringAction: state.activeGame.shoringAction, giveTreasureAction: state.activeGame.giveTreasureAction }), { toggleShoringAction, toggleGiveTreasureAction })(CurrentTurnInterface)
+export default connect(state => ({ tiles: state.activeGame.tiles, shoringAction: state.activeGame.shoringAction, giveTreasureAction: state.activeGame.giveTreasureAction, pilotFly: state.activeGame.pilotFly }), { toggleShoringAction, toggleGiveTreasureAction, togglePilotFly })(CurrentTurnInterface)

@@ -116,6 +116,10 @@ class ActiveGame < ApplicationRecord
     end
   end
 
+  def can_fly
+    self.ability == "Pilot" && self.turn_action
+  end
+
   def give_treasure_card(treasure_card, active_game_id)
     self.treasure_cards.delete_at(self.treasure_cards.index(treasure_card))
     self.update(treasure_cards: self.treasure_cards)
@@ -169,7 +173,7 @@ class ActiveGame < ApplicationRecord
 
   def assign_position
     positions = {
-      "Pilot": "Fools' Landing",
+      "Pilot": "Fools Landing",
       "Diver": "Iron Gate",
       "Explorer": "Copper Gate",
       "Engineer": "Cobalt Gate",

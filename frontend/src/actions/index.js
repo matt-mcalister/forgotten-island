@@ -131,3 +131,7 @@ export function resetMessageInput(){
 export function removePlayersToLift(id){
   return { type: "REMOVE_PLAYERS_TO_LIFT", active_game_id: id}
 }
+
+export function togglePilotFly(){
+  return { type: "TOGGLE_PILOT_FLY" }
+}

@@ -72,7 +72,8 @@ export function activeGameReducer(state = {
   sandbag: undefined,
   helicopterLift: undefined,
   playersToLift: [],
-  loading: false
+  loading: false,
+  pilotFly: false
 }, action) {
   switch(action.type){
     case 'SET_LOADING_TO_TRUE':
@@ -175,7 +176,8 @@ export function activeGameReducer(state = {
         messages: [...state.messages, ...onlyNewMessages],
         sandbag: undefined,
         helicopterLift: undefined,
-        playersToLift: []
+        playersToLift: [],
+        pilotFly: false
       }
     case "TOGGLE_SHORING_ACTION":
       let newShoringAction = !state.shoringAction
@@ -208,6 +210,9 @@ export function activeGameReducer(state = {
         playersToLift: newPlayersToLift,
         sandbag: undefined
       }
+    case "TOGGLE_PILOT_FLY":
+      let newPilotFly = !action.pilotFly
+      return {...state, pilotFly: newPilotFly}
     case "ADD_TO_PLAYERS_TO_LIFT":
       return {
         ...state,

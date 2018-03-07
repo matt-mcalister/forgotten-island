@@ -72,6 +72,7 @@ class Api::V1::ActiveGamesController < ApplicationController
           ).serializable_hash
       end
 
+
       ActiveGamesChannel.broadcast_to game, {new_turn: {game: serialized_game, active_games: serialized_active_games, tiles: serialized_tiles, messages: serialized_messages}}
       head :ok
 
@@ -119,7 +120,7 @@ class Api::V1::ActiveGamesController < ApplicationController
 
   private
     def active_game_params
-      params.require(:active_game).permit(:id, :game_id, :user_id, :ready_to_start, :position, :treasure_cards, :actions_remaining)
+      params.require(:active_game).permit(:id, :game_id, :user_id, :ready_to_start, :position, :treasure_cards, :actions_remaining, :turn_action)
     end
 
 end
