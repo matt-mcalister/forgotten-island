@@ -31,7 +31,7 @@ const Message = (props) => {
         return (
           <div className="alert">
             <p>CLICK ON A FELLOW ADVENTURERs INVENTORY TO GIVE THEM YOUR {props.message.treasure.replace(/THE /, "").toUpperCase()} TOKEN </p>
-            <p>NOTE: ADVENTURER MUST BE ON THE SAME TILE</p>
+            {props.currentUserActiveGame.ability !== "Messenger" && <p>NOTE: ADVENTURER MUST BE ON THE SAME TILE</p>}
           </div>
         )
       case "user_must_discard":
@@ -68,4 +68,11 @@ const Message = (props) => {
     }
   }
 }
-export default connect(state => ({currentUser: state.currentUser.currentUser}))(Message)
+
+const mapStateToProps = state => {
+  return {
+    currentUser: state.currentUser.currentUser,
+    currentUserActiveGame: state.activeGame.active_games[state.currentUser.activeGameId]
+  }
+}
+export default connect(mapStateToProps)(Message)

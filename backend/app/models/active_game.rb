@@ -125,7 +125,7 @@ class ActiveGame < ApplicationRecord
   end
 
   def can_trade_cards_with_user?
-    self.game.active_games.any? {|ag| ag.id != self.id && ag.position == self.position}
+    self.ability == "Messenger" || self.game.active_games.any? {|ag| ag.id != self.id && ag.position == self.position}
   end
 
   def is_users_turn?
