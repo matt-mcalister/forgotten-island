@@ -33,27 +33,63 @@ class CurrentTurnInterface extends React.Component {
     RestfulAdapter.editFetchToChannel("active_games", this.props.active_game.id, {actions_remaining: 0})
   }
 
+  renderNavigationControls = () => {
+    if (this.props.active_game.ability === "Explorer"){
+      return (<div className="navigation-controls">
+        <div className="up arrow" onClick={() => handleArrowClick(this.props.active_game, "up", this.props.tiles, this.props.shoringAction)}>
+          <img src={require("../navigation-icons/arrow.png")} />
+        </div>
+        <div className="down arrow" onClick={() => handleArrowClick(this.props.active_game, "down", this.props.tiles, this.props.shoringAction)}>
+          <img src={require("../navigation-icons/arrow.png")} />
+        </div>
+        <div className="left arrow" onClick={() => handleArrowClick(this.props.active_game, "left", this.props.tiles, this.props.shoringAction)}>
+          <img src={require("../navigation-icons/arrow.png")} />
+        </div>
+        <div className="right arrow" onClick={() => handleArrowClick(this.props.active_game, "right", this.props.tiles, this.props.shoringAction)}>
+          <img src={require("../navigation-icons/arrow.png")} />
+        </div>
+        <div className="up-left arrow" onClick={() => handleArrowClick(this.props.active_game, "up-left", this.props.tiles, this.props.shoringAction)}>
+          <img src={require("../navigation-icons/arrow.png")} />
+        </div>
+        <div className="down-right arrow" onClick={() => handleArrowClick(this.props.active_game, "down-right", this.props.tiles, this.props.shoringAction)}>
+          <img src={require("../navigation-icons/arrow.png")} />
+        </div>
+        <div className="down-left arrow" onClick={() => handleArrowClick(this.props.active_game, "down-left", this.props.tiles, this.props.shoringAction)}>
+          <img src={require("../navigation-icons/arrow.png")} />
+        </div>
+        <div className="up-right arrow" onClick={() => handleArrowClick(this.props.active_game, "up-right", this.props.tiles, this.props.shoringAction)}>
+          <img src={require("../navigation-icons/arrow.png")} />
+        </div>
+        <div className="current-location-pin" onClick={() => this.props.shoringAction && handleArrowClick(this.props.active_game, "currentLocation", this.props.tiles, this.props.shoringAction)}>
+          <img src={require("../navigation-icons/current_location_pin.png")} />
+        </div>
+      </div>)
+    } else {
+      return (<div className="navigation-controls">
+        <div className="up arrow" onClick={() => handleArrowClick(this.props.active_game, "up", this.props.tiles, this.props.shoringAction)}>
+          <img src={require("../navigation-icons/arrow.png")} />
+        </div>
+        <div className="down arrow" onClick={() => handleArrowClick(this.props.active_game, "down", this.props.tiles, this.props.shoringAction)}>
+          <img src={require("../navigation-icons/arrow.png")} />
+        </div>
+        <div className="left arrow" onClick={() => handleArrowClick(this.props.active_game, "left", this.props.tiles, this.props.shoringAction)}>
+          <img src={require("../navigation-icons/arrow.png")} />
+        </div>
+        <div className="right arrow" onClick={() => handleArrowClick(this.props.active_game, "right", this.props.tiles, this.props.shoringAction)}>
+          <img src={require("../navigation-icons/arrow.png")} />
+        </div>
+        <div className="current-location-pin" onClick={() => this.props.shoringAction && handleArrowClick(this.props.active_game, "currentLocation", this.props.tiles, this.props.shoringAction)}>
+          <img src={require("../navigation-icons/current_location_pin.png")} />
+        </div>
+      </div>)
+    }
+  }
+
   render() {
     return (
       <div className="current-turn-interface">
 
-        <div className="navigation-controls">
-          <div className="up arrow" onClick={() => handleArrowClick(this.props.active_game, "up", this.props.tiles, this.props.shoringAction)}>
-            <img src={require("../navigation-icons/arrow.png")} />
-          </div>
-          <div className="down arrow" onClick={() => handleArrowClick(this.props.active_game, "down", this.props.tiles, this.props.shoringAction)}>
-            <img src={require("../navigation-icons/arrow.png")} />
-          </div>
-          <div className="left arrow" onClick={() => handleArrowClick(this.props.active_game, "left", this.props.tiles, this.props.shoringAction)}>
-            <img src={require("../navigation-icons/arrow.png")} />
-          </div>
-          <div className="right arrow" onClick={() => handleArrowClick(this.props.active_game, "right", this.props.tiles, this.props.shoringAction)}>
-            <img src={require("../navigation-icons/arrow.png")} />
-          </div>
-          <div className="current-location-pin" onClick={() => this.props.shoringAction && handleArrowClick(this.props.active_game, "currentLocation", this.props.tiles, this.props.shoringAction)}>
-            <img src={require("../navigation-icons/current_location_pin.png")} />
-          </div>
-        </div>
+        {this.renderNavigationControls()}
 
         <div className="turn-action-buttons">
           <h3>{`${this.props.active_game.actions_remaining} Actions Remaining`}</h3>

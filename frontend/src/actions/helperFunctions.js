@@ -54,6 +54,62 @@ export function handleArrowClick(active_game, direction, tiles, shoringAction) {
           executeMove(active_game, "right", tiles, shoringAction)
           return true;
       }
+    case "up-left":
+      switch(active_game.position){
+        case 1:
+        case 2:
+        case 3:
+        case 4:
+        case 7:
+        case 8:
+        case 13:
+         return false;
+        default:
+          executeMove(active_game, "up-left", tiles, shoringAction)
+          return true
+      }
+    case "up-right":
+      switch(active_game.position){
+        case 1:
+        case 2:
+        case 5:
+        case 6:
+        case 11:
+        case 12:
+        case 18:
+         return false;
+        default:
+          executeMove(active_game, "up-right", tiles, shoringAction)
+          return true
+      }
+    case "down-left":
+      switch(active_game.position){
+        case 23:
+        case 24:
+        case 19:
+        case 20:
+        case 13:
+        case 14:
+        case 7:
+         return false;
+        default:
+          executeMove(active_game, "down-left", tiles, shoringAction)
+          return true
+      }
+    case "down-right":
+      switch(active_game.position){
+        case 23:
+        case 24:
+        case 21:
+        case 22:
+        case 17:
+        case 18:
+        case 12:
+         return false;
+        default:
+          executeMove(active_game, "down-right", tiles, shoringAction)
+          return true
+      }
     case "currentLocation":
       executeMove(active_game, "currentLocation", tiles, shoringAction)
       break;
@@ -79,13 +135,17 @@ function moveUp(position){
     case 14:
     case 13:
       return (position - 6)
+    case 12:
     case 11:
     case 10:
     case 9:
     case 8:
+    case 7:
       return (position - 5)
+    case 6:
     case 5:
     case 4:
+    case 3:
       return (position - 3)
     default:
       return false
@@ -109,13 +169,17 @@ function moveDown(position){
     case 11:
     case 12:
       return (position + 6)
+    case 13:
     case 14:
     case 15:
     case 16:
     case 17:
+    case 18:
       return (position + 5)
+    case 19:
     case 20:
     case 21:
+    case 22:
       return (position + 3)
     default:
       return false
@@ -153,6 +217,18 @@ function executeMove(active_game, direction, tiles, shoringAction){
       break;
     case "right":
       newPosition = moveRight(active_game.position)
+      break;
+    case "up-left":
+      newPosition = moveLeft(moveUp(active_game.position))
+      break;
+    case "up-right":
+      newPosition = moveRight(moveUp(active_game.position))
+      break;
+    case "down-left":
+      newPosition = moveLeft(moveDown(active_game.position))
+      break;
+    case "down-right":
+      newPosition = moveRight(moveDown(active_game.position))
       break;
     case "currentLocation":
       newPosition = active_game.position

@@ -14,7 +14,7 @@
 }
 
 .up {
-  grid-area: 1 / 2 / 2 / 3
+  grid-area: 1 / 2 / 2 / 3;
 }
 
 .down {
@@ -30,6 +30,26 @@
 .right {
   grid-area: 2 / 3 / 3 / 4;
   transform:rotate(90deg);
+}
+
+.up-left {
+  grid-area: 1 / 1 / 2 / 2;
+  transform:rotate(315deg)
+}
+
+.down-right {
+  grid-area: 3 / 3 / 4 / 4;
+  transform:rotate(135deg);
+}
+
+.down-left {
+  grid-area: 3 / 1 / 4 / 2;
+  transform:rotate(225deg);
+}
+
+.up-right {
+  grid-area: 1 / 3 / 2 / 4;
+  transform:rotate(45deg);
 }
 
 .current-location-pin {
