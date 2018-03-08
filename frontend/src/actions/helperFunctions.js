@@ -258,9 +258,6 @@ function executeMove(active_game, direction, tiles, shoringAction, navigatorSele
       currentUserActiveGame = navigatorSelectedActiveGame.currentUserActiveGame
       if (!diverAction){
         fetchBody.navigations_remaining = navigatorSelectedActiveGame.currentUserActiveGame.navigations_remaining - 1
-        // if (fetchBody.navigations_remaining === 2){
-        //   fetchBody.navigations_remaining = 1
-        // }
       } else {
         fetchBody.navigations_remaining = navigatorSelectedActiveGame.currentUserActiveGame.navigations_remaining
       }
@@ -271,13 +268,9 @@ function executeMove(active_game, direction, tiles, shoringAction, navigatorSele
     }
 
     let new_actions_remaining = currentUserActiveGame.actions_remaining
-    if (navigatorSelectedActiveGame && fetchBody.navigations_remaining === 0) {
+    if ((navigatorSelectedActiveGame || shoringAction) && fetchBody.navigations_remaining === 0) {
       new_actions_remaining = new_actions_remaining - 1
-      // if (navigatorSelectedActiveGame.ag.ability === "Diver"){
-      //   fetchBody.navigations_remaining = 3
-      // } else {
-        fetchBody.navigations_remaining = 2
-      // }
+      fetchBody.navigations_remaining = 2
     } else if (!active_game["must_relocate?"] && !diverAction && !navigatorSelectedActiveGame){
       new_actions_remaining = new_actions_remaining - 1
     }
@@ -286,6 +279,10 @@ function executeMove(active_game, direction, tiles, shoringAction, navigatorSele
     if (shoringAction) {
       if (canBeShored(tiles, newPosition)) {
         fetchBody.shoring = newPosition
+        fetchBody.navigations_remaining = active_game.navigations_remaining - 1
+        if (fetchBody.navigations_remaining !== 0){
+          fetchBody.actions_remaining = active_game.actions_remaining
+        }
         RestfulAdapter.editFetchToChannel("active_games", active_game.id, fetchBody)
       }
     } else {

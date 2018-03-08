@@ -75,7 +75,8 @@ export function activeGameReducer(state = {
   loading: false,
   pilotFly: false,
   navigatorAction: false,
-  navigatorSelectedActiveGame: false
+  navigatorSelectedActiveGame: false,
+  engineerAction: false
 }, action) {
   switch(action.type){
     case 'SET_LOADING_TO_TRUE':
@@ -170,19 +171,17 @@ export function activeGameReducer(state = {
       let updatedNavigatorSelectedActiveGame = false
       let updatedNavigatorAction = false
       let updateNavigatorInfo = false
-      // if (state.navigatorSelectedActiveGame && updatedActiveGamesObject[state.navigatorSelectedActiveGame.currentUserActiveGame.id]["is_users_turn?"]){
-      //   if (updatedActiveGamesObject[state.navigatorSelectedActiveGame.currentUserActiveGame.id].navigations_remaining === 1){
-      //     updatedNavigatorInfo = true
-      //   } else if (updatedActiveGamesObject[state.navigatorSelectedActiveGame.currentUserActiveGame.id].navigations_remaining === 2 && state.navigatorSelectedActiveGame.ag.ability === "Diver") {
-      //     updatedNavigatorInfo = true
-      //   }
-      // }
       if (state.navigatorSelectedActiveGame && updatedActiveGamesObject[state.navigatorSelectedActiveGame.currentUserActiveGame.id].actions_remaining === state.active_games[state.navigatorSelectedActiveGame.currentUserActiveGame.id].actions_remaining){
         updateNavigatorInfo = true
       }
       if (updateNavigatorInfo){
         updatedNavigatorSelectedActiveGame = {ag: updatedActiveGamesObject[state.navigatorSelectedActiveGame.ag.id], currentUserActiveGame: updatedActiveGamesObject[state.navigatorSelectedActiveGame.currentUserActiveGame.id] }
         updatedNavigatorAction = true
+      }
+      let engineerActiveGameId = Object.keys(updatedActiveGamesObject).find(id => updatedActiveGamesObject[id].ability === "Engineer")
+      let updatedEngineerAction = false
+      if (engineerActiveGameId && updatedActiveGamesObject[engineerActiveGameId].navigations_remaining === 1){
+        updatedEngineerAction = true
       }
       return {
         ...state,
@@ -198,7 +197,8 @@ export function activeGameReducer(state = {
         playersToLift: [],
         pilotFly: false,
         navigatorAction: updatedNavigatorAction,
-        navigatorSelectedActiveGame: updatedNavigatorSelectedActiveGame
+        navigatorSelectedActiveGame: updatedNavigatorSelectedActiveGame,
+        engineerAction: updatedEngineerAction
       }
     case "TOGGLE_SHORING_ACTION":
       let newShoringAction = !state.shoringAction
@@ -234,6 +234,9 @@ export function activeGameReducer(state = {
     case "TOGGLE_PILOT_FLY":
       let newPilotFly = !state.pilotFly
       return {...state, pilotFly: newPilotFly}
+    case "TOGGLE_ENGINEER_ACTION":
+      let newEngineerAction = !state.engineerAction
+      return {...state, engineerAction: newEngineerAction}
     case "TOGGLE_NAVIGATOR_ACTION":
       let newNavigatorAction = !state.navigatorAction
       let newNavigatorSelectedActiveGame = state.navigatorSelectedActiveGame
