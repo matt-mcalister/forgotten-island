@@ -1,7 +1,7 @@
 import React from "react";
 import { HEADERS, API_ROOT } from "../connections/constants"
 import { connect } from "react-redux"
-import { resetActiveGameState, addToPlayersToLift, removePlayersToLift } from "../actions"
+import { resetActiveGameState, addToPlayersToLift, removePlayersToLift, setNavigatorSelectedActiveGame } from "../actions"
 
 class PlayerToken extends React.Component {
   state = {
@@ -25,7 +25,7 @@ class PlayerToken extends React.Component {
   }
 
   handleMouseOver = () => {
-    if (this.props.helicopterLift) {
+    if (this.props.helicopterLift || (this.props.navigatorAction && this.props.id !== this.props.currentUserActiveGame.id)) {
       this.setState({height: "4vmin", width:"4vmin"})
     }
   }
@@ -41,6 +41,8 @@ class PlayerToken extends React.Component {
       } else {
         this.props.addToPlayersToLift({id: this.props.id, position: this.props.position})
       }
+    } else if (this.props.navigatorAction && this.props.id !== this.props.currentUserActiveGame.id) {
+      this.props.setNavigatorSelectedActiveGame(this.props.active_game, this.props.currentUserActiveGame)
     }
   }
 
@@ -71,7 +73,7 @@ const mapStateToProps = (state, props) => {
     helicopterStartingPosition = state.activeGame.playersToLift[0].position
   }
   let borderWidth = 0
-  if (state.activeGame.playersToLift.find(ag => ag.id === props.id)){
+  if (state.activeGame.playersToLift.find(ag => ag.id === props.id) || (state.activeGame.navigatorSelectedActiveGame && state.activeGame.navigatorSelectedActiveGame.ag.id === props.id)){
     borderWidth = 0.2
   }
 
@@ -81,6 +83,10 @@ const mapStateToProps = (state, props) => {
     helicopterStartingPosition: helicopterStartingPosition,
     playersToLift: state.activeGame.playersToLift,
     end_game: state.activeGame.game.end_game,
-    borderWidth: borderWidth}
+    borderWidth: borderWidth,
+    navigatorAction: state.activeGame.navigatorAction,
+    currentUserActiveGame: state.activeGame.active_games[state.currentUser.activeGameId],
+    active_game: state.activeGame.active_games[props.id]
+  }
 }
-export default connect(mapStateToProps, { resetActiveGameState, addToPlayersToLift, removePlayersToLift })(PlayerToken)
+export default connect(mapStateToProps, { resetActiveGameState, addToPlayersToLift, removePlayersToLift, setNavigatorSelectedActiveGame })(PlayerToken)

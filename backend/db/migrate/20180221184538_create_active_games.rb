@@ -9,6 +9,7 @@ class CreateActiveGames < ActiveRecord::Migration[5.1]
       t.boolean :ready_to_start, default: false
       t.integer :actions_remaining, default: 0
       t.boolean :turn_action, default: false
+      t.integer :navigations_remaining, default: 2
 
       t.timestamps
     end

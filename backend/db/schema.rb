@@ -24,6 +24,7 @@ ActiveRecord::Schema.define(version: 20180221184605) do
     t.boolean "ready_to_start", default: false
     t.integer "actions_remaining", default: 0
     t.boolean "turn_action", default: false
+    t.integer "navigations_remaining", default: 2
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["game_id"], name: "index_active_games_on_game_id"

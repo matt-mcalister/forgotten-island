@@ -14,6 +14,9 @@ class Tile extends React.Component {
     } else if (this.props.pilotFly) {
       let pilotFlyBody = {actions_remaining: this.props.currentUserActiveGame.actions_remaining-1, turn_action: false, position: this.props.tile.position}
       RestfulAdapter.editFetchToChannel("active_games", this.props.currentUserActiveGame.id, pilotFlyBody )
+    } else if (this.props.currentUserActiveGame["must_relocate?"] && this.props.currentUserActiveGame.ability === "Pilot"){
+      let pilotEscape = {position: this.props.tile.position}
+      RestfulAdapter.editFetchToChannel("active_games", this.props.currentUserActiveGame.id, pilotEscape )
     }
   }
 

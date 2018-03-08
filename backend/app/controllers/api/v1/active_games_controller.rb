@@ -36,6 +36,8 @@ class Api::V1::ActiveGamesController < ApplicationController
         active_game.sandbag(Tile.find(params[:sandbag]))
       elsif params[:lift_destination]
         active_game.helicopter_lift(params[:players_to_lift], params[:lift_destination])
+      elsif params[:navigating_id]
+        ActiveGame.find(params[:navigating_id]).update(position: params[:navigating_position])
       end
 
 
@@ -58,6 +60,11 @@ class Api::V1::ActiveGamesController < ApplicationController
         ActiveModelSerializers::Adapter::Json.new(
           ActiveGameSerializer.new(ag)
           ).serializable_hash
+      end
+
+      if params[:navigating_id]
+        serialized_active_games.find {|ag| ag[:active_game][:id] == params[:navigating_id]}[:active_game][:must_relocate?] = false
+        serialized_game[:game][:halt_game?] = false
       end
 
       serialized_tiles = game.tiles.map do |tile|
@@ -120,7 +127,7 @@ class Api::V1::ActiveGamesController < ApplicationController
 
   private
     def active_game_params
-      params.require(:active_game).permit(:id, :game_id, :user_id, :ready_to_start, :position, :treasure_cards, :actions_remaining, :turn_action)
+      params.require(:active_game).permit(:id, :game_id, :user_id, :ready_to_start, :position, :treasure_cards, :actions_remaining, :turn_action, :navigations_remaining)
     end
 
 end

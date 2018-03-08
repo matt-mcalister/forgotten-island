@@ -117,7 +117,7 @@ class ActiveGame < ApplicationRecord
   end
 
   def can_fly
-    self.ability == "Pilot" && self.turn_action
+    self.ability == "Pilot" && self.turn_action && self.is_users_turn?
   end
 
   def give_treasure_card(treasure_card, active_game_id)

@@ -1,6 +1,6 @@
 import {RestfulAdapter} from "../connections/adapter"
 
-export function handleArrowClick(active_game, direction, tiles, shoringAction) {
+export function handleArrowClick(active_game, direction, tiles, shoringAction, navigatorSelectedActiveGame) {
   switch (direction){
     case "up":
       switch (active_game.position){
@@ -12,7 +12,7 @@ export function handleArrowClick(active_game, direction, tiles, shoringAction) {
         case 12:
           return false;
         default:
-          executeMove(active_game, "up", tiles, shoringAction)
+          executeMove(active_game, "up", tiles, shoringAction, navigatorSelectedActiveGame)
           return true;
       }
     case "down":
@@ -25,7 +25,7 @@ export function handleArrowClick(active_game, direction, tiles, shoringAction) {
         case 18:
           return false;
         default:
-          executeMove(active_game, "down", tiles, shoringAction)
+          executeMove(active_game, "down", tiles, shoringAction, navigatorSelectedActiveGame)
           return true;
       }
     case "left":
@@ -38,7 +38,7 @@ export function handleArrowClick(active_game, direction, tiles, shoringAction) {
         case 23:
           return false;
         default:
-          executeMove(active_game, "left", tiles, shoringAction)
+          executeMove(active_game, "left", tiles, shoringAction, navigatorSelectedActiveGame)
           return true;
       }
     case "right":
@@ -51,7 +51,7 @@ export function handleArrowClick(active_game, direction, tiles, shoringAction) {
         case 24:
           return false;
         default:
-          executeMove(active_game, "right", tiles, shoringAction)
+          executeMove(active_game, "right", tiles, shoringAction, navigatorSelectedActiveGame)
           return true;
       }
     case "up-left":
@@ -65,7 +65,7 @@ export function handleArrowClick(active_game, direction, tiles, shoringAction) {
         case 13:
          return false;
         default:
-          executeMove(active_game, "up-left", tiles, shoringAction)
+          executeMove(active_game, "up-left", tiles, shoringAction, navigatorSelectedActiveGame)
           return true
       }
     case "up-right":
@@ -79,7 +79,7 @@ export function handleArrowClick(active_game, direction, tiles, shoringAction) {
         case 18:
          return false;
         default:
-          executeMove(active_game, "up-right", tiles, shoringAction)
+          executeMove(active_game, "up-right", tiles, shoringAction, navigatorSelectedActiveGame)
           return true
       }
     case "down-left":
@@ -93,7 +93,7 @@ export function handleArrowClick(active_game, direction, tiles, shoringAction) {
         case 7:
          return false;
         default:
-          executeMove(active_game, "down-left", tiles, shoringAction)
+          executeMove(active_game, "down-left", tiles, shoringAction, navigatorSelectedActiveGame)
           return true
       }
     case "down-right":
@@ -107,11 +107,11 @@ export function handleArrowClick(active_game, direction, tiles, shoringAction) {
         case 12:
          return false;
         default:
-          executeMove(active_game, "down-right", tiles, shoringAction)
+          executeMove(active_game, "down-right", tiles, shoringAction, navigatorSelectedActiveGame)
           return true
       }
     case "currentLocation":
-      executeMove(active_game, "currentLocation", tiles, shoringAction)
+      executeMove(active_game, "currentLocation", tiles, shoringAction, navigatorSelectedActiveGame)
       break;
     default:
       return false
@@ -203,7 +203,7 @@ function tileExists(tiles, newPosition) {
   }
 }
 
-function diverSwimming(tiles, newPosition, active_game, shoringAction){
+function diverSwimming(tiles, newPosition, active_game, shoringAction, navigatorSelectedActiveGame){
   if (!shoringAction && active_game.ability === "Diver"){
     let newTile = tiles.find(tile => tile.tile.position === newPosition)
     if (newTile.tile.status === "dry") {
@@ -216,7 +216,7 @@ function diverSwimming(tiles, newPosition, active_game, shoringAction){
   }
 }
 
-function executeMove(active_game, direction, tiles, shoringAction){
+function executeMove(active_game, direction, tiles, shoringAction, navigatorSelectedActiveGame){
   let newPosition;
   switch(direction){
     case "up":
@@ -249,18 +249,50 @@ function executeMove(active_game, direction, tiles, shoringAction){
     default:
       return false
   }
-  let diverAction = diverSwimming(tiles, newPosition, active_game, shoringAction)
+  let diverAction = diverSwimming(tiles, newPosition, active_game, shoringAction, navigatorSelectedActiveGame)
   if (diverAction || tileExists(tiles, newPosition)) {
-    let new_actions_remaining = active_game.actions_remaining
-    if (!active_game["must_relocate?"] && !diverAction){
+
+    let currentUserActiveGame;
+    let fetchBody = {}
+    if (navigatorSelectedActiveGame){
+      currentUserActiveGame = navigatorSelectedActiveGame.currentUserActiveGame
+      if (!diverAction){
+        fetchBody.navigations_remaining = navigatorSelectedActiveGame.currentUserActiveGame.navigations_remaining - 1
+        // if (fetchBody.navigations_remaining === 2){
+        //   fetchBody.navigations_remaining = 1
+        // }
+      } else {
+        fetchBody.navigations_remaining = navigatorSelectedActiveGame.currentUserActiveGame.navigations_remaining
+      }
+      fetchBody.navigating_id = active_game.id
+      fetchBody.navigating_position = newPosition
+    } else {
+      currentUserActiveGame = active_game
+    }
+
+    let new_actions_remaining = currentUserActiveGame.actions_remaining
+    if (navigatorSelectedActiveGame && fetchBody.navigations_remaining === 0) {
+      new_actions_remaining = new_actions_remaining - 1
+      // if (navigatorSelectedActiveGame.ag.ability === "Diver"){
+      //   fetchBody.navigations_remaining = 3
+      // } else {
+        fetchBody.navigations_remaining = 2
+      // }
+    } else if (!active_game["must_relocate?"] && !diverAction && !navigatorSelectedActiveGame){
       new_actions_remaining = new_actions_remaining - 1
     }
+
+    fetchBody.actions_remaining = new_actions_remaining
     if (shoringAction) {
       if (canBeShored(tiles, newPosition)) {
-        RestfulAdapter.editFetchToChannel("active_games", active_game.id, {shoring: newPosition, actions_remaining: new_actions_remaining})
+        fetchBody.shoring = newPosition
+        RestfulAdapter.editFetchToChannel("active_games", active_game.id, fetchBody)
       }
     } else {
-      RestfulAdapter.editFetchToChannel("active_games", active_game.id, {position: newPosition, actions_remaining: new_actions_remaining})
+      if (!fetchBody.navigating_id){
+        fetchBody.position = newPosition
+      }
+      RestfulAdapter.editFetchToChannel("active_games", currentUserActiveGame.id, fetchBody)
     }
   }
 }

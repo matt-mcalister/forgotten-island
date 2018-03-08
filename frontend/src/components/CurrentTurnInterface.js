@@ -1,7 +1,7 @@
 import React from "react";
 import { handleArrowClick } from "../actions/helperFunctions"
 import { connect } from "react-redux"
-import { toggleShoringAction, toggleGiveTreasureAction, togglePilotFly } from "../actions"
+import { toggleShoringAction, toggleGiveTreasureAction, togglePilotFly, toggleNavigatorAction } from "../actions"
 import { RestfulAdapter } from "../connections/adapter"
 
 class CurrentTurnInterface extends React.Component {
@@ -33,52 +33,52 @@ class CurrentTurnInterface extends React.Component {
     RestfulAdapter.editFetchToChannel("active_games", this.props.active_game.id, {actions_remaining: 0})
   }
 
-  renderNavigationControls = () => {
-    if (this.props.active_game.ability === "Explorer"){
+  renderNavigationControls = (active_game) => {
+    if (active_game.ability === "Explorer"){
       return (<div className="navigation-controls">
-        <div className="up arrow" onClick={() => handleArrowClick(this.props.active_game, "up", this.props.tiles, this.props.shoringAction)}>
+        <div className="up arrow" onClick={() => handleArrowClick(active_game, "up", this.props.tiles, this.props.shoringAction, this.props.navigatorSelectedActiveGame)}>
           <img src={require("../navigation-icons/arrow.png")} />
         </div>
-        <div className="down arrow" onClick={() => handleArrowClick(this.props.active_game, "down", this.props.tiles, this.props.shoringAction)}>
+        <div className="down arrow" onClick={() => handleArrowClick(active_game, "down", this.props.tiles, this.props.shoringAction, this.props.navigatorSelectedActiveGame)}>
           <img src={require("../navigation-icons/arrow.png")} />
         </div>
-        <div className="left arrow" onClick={() => handleArrowClick(this.props.active_game, "left", this.props.tiles, this.props.shoringAction)}>
+        <div className="left arrow" onClick={() => handleArrowClick(active_game, "left", this.props.tiles, this.props.shoringAction, this.props.navigatorSelectedActiveGame)}>
           <img src={require("../navigation-icons/arrow.png")} />
         </div>
-        <div className="right arrow" onClick={() => handleArrowClick(this.props.active_game, "right", this.props.tiles, this.props.shoringAction)}>
+        <div className="right arrow" onClick={() => handleArrowClick(active_game, "right", this.props.tiles, this.props.shoringAction, this.props.navigatorSelectedActiveGame)}>
           <img src={require("../navigation-icons/arrow.png")} />
         </div>
-        <div className="up-left arrow" onClick={() => handleArrowClick(this.props.active_game, "up-left", this.props.tiles, this.props.shoringAction)}>
+        <div className="up-left arrow" onClick={() => handleArrowClick(active_game, "up-left", this.props.tiles, this.props.shoringAction, this.props.navigatorSelectedActiveGame)}>
           <img src={require("../navigation-icons/arrow.png")} />
         </div>
-        <div className="down-right arrow" onClick={() => handleArrowClick(this.props.active_game, "down-right", this.props.tiles, this.props.shoringAction)}>
+        <div className="down-right arrow" onClick={() => handleArrowClick(active_game, "down-right", this.props.tiles, this.props.shoringAction, this.props.navigatorSelectedActiveGame)}>
           <img src={require("../navigation-icons/arrow.png")} />
         </div>
-        <div className="down-left arrow" onClick={() => handleArrowClick(this.props.active_game, "down-left", this.props.tiles, this.props.shoringAction)}>
+        <div className="down-left arrow" onClick={() => handleArrowClick(active_game, "down-left", this.props.tiles, this.props.shoringAction, this.props.navigatorSelectedActiveGame)}>
           <img src={require("../navigation-icons/arrow.png")} />
         </div>
-        <div className="up-right arrow" onClick={() => handleArrowClick(this.props.active_game, "up-right", this.props.tiles, this.props.shoringAction)}>
+        <div className="up-right arrow" onClick={() => handleArrowClick(active_game, "up-right", this.props.tiles, this.props.shoringAction, this.props.navigatorSelectedActiveGame)}>
           <img src={require("../navigation-icons/arrow.png")} />
         </div>
-        <div className="current-location-pin" onClick={() => this.props.shoringAction && handleArrowClick(this.props.active_game, "currentLocation", this.props.tiles, this.props.shoringAction)}>
+        <div className="current-location-pin" onClick={() => this.props.shoringAction && handleArrowClick(active_game, "currentLocation", this.props.tiles, this.props.shoringAction, this.props.navigatorSelectedActiveGame)}>
           <img src={require("../navigation-icons/current_location_pin.png")} />
         </div>
       </div>)
     } else {
       return (<div className="navigation-controls">
-        <div className="up arrow" onClick={() => handleArrowClick(this.props.active_game, "up", this.props.tiles, this.props.shoringAction)}>
+        <div className="up arrow" onClick={() => handleArrowClick(active_game, "up", this.props.tiles, this.props.shoringAction, this.props.navigatorSelectedActiveGame)}>
           <img src={require("../navigation-icons/arrow.png")} />
         </div>
-        <div className="down arrow" onClick={() => handleArrowClick(this.props.active_game, "down", this.props.tiles, this.props.shoringAction)}>
+        <div className="down arrow" onClick={() => handleArrowClick(active_game, "down", this.props.tiles, this.props.shoringAction, this.props.navigatorSelectedActiveGame)}>
           <img src={require("../navigation-icons/arrow.png")} />
         </div>
-        <div className="left arrow" onClick={() => handleArrowClick(this.props.active_game, "left", this.props.tiles, this.props.shoringAction)}>
+        <div className="left arrow" onClick={() => handleArrowClick(active_game, "left", this.props.tiles, this.props.shoringAction, this.props.navigatorSelectedActiveGame)}>
           <img src={require("../navigation-icons/arrow.png")} />
         </div>
-        <div className="right arrow" onClick={() => handleArrowClick(this.props.active_game, "right", this.props.tiles, this.props.shoringAction)}>
+        <div className="right arrow" onClick={() => handleArrowClick(active_game, "right", this.props.tiles, this.props.shoringAction, this.props.navigatorSelectedActiveGame)}>
           <img src={require("../navigation-icons/arrow.png")} />
         </div>
-        <div className="current-location-pin" onClick={() => this.props.shoringAction && handleArrowClick(this.props.active_game, "currentLocation", this.props.tiles, this.props.shoringAction)}>
+        <div className="current-location-pin" onClick={() => this.props.shoringAction && handleArrowClick(active_game, "currentLocation", this.props.tiles, this.props.shoringAction, this.props.navigatorSelectedActiveGame)}>
           <img src={require("../navigation-icons/current_location_pin.png")} />
         </div>
       </div>)
@@ -95,11 +95,34 @@ class CurrentTurnInterface extends React.Component {
     }
   }
 
+  handleEndNavigation = () => {
+    if (this.props.navigatorSelectedActiveGame.currentUserActiveGame.navigations_remaining == 1) {
+      RestfulAdapter.editFetchToChannel("active_games", this.props.active_game.id, {actions_remaining: this.props.active_game.actions_remaining - 1, navigations_remaining: 2})
+    }
+    this.props.toggleNavigatorAction()
+  }
+
+  renderNavigatorAction = () => {
+    if (this.props.navigatorSelectedActiveGame) {
+      return (
+        <div className="navigator-button" onClick={this.handleEndNavigation}>
+          {!!this.props.navigatorSelectedActiveGame.currentUserActiveGame.navigations_remaining && <h3>End Navigation</h3>}
+        </div>
+      )
+    } else if (this.props.active_game.ability === "Navigator") {
+      return (
+        <div className="navigator-button" onClick={this.props.toggleNavigatorAction}>
+          {!this.props.navigatorAction ? <h3>Navigate another player 2 tiles</h3> : <h3>Cancel Navigation</h3>}
+        </div>
+      )
+    }
+  }
+
   render() {
     return (
       <div className="current-turn-interface">
 
-        {this.renderNavigationControls()}
+        {this.props.navigatorSelectedActiveGame ? this.renderNavigationControls(this.props.navigatorSelectedActiveGame.ag) : this.renderNavigationControls(this.props.active_game)}
 
         <div className="turn-action-buttons">
           <h3>{`${this.props.active_game.actions_remaining} Actions Remaining`}</h3>
@@ -109,6 +132,7 @@ class CurrentTurnInterface extends React.Component {
           {this.canTrade()}
           {this.canGetTreasure()}
           {this.canFly()}
+          {this.renderNavigatorAction()}
           <div className="end-turn-button" onClick={this.endTurn}>
             <h3>End Turn</h3>
           </div>
@@ -119,5 +143,15 @@ class CurrentTurnInterface extends React.Component {
   }
 }
 
+const mapStateToProps = (state, props) => {
 
-export default connect(state => ({ tiles: state.activeGame.tiles, shoringAction: state.activeGame.shoringAction, giveTreasureAction: state.activeGame.giveTreasureAction, pilotFly: state.activeGame.pilotFly }), { toggleShoringAction, toggleGiveTreasureAction, togglePilotFly })(CurrentTurnInterface)
+  return {
+    tiles: state.activeGame.tiles,
+    shoringAction: state.activeGame.shoringAction,
+    giveTreasureAction: state.activeGame.giveTreasureAction,
+    pilotFly: state.activeGame.pilotFly,
+    navigatorAction: state.activeGame.navigatorAction,
+    navigatorSelectedActiveGame: state.activeGame.navigatorSelectedActiveGame}
+}
+
+export default connect(mapStateToProps, { toggleShoringAction, toggleGiveTreasureAction, togglePilotFly, toggleNavigatorAction })(CurrentTurnInterface)

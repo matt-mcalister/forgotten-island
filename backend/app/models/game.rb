@@ -61,7 +61,7 @@ class Game < ApplicationRecord
     end
     flood_card_results = self.draw_flood_cards
     self.current_turn_id = self.turn_order.first.id
-    self.active_games.first.update(actions_remaining: 3, turn_action: true)
+    self.turn_order.first.update(actions_remaining: 3, turn_action: true)
     self.save
   end
 
