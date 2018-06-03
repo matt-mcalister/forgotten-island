@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux"
 import Message from "./Message"
-import { updateNewMessageInput, resetMessageInput } from "../actions"
+import { updateNewMessageInput, resetMessageInput, helpMessage } from "../actions"
 import { RestfulAdapter } from "../connections/adapter.js"
 
 
@@ -9,12 +9,16 @@ class TeamChat extends React.Component {
 
   handleSubmit = (e) => {
     e.preventDefault()
-    const messageBody = {
-      text: this.props.newMessageInput,
-      user_id: this.props.currentUser.id,
-      game_id: this.props.game.id
+    if (this.props.newMessageInput.toLowerCase() === "help"){
+      this.props.helpMessage()
+    } else {
+      const messageBody = {
+        text: this.props.newMessageInput,
+        user_id: this.props.currentUser.id,
+        game_id: this.props.game.id
+      }
+      RestfulAdapter.createFetchToChannel("messages", messageBody)
     }
-    RestfulAdapter.createFetchToChannel("messages", messageBody)
     this.props.resetMessageInput()
   }
 
@@ -44,7 +48,7 @@ class TeamChat extends React.Component {
           </div>
         </div>
         <form className="new-message-form" onSubmit={this.handleSubmit}>
-          <input type="text" value={this.props.newMessageInput} onChange={this.handleChange} placeholder="Type here to chat" />
+          <input type="text" value={this.props.newMessageInput} onChange={this.handleChange} placeholder="Type to chat. Type 'help' for instructions." />
           <input className="submit" type="submit" value="Send" />
         </form>
       </div>
@@ -61,4 +65,4 @@ const mapStateToProps = (state) => {
   })
 }
 
-export default connect(mapStateToProps, { updateNewMessageInput, resetMessageInput })(TeamChat)
+export default connect(mapStateToProps, { updateNewMessageInput, resetMessageInput, helpMessage })(TeamChat)

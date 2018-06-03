@@ -76,7 +76,8 @@ export function activeGameReducer(state = {
   pilotFly: false,
   navigatorAction: false,
   navigatorSelectedActiveGame: false,
-  engineerAction: false
+  engineerAction: false,
+  helpMessage: false
 }, action) {
   switch(action.type){
     case 'SET_LOADING_TO_TRUE':
@@ -133,6 +134,8 @@ export function activeGameReducer(state = {
         ...state,
         messages: filteredMessages
       }
+    case "HELP_MESSAGE":
+    return {...state, helpMessage: true, messages: [...state.messages, {alert: "help_message", temporary: true, id:`temporary - ${Date.now()}`}]}
     case "RESET_ACTIVE_GAME_STATE":
       return {
         game: {water_level: 0},
@@ -145,7 +148,8 @@ export function activeGameReducer(state = {
         treasureToGive: null,
         sandbag: undefined,
         helicopterLift: undefined,
-        playersToLift: []
+        playersToLift: [],
+        helpMessage: false
       }
     case "RESET_MESSAGE_INPUT":
       return {...state, newMessageInput: ""}
@@ -198,7 +202,8 @@ export function activeGameReducer(state = {
         pilotFly: false,
         navigatorAction: updatedNavigatorAction,
         navigatorSelectedActiveGame: updatedNavigatorSelectedActiveGame,
-        engineerAction: updatedEngineerAction
+        engineerAction: updatedEngineerAction,
+        helpMessage: false
       }
     case "TOGGLE_SHORING_ACTION":
       let newShoringAction = !state.shoringAction

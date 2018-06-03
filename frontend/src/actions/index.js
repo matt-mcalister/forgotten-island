@@ -147,3 +147,7 @@ export function setNavigatorSelectedActiveGame(active_game, currentUserActiveGam
 export function toggleEngineerAction(){
   return { type: "TOGGLE_ENGINEER_ACTION" }
 }
+
+export function helpMessage(){
+  return { type: "HELP_MESSAGE" }
+}

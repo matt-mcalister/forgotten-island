@@ -9,7 +9,7 @@ class UserGameInfo extends React.Component {
     if (!this.props.end_game){
       if (this.props.currentUserActiveGame["must_discard?"]) {
         this.props.userMustDiscard()
-      } else if (this.props.giveTreasureAction){
+      } else if (this.props.giveTreasureAction || this.props.helpMessage){
         return null
       } else if (this.props.currentUserActiveGame["must_relocate?"]){
         this.props.userMustRelocate()
@@ -36,7 +36,8 @@ const mapStateToProps = (state) => {
     giveTreasureAction: state.activeGame.giveTreasureAction,
     currentUserActiveGame: state.activeGame.active_games[state.currentUser.activeGameId],
     halt_game: state.activeGame.game["halt_game?"],
-    end_game: state.activeGame.game.end_game
+    end_game: state.activeGame.game.end_gamem,
+    helpMessage: state.activeGame.help_message
   }
 }
 export default connect(mapStateToProps, { userMustDiscard, removeTemporaryMessages, userMustRelocate })(UserGameInfo)

@@ -279,9 +279,13 @@ function executeMove(active_game, direction, tiles, shoringAction, navigatorSele
     if (shoringAction) {
       if (canBeShored(tiles, newPosition)) {
         fetchBody.shoring = newPosition
-        fetchBody.navigations_remaining = active_game.navigations_remaining - 1
-        if (fetchBody.navigations_remaining !== 0){
+        if (active_game.ability === "Engineer"){
+          fetchBody.navigations_remaining = active_game.navigations_remaining - 1
+        }
+        if (fetchBody.navigations_remaining === 1){
           fetchBody.actions_remaining = active_game.actions_remaining
+        } else {
+          fetchBody.actions_remaining = active_game.actions_remaining - 1
         }
         RestfulAdapter.editFetchToChannel("active_games", active_game.id, fetchBody)
       }

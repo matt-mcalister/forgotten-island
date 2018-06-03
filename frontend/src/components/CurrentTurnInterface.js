@@ -139,25 +139,27 @@ class CurrentTurnInterface extends React.Component {
   }
 
   renderShoringAction = () => {
-    if (this.props.active_game.ability === "Engineer"){
-      if (this.props.active_game.navigations_remaining === 2) {
-        return (
-          <div className="shore-up-button" onClick={this.props.toggleEngineerAction}>
-            {(this.props.engineerAction) ? <h3>Cancel Shore</h3> : <h3>Shore Up 1 tile</h3>}
-          </div>
-        )
+    if (!this.props.active_game["must_relocate?"]){
+      if (this.props.active_game.ability === "Engineer"){
+        if (this.props.active_game.navigations_remaining === 2) {
+          return (
+            <div className="shore-up-button" onClick={this.props.toggleEngineerAction}>
+              {(this.props.engineerAction) ? <h3>Cancel Shore</h3> : <h3>Shore Up 1 tile</h3>}
+            </div>
+          )
+        } else {
+          return (
+            <div className="shore-up-button" onClick={this.handleEndShore}>
+              <h3>End Shore</h3>
+            </div>
+          )
+        }
       } else {
         return (
-          <div className="shore-up-button" onClick={this.handleEndShore}>
-            <h3>End Shore</h3>
-          </div>
-        )
+        <div className="shore-up-button" onClick={this.props.toggleShoringAction}>
+          {(this.props.shoringAction) ? <h3>Cancel Shore</h3> : <h3>Shore Up 1 tile</h3>}
+        </div>)
       }
-    } else {
-      return (
-      <div className="shore-up-button" onClick={this.props.toggleShoringAction}>
-        {(this.props.shoringAction) ? <h3>Cancel Shore</h3> : <h3>Shore Up 1 tile</h3>}
-      </div>)
     }
   }
 
