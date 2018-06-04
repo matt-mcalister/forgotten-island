@@ -20,7 +20,7 @@ class Welcome extends React.Component {
     return (
       <div id="welcome-page">
         <div id="welcome-message">
-          <h1>Forgotten Island</h1>
+          <h1>Forgotten Isle</h1>
         </div>
         <form onSubmit={this.handleSubmit} id={"login-form"}>
           <input type="text" value={this.props.userNameInput} onChange={this.handleChange} placeholder="Enter your name here..." />

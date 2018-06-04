@@ -8,7 +8,7 @@ const Message = (props) => {
         if (props.message.active_game.user.id === props.currentUser.id){
           return (
             <div className="alert">
-            <p>{`Welcome to Forbidden Island, ${props.message.active_game.user.name}! You are the ${props.message.active_game.ability}.`}</p>
+            <p>{`Welcome to Forgotten Isle, ${props.message.active_game.user.name}! You are the ${props.message.active_game.ability}.`}</p>
             </div>)
         } else {
           return (
